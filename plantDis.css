@@ -318,3 +318,170 @@ iframe{
     font-size: 0.85rem;
 
 }
+
+
+
+
+
+
+
+
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .container {
+        padding: 20px;
+        height: auto;
+    }
+
+    .introcontainer {
+        width: 100%;
+        height: auto;
+        padding: 20px;
+    }
+
+    .textintro {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .text1 {
+        width: 100%;
+        margin: 20px 0;
+    }
+
+    .text1 h1, .text1 h2, #plant-protection h2 {
+        font-size: 28px;
+    }
+
+    .text1 h2 {
+        font-size: 16px;
+    }
+
+    .textintro img {
+        width: 100%;
+        max-width: 300px;
+        height: auto;
+    }
+
+    .text2 {
+        margin: 20px 0;
+    }
+
+    #olive, #tomato {
+        height: auto;
+        padding: 10px;
+    }
+
+    #olive h2, #tomato h2 {
+        font-size: 30px;
+        padding: 10px;
+    }
+
+    .containner {
+        flex-direction: column;
+    }
+
+    .card {
+        width: 100%;
+        height: auto;
+        margin: 10px 0;
+    }
+
+    .card iframe {
+        width: 100%;
+        height: auto;
+        min-height: 200px;
+    }
+
+    #plant-protection p {
+        padding: 20px;
+        font-size: 16px;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .footer-section {
+        min-width: auto;
+    }
+
+    .nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+
+/* Extra small screens (phones) */
+@media (max-width: 480px) {
+    .container {
+        padding: 10px;
+    }
+
+    .introcontainer {
+        padding: 10px;
+    }
+
+    .text1 h1, .text1 h2, #plant-protection h2 {
+        font-size: 24px;
+    }
+
+    .text1 h2 {
+        font-size: 14px;
+    }
+
+    .textintro img {
+        max-width: 200px;
+    }
+
+    .text2 {
+        margin: 10px 0;
+    }
+
+    #olive, #tomato {
+        padding: 5px;
+    }
+
+    #olive h2, #tomato h2 {
+        font-size: 24px;
+        padding: 5px;
+    }
+
+    .card h3 {
+        font-size: 20px;
+    }
+
+    .card p {
+        padding: 4px;
+        font-size: 14px;
+    }
+
+    .card iframe {
+        min-height: 150px;
+    }
+
+    #plant-protection p {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    .footer-section h4 {
+        font-size: 1rem;
+    }
+
+    .footer-section p, .footer-section ul li {
+        font-size: 0.8rem;
+    }
+
+    .social-links a {
+        font-size: 1.2rem;
+        margin-right: 10px;
+    }
+
+    .footer-bottom {
+        font-size: 0.75rem;
+    }
+}
