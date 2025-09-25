@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Food Security in Jordan</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(315deg, #253528 3%,#49654E 38%, #8BA889 68%);
+            animation: gradient 15s ease infinite;
+            background-size: 400% 400%;
+            background-attachment: fixed;
+            color: white;
+            /* 1. Ensure body padding-top matches navbar height (60px) */
+            padding-top: 60px; 
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
+        }
+
+        /* --- Navigation Bar Styles --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(37, 53, 40, 0.95); 
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            max-width: 1100px;
+            width: 90%;
+            justify-content: space-around;
+        }
+
+        .nav-links a {
+            color: #ffffff;
+            text-decoration: none;
+            padding: 10px 15px;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: color 0.3s, background-color 0.3s;
+            border-radius: 5px;
+        }
+
+        .nav-links a:hover {
+            color: #8BA889; 
+            background-color: rgba(139, 168, 137, 0.1);
+        }
+
+        /* --- Wave Animation (Kept) --- */
+        .wave {
+            background: rgb(255 255 255 / 25%);
+            border-radius: 1000% 1000% 0 0;
+            position: fixed;
+            width: 200%;
+            height: 12em;
+            animation: wave 10s -3s linear infinite;
+            transform: translate3d(0, 0, 0);
+            opacity: 0.8;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .wave:nth-of-type(2) { bottom: -1.25em; animation: wave 18s linear reverse infinite; opacity: 0.8; }
+        .wave:nth-of-type(3) { bottom: -2.5em; animation: wave 20s -1s reverse infinite; opacity: 0.9; }
+
+        @keyframes wave { 2%{transform:translateX(1);} 25%{transform:translateX(-25%);} 50%{transform:translateX(-50%);} 75%{transform:translateX(-25%);} 100%{transform:translateX(1);} }
+
+        /* --- Main Title and Introduction Styles --- */
+        .title {
+            text-align: center;
+            font-size: 55px;
+            color: white;
+            /* Adjusted margin-top to account for navbar height on page load */
+            margin-top: 20px; 
+            margin-bottom: 30px; 
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        
+        /* New Introduction Section */
+        .introduction {
+            max-width: 900px;
+            width: 90%;
+            margin: 0 auto 80px auto; 
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+
+        .introduction p {
+            font-size: 1.15rem;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .key-points {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .key-points li {
+            font-size: 1rem;
+            font-weight: 600;
+            background: #8BA889;
+            color: #253528;
+            padding: 10px 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        /* --- Section Styles --- */
+        section {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            position: relative;
+            z-index: 0;
+            overflow: hidden;
+            
+            /* 2. ANCHOR OFFSET FIX for fixed navbar */
+            /* The height of the fixed navbar is 60px. We use 70px to add a little gap. */
+            padding-top: 70px;
+            margin-top: -70px; 
+        }
+
+        section:first-of-type {
+            /* Remove the anchor fix from the very first section so it sits correctly below the title */
+            margin-top: 0;
+            padding-top: 60px; /* Reset padding to a normal section height */
+        }
+
+        section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); 
+            z-index: -1;
+        }
+        
+        /* Specific Background Images: (Kept) */
+        #agriculture { background-image: url('https://www.alraicenter.com/Admin_Site/Articles/Images/2044/0/fb0db5bf-2d23-49aa-990f-91bff6f1715b.jpg'); } 
+        #irrigation { background-image: url('https://www.aljazeera.net/wp-content/uploads/2021/08/08b8eb44-a7f2-4a87-8d06-bb728da88381.jpg?resize=1920%2C1280&quality=80'); } 
+        #crops { background-image: url('https://www.addustour.com/file.php?fileid=491065&width=800&height=450'); } 
+        #plants { background-image: url('https://www.7iber.com/wp-content/uploads/2019/08/DeerAlla-Pakistanis-74.jpg'); } 
+        #vertical { background-image: url('https://www.almamlakatv.com//images/articles/big/2018/08/main_image5b67fbfd7be1f.jpeg'); } 
+        #diseases { background-image: url('https://www.almamlakatv.com//images/articles/big/2024/2/65c3227c6b0aa.jpeg'); }
+
+
+        .section-box {
+            max-width: 900px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(8px);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.6);
+            text-align: center;
+            animation: fadeIn 1.2s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .section-box h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(0,0,0,0.8);
+        }
+
+        .section-box p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #f5f5f5;
+            margin-bottom: 30px;
+        }
+
+        .section-box a {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #8BA889;
+            color: #253528;
+            font-weight: bold;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: background 0.3s, transform 0.3s;
+        }
+
+        .section-box a:hover {
+            background: #49654E;
+            color: white;
+            transform: translateY(-3px);
+        }
+
+        /* Footer (Kept) */
+        footer {
+            background: rgba(0,0,0,0.8);
+            color: #e0e0e0;
+            padding: 50px 20px 30px;
+            font-size: 0.95rem;
+            border-top: 4px solid #8BA889;
+        }
+        /* ... other footer styles (kept) ... */
+
+        .footer-content {
+
+            max-width: 1100px;
+
+            margin: auto;
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            justify-content: space-between;
+
+            gap: 30px;
+
+            padding-bottom: 20px;
+
+        }
+
+
+
+        .footer-section {
+
+            flex: 1;
+
+            min-width: 200px;
+
+        }
+
+
+
+        .footer-section h4 {
+
+            color: #8BA889;
+
+            font-size: 1.2rem;
+
+            margin-bottom: 15px;
+
+            border-bottom: 2px solid rgba(139, 168, 137, 0.3);
+
+            padding-bottom: 5px;
+
+        }
+
+
+
+        .footer-section p, .footer-section ul {
+
+            margin: 0;
+
+            padding: 0;
+
+            list-style: none;
+
+        }
+
+
+
+        .footer-section ul li {
+
+            margin-bottom: 10px;
+
+        }
+
+
+
+        .footer-section a {
+
+            color: #e0e0e0;
+
+            text-decoration: none;
+
+            transition: color 0.3s;
+
+        }
+
+
+
+        .footer-section a:hover {
+
+            color: #8BA889;
+
+            text-decoration: underline;
+
+        }
+
+
+
+        .social-links a {
+
+            font-size: 1.5rem;
+
+            margin-right: 15px;
+
+            color: #8BA889;
+
+            transition: color 0.3s;
+
+        }
+
+
+
+        .social-links a:hover {
+
+            color: #ffffff;
+
+        }
+
+
+
+        .footer-bottom {
+
+            text-align: center;
+
+            margin-top: 30px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+            font-size: 0.85rem;
+
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="#agriculture">Agriculture</a></li>
+            <li><a href="#irrigation">Irrigation</a></li>
+            <li><a href="#crops">Crops</a></li>
+            <li><a href="#plants">Plants</a></li>
+            <li><a href="#vertical">Vertical Farming</a></li>
+            <li><a href="#diseases">Diseases</a></li>
+        </ul>
+    </nav>
+
+    <div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+    </div>
+
+    <div class="title"><h1>Food Security in Jordan 🇯🇴</h1></div>
+
+    <div class="introduction">
+        <p>
+            Jordan, characterized by its arid to semi-arid climate, faces unique
+            challenges in ensuring **food security** for its growing population. The
+            nation's resilience is built on optimizing scarce water resources and
+            adopting advanced agricultural technologies. This page explores the key
+            components of food production in the Hashemite Kingdom.
+        </p>
+        <ul class="key-points">
+            <li>Water Scarcity Management</li>
+            <li>Adopting Modern Irrigation</li>
+            <li>Focus on Climate-Appropriate Crops</li>
+        </ul>
+    </div>
+
+    <section id="agriculture">
+        <div class="section-box">
+            <h2>Statistics on types of agriculture</h2>
+            <p>
+                Jordan’s agriculture relies mainly on two systems: **rain-fed
+                farming** in the highlands, and **irrigated farming** in the Jordan
+                Valley. Around 80% of the land is arid or semi-arid, making water a
+                critical resource. Wheat, barley, and olives are the most common
+                rain-fed crops, while vegetables and citrus dominate irrigated farms.
+            </p>
+            <a href="agriculture.html">Read More</a>
+        </div>
+    </section>
+
+    <section id="irrigation">
+        <div class="section-box">
+            <h2>Irrigation systems</h2>
+            <p>
+                Modern irrigation in Jordan includes **drip irrigation**, **sprinkler
+                systems**, and limited surface irrigation. Drip irrigation is the most
+                widespread as it saves water and improves efficiency. Innovative
+                methods such as water harvesting and treated wastewater reuse are
+                increasingly applied to face water scarcity.
+            </p>
+            <a href="irrigation.html">Read More</a>
+        </div>
+    </section>
+
+    <section id="crops">
+        <div class="section-box">
+            <h2>Available or rare crops</h2>
+            <p>
+                Common crops in Jordan include **tomatoes**, **cucumbers**,
+                **eggplants**, **olives**, and **citrus fruits**. Rare or less
+                available crops include tropical fruits like mangoes, pineapples, and
+                avocados due to climate challenges. Some pilot projects are testing
+                new varieties to expand food production.
+            </p>
+            <a href="crops.html">Read More</a>
+        </div>
+    </section>
+
+    <section id="plants">
+        <div class="section-box">
+            <h2>Available or rare plants</h2>
+            <p>
+                Jordan hosts a wide range of **medicinal and aromatic plants** such as
+                sage, thyme, and rosemary. Rare native species include some desert
+                plants and wildflowers that are endangered due to overgrazing and
+                climate change. Conservation efforts are ongoing to protect
+                biodiversity.
+            </p>
+            <a href="plants.html">Read More</a>
+        </div>
+    </section>
+
+    <section id="vertical">
+        <div class="section-box">
+            <h2>Vertical farming</h2>
+            <p>
+                **Vertical farming** is an emerging technology in Jordan. It involves
+                growing crops in stacked layers within controlled environments. This
+                method reduces water use by up to 90%, requires less land, and allows
+                year-round production, making it a promising solution for future food
+                security.
+            </p>
+            <a href="vertical.html">Read More</a>
+        </div>
+    </section>
+
+    <section id="diseases">
+        <div class="section-box">
+            <h2>Plant diseases</h2>
+            <p>
+                Plant diseases such as **olive fruit fly infestations**, **tomato
+                blight**, and **powdery mildew** significantly affect Jordan’s crop
+                yields. Farmers use integrated pest management and modern techniques
+                to minimize losses. Strengthening plant health is key to ensuring food
+                security.
+            </p>
+            <a href="diseases.html">Read More</a>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h4>About Food Security Jordan</h4>
+                <p>
+                    Dedicated to exploring and promoting sustainable agricultural
+                    practices and food resilience in the Hashemite Kingdom of Jordan.
+                </p>
+            </div>
+            <div class="footer-section links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#agriculture">Agriculture Types</a></li>
+                    <li><a href="#irrigation">Irrigation</a></li>
+                    <li><a href="#vertical">Vertical Farming</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section contact">
+                <h4>Contact Us</h4>
+                <p><i class="fas fa-envelope"></i> info@foodsecurityjo.com</p>
+                <p><i class="fas fa-phone"></i> +962 6 XXX XXXX</p>
+                <p><i class="fas fa-map-marker-alt"></i> Amman, Jordan</p>
+            </div>
+            <div class="footer-section social">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" target="_blank" title="Facebook"
+                      ><i class="fab fa-facebook"></i
+                    ></a>
+                    <a href="#" target="_blank" title="Twitter"
+                      ><i class="fab fa-twitter"></i
+                    ></a>
+                    <a href="#" target="_blank" title="Instagram"
+                      ><i class="fab fa-instagram"></i
+                    ></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2025 Food Security Jordan. All rights reserved. | Designed for
+            awareness and education.
+        </div>
+    </footer>
+</body>
+</html>
