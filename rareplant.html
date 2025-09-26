@@ -3,9 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="rareplant.css">
     <title>Rare plants</title>
+    <style>
+        *{
+    margin:0;
+    padding: 0;
+}
+
+
+a{
+    color:rgb(12, 50, 28);
+    text-decoration: none;
+
+}
+.container{
+    background-image: url('images/bg4.jpg');
+    background-repeat: no-repeat;
+    background-position: center center; 
+    background-size: cover;
+    height: 150vh;
+    padding: 50px;
+}
+.navbar , .content , .card{
+    background-position: center center; 
+    background-size: cover;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 
+    255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 16px;
+    text-align: center;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+ .content{
+    height: 86vh;
+    width: 100%;
+   margin-top: 30px;
+
+ }
+ul{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+li{
+    list-style: none;
+}
+li a{
+    font-weight: 400;
+    font-size: 19px;
+}
+
+li a:hover{
+    background-color: rgba(66, 99, 66, 0.847);
+    color:antiquewhite;
+    padding: 10px;
+    border-radius: 20px;
+}
+.statistics{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+     gap: 20px;
+}
+
+.card{
+    margin-top:30px;
+    width:23%;
+    height: 37vh;
+    border-radius: 0px 50px;
+
+}
+
+</style>
 </head>
+
 <body>
   <div class="container">
      <header>
@@ -51,7 +125,6 @@
              
         </div>
     </div>
-
    
         <script>
            function showPage(pageNumber) {
