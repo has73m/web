@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jordan's Water Resilience: The Future of Farming</title>
+    
+    <style>
+        /* 🎨 THEME VARIABLES - Dark Mode is the default */
+
+        :root {
+            /* Core Green Palette */
+            --color-dark: #253528; 
+            --color-medium: #49654E; 
+            --color-light: #8BA889; 
+
+            /* Theme Colors (Dark Mode) */
+            --bg-primary: var(--color-dark);
+            --bg-secondary: #314234; 
+            --bg-card: rgba(73, 101, 78, 0.4); 
+            --text-color-main: #ffffff;
+            --text-color-secondary: #D4E4D3; 
+            --accent-color: #A3C49B; 
+            
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --border-radius: 15px;
+        }
+
+        /* 💡 Light Mode Overrides */
+        .light-mode {
+            --bg-primary: #f8f8f8; 
+            --bg-secondary: #e0e0e0; 
+            --bg-card: #ffffff; 
+            --text-color-main: #222222; 
+            --text-color-secondary: #555555; 
+            --accent-color: var(--color-medium); 
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif; 
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-primary);
+            color: var(--text-color-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* --- Utility & Controls Container --- */
+        .controls-container {
+            position: fixed; 
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        /* --- Back Button & Theme Toggle Base Style --- */
+        .control-button {
+            background-color: var(--bg-secondary);
+            color: var(--text-color-main);
+            border: 2px solid var(--accent-color);
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px var(--shadow-color);
+            text-decoration: none; 
+            display: flex;
+            align-items: center;
+        }
+        .control-button:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-primary);
+            transform: scale(1.03);
+        }
+        .mode-icon { margin-left: 5px; }
+
+        /* --- Main Layout --- */
+        .container {
+            width: 95%;
+            max-width: 1200px; 
+            margin: 80px auto 40px auto; 
+            padding: 20px;
+        }
+
+        h1 {
+            color: var(--accent-color); 
+            font-weight: 900;
+            font-size: 3.5rem;
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-color-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+            font-style: italic;
+        }
+
+        /* --- Stats Banner --- */
+        .stats-banner {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            padding: 30px 15px;
+            background-color: var(--bg-secondary);
+            border-radius: var(--border-radius);
+            margin-bottom: 50px;
+            box-shadow: 0 10px 20px var(--shadow-color);
+        }
+        .stat-item {
+            text-align: center;
+            padding: 10px 20px;
+            flex-basis: 20%; 
+        }
+        .stat-item strong {
+            display: block;
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            line-height: 1.1;
+        }
+        .stat-item p {
+            font-size: 0.9rem;
+            color: var(--text-color-secondary);
+            margin: 0;
+            font-weight: 600;
+        }
+
+        /* --- Section Cards Layout --- */
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Default 3 columns */
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        /* Special layout for comparison tables within the grid */
+        .comparison-wrapper {
+            grid-column: 1 / -1; /* Spans all columns */
+            margin: 20px 0;
+        }
+        
+        .section-card {
+            background-color: var(--bg-card);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px var(--shadow-color);
+            border-top: 5px solid var(--accent-color);
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            min-height: 350px; /* Uniform height for better visualization */
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        .section-card h2 {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            margin-top: 0;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+        }
+        .section-card h2 span {
+            font-size: 2.2rem;
+            margin-right: 12px;
+        }
+
+        .section-card p {
+            color: var(--text-color-secondary);
+            font-size: 1rem;
+            line-height: 1.7;
+            text-align: justify;
+            flex-grow: 1; /* Allows the paragraph to take available space */
+        }
+        .section-card strong {
+             color: var(--text-color-main);
+        }
+
+        /* --- VF Specific Details --- */
+        .vf-details {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            border-left: 5px solid var(--color-light);
+        }
+        .light-mode .vf-details {
+             background-color: #f0f0f0;
+        }
+
+        .vf-details h4 {
+            color: var(--text-color-main);
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        .vf-details ul {
+            list-style: none;
+            padding: 0;
+        }
+        .vf-details li {
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            color: var(--text-color-secondary);
+        }
+        .vf-details li:before {
+            content: '💧';
+            margin-right: 8px;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        /* --- Comparison Table Styling (General) --- */
+        .comparison-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: 0 5px 15px var(--shadow-color);
+            margin: 20px 0;
+        }
+        .comparison-table th, .comparison-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .comparison-table th {
+            background-color: var(--accent-color);
+            color: var(--bg-primary);
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        .light-mode .comparison-table th {
+            background-color: var(--accent-color);
+            color: #ffffff;
+        }
+        .comparison-table td {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-color-secondary);
+        }
+        .light-mode .comparison-table td {
+            background-color: #ffffff;
+            border-bottom: 1px solid #ddd;
+        }
+        .comparison-table tr:hover td {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .light-mode .comparison-table tr:hover td {
+            background-color: #f5f5f5;
+        }
+        .advantage { color: var(--accent-color); font-weight: 600; }
+        .challenge { color: var(--color-light); }
+        
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .sections-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Switches to fluid 2-column on tablets */
+            }
+            .comparison-wrapper {
+                grid-column: auto; /* Allow comparison table to take natural grid space */
+            }
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .sections-grid {
+                grid-template-columns: 1fr; /* Switches to single column on phones */
+            }
+            .comparison-table, .comparison-table thead, .comparison-table tbody, .comparison-table th, .comparison-table td, .comparison-table tr {
+                display: block;
+            }
+            .comparison-table thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+            .comparison-table tr {
+                margin-bottom: 10px;
+                border: 1px solid var(--box-border);
+                border-radius: var(--border-radius);
+            }
+            .comparison-table td {
+                border: none;
+                position: relative;
+                padding-left: 50%;
+                text-align: right;
+            }
+            .comparison-table td::before {
+                content: attr(data-label);
+                position: absolute;
+                left: 0;
+                width: 45%;
+                padding-left: 10px;
+                font-weight: bold;
+                text-align: left;
+                color: var(--accent-color);
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    
+    <div class="controls-container">
+        <a href="javascript:history.back()" class="control-button" title="Go back to the previous page">
+            <span>&larr; Back</span>
+        </a>
+        
+        <button id="theme-toggle" class="control-button" title="Toggle Dark/Light Mode">
+            Toggle Theme <span class="mode-icon">☀️</span> 
+        </button>
+    </div>
+
+    <div class="container">
+        <h1>💧 Jordan's Water Resilience: The Future of Farming 💧</h1>
+        <p class="subtitle">A national strategy to turn scarcity into agricultural innovation.</p>
+
+        <div class="stats-banner">
+            <div class="stat-item">
+                <strong>~65%</strong>
+                <p>Water for Agriculture</p>
+            </div>
+            <div class="stat-item">
+                <strong>90-95%</strong>
+                <p>Drip Irrigation Efficiency</p>
+            </div>
+            <div class="stat-item">
+                <strong>> 80%</strong>
+                <p>Wastewater Reused</p>
+            </div>
+            <div class="stat-item">
+                <strong>#4</strong>
+                <p>Water-Scarce Country Rank (Global)</p>
+            </div>
+        </div>
+
+        <div class="sections-grid">
+
+            <div class="section-card">
+                <h2><span>🌱</span>1. Precision Drip Irrigation</h2>
+                <p>
+                    **Drip and micro-irrigation** are the national standard, particularly for high-value crops in the Jordan Valley. This method uses **low-pressure emitters** to deliver water and dissolved nutrients (Fertigation) directly to the plant's root zone. This focused delivery eliminates losses from wind and surface runoff, achieving an efficiency of **90–95%**. It allows for predictable, high-density yields and is essential for crops like bananas, tomatoes, and citrus.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <h2><span>♻️</span>2. Strategic Water Reuse</h2>
+                <p>
+                    Jordan is a global pioneer in utilizing non-conventional water resources, with **Treated Wastewater** being the most reliable supplement. Major treatment plants provide a constant flow of high-quality treated effluent, which is crucial for irrigating vast agricultural areas. Strict national regulations ensure this water is used only for **restricted crops**—including fodder, industrial plants, and specific fruit trees—thereby safeguarding public health while significantly bolstering agricultural output.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <h2><span>🌧️</span>3. Efficient Sprinkler Use</h2>
+                <p>
+                    While not matching the efficiency of drip systems, modern **fixed-set and Center Pivot** sprinklers are indispensable for large-scale, extensive farming in regions like the Eastern Badia. These systems are typically used for **fodder and cereal crops** that require broader water coverage. Their efficiency (**70–85%**) is far superior to traditional flood methods, and their use is often integrated with sustainable groundwater extraction permits to balance production goals with resource preservation.
+                </p>
+            </div>
+
+            <div class="comparison-wrapper">
+                <h3 style="color: var(--text-color-main); text-align: center; margin-bottom: 15px;">Micro-Comparison: Conventional vs. Modern</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th>Efficiency Range</th>
+                            <th>Primary Use</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Method">Drip/Micro-Irrigation</td>
+                            <td data-label="Efficiency Range"><span class="advantage">90% - 95%</span></td>
+                            <td data-label="Primary Use">High-value row crops, Orchards</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Method">Modern Sprinklers</td>
+                            <td data-label="Efficiency Range">70% - 85%</td>
+                            <td data-label="Primary Use">Fodder, Cereals (Large fields)</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Method">Treated Wastewater</td>
+                            <td data-label="Efficiency Range">Reliable supply source</td>
+                            <td data-label="Primary Use">Restricted industrial/fodder crops</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="section-card">
+                <h2><span>📡</span>4. Smart Technology & IoT</h2>
+                <p>
+                    The future of Jordanian agriculture lies in integrating **Internet of Things (IoT)** sensors and real-time data analysis. **Soil Moisture Sensors** precisely measure plant water demand, allowing automated systems to schedule irrigation to the minute. This shift from time-based to **demand-based irrigation** prevents costly over-watering. Furthermore, remote sensing and drone technology provide large-scale crop health monitoring, enabling rapid detection of leaks and system inefficiencies.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <h2><span>🏗️</span>5. Vertical Farming (VF) - Urban Ag.</h2>
+                <p>
+                    **Vertical Farming** is an emerging concept involving Controlled Environment Agriculture (CEA) in stacked, multi-story systems. It utilizes advanced soilless methods like **Hydroponics** and **Aeroponics** for nutrient delivery, supplemented by specialized LED lighting. The concept is highly attractive for land-scarce, arid nations due to its ability to produce crops year-round.
+                </p>
+                
+                <div class="vf-details">
+                    <h4>Key VF Metrics:</h4>
+                    <ul>
+                        <li><p><strong>Water Savings:</strong> Up to 98% less water use.</p></li>
+                        <li><p><strong>Feasible Crops:</strong> Leafy Greens, Herbs, Berries.</p></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section-card">
+                <h2><span>💰</span>6. Policy & Economic Strategy</h2>
+                <p>
+                    Government policies are actively shaping the agricultural landscape toward **economic viability and water consciousness**. Key initiatives include **mandating efficiency standards** for water-intensive crops and utilizing **tiered water pricing** that heavily penalizes high-volume, low-efficiency usage. The overall goal is to maximize the economic return per cubic meter of water, favoring high-value export crops (e.g., Medjool dates) over subsidized, less profitable cereals.
+                </p>
+            </div>
+
+            <div class="comparison-wrapper">
+                <h3 style="color: var(--text-color-main); text-align: center; margin-bottom: 15px;">Micro-Comparison: Future Innovations</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Innovation</th>
+                            <th>Primary Benefit</th>
+                            <th>Cost Hurdle</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td data-label="Innovation">Vertical Farming (VF)</td>
+                            <td data-label="Primary Benefit">Extreme Water Saving & Urban Production</td>
+                            <td data-label="Cost Hurdle"><span class="challenge">High initial investment & Energy</span></td>
+                        </tr>
+                        <tr>
+                            <td data-label="Innovation">Smart IoT Sensors</td>
+                            <td data-label="Primary Benefit">Precise demand-based water application</td>
+                            <td data-label="Cost Hurdle">Integration and Maintenance</td>
+                        </tr>
+                        <tr>
+                            <td data-label="Innovation">Water Pricing/Tariffs</td>
+                            <td data-label="Primary Benefit">Incentivizes conservation behaviour</td>
+                            <td data-label="Cost Hurdle">Political/Social resistance</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section-card">
+                <h2><span>เก็บ</span>7. Water Harvesting & Dams</h2>
+                <p>
+                    Maximizing the capture of scarce rainfall is critical. Jordan operates a network of major surface **dams** (like King Talal Dam) for irrigation and utilizes numerous **Wadi Diversion** structures to slow down and divert flash floodwaters for groundwater recharge. Locally, traditional **cisterns** and earth dams (**Hafayer**) are employed, especially in the Badia, to provide supplemental water for livestock and small-scale supplemental irrigation, supporting rural resilience against drought.
+                </p>
+            </div>
+
+            <div class="section-card">
+                <h2><span>🌊</span>8. Groundwater Management</h2>
+                <p>
+                    Groundwater accounts for a significant portion of Jordan's water supply, used for both domestic and agricultural purposes. The government maintains strict regulatory control over deep **well drilling and pumping quotas** to combat over-extraction, which is a major long-term threat to water security. Efforts are focused on licensing older, illegal wells and enforcing the closure of unsustainable ones to ensure the aquifer is not permanently depleted.
+                </p>
+            </div>
+
+        </div>
+        
+        <h2 style="text-align: center; margin-top: 80px; font-size: 2rem; color: var(--accent-color);">Comprehensive Technology Comparison</h2>
+        <p class="subtitle" style="margin-bottom: 20px;">Efficiency and viability across primary agricultural technologies.</p>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Metric</th>
+                    <th>Drip Irrigation</th>
+                    <th>Vertical Farming (VF)</th>
+                    <th>Sprinkler (Modern)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Metric"><strong>Water Efficiency</strong></td>
+                    <td data-label="Drip Irrigation"><span class="advantage">Very High (90-95%)</span></td>
+                    <td data-label="Vertical Farming (VF)"><span class="advantage">Exceptional (>98%)</span> - Closed Loop</td>
+                    <td data-label="Sprinkler (Modern)">Moderate to High (70-85%)</td>
+                </tr>
+                <tr>
+                    <td data-label="Metric"><strong>Energy Use</strong></td>
+                    <td data-label="Drip Irrigation">Low (Low pressure required)</td>
+                    <td data-label="Vertical Farming (VF)"><span class="challenge">Very High</span> (For lighting & climate control)</td>
+                    <td data-label="Sprinkler (Modern)">High (High pressure required)</td>
+                </tr>
+                <tr>
+                    <td data-label="Metric"><strong>Land Requirement</strong></td>
+                    <td data-label="Drip Irrigation">Standard (Uses open field/greenhouses)</td>
+                    <td data-label="Vertical Farming (VF)"><span class="advantage">Minimal</span> (Vertical stacking)</td>
+                    <td data-label="Sprinkler (Modern)">Large (Requires wide, flat fields)</td>
+                </tr>
+                <tr>
+                    <td data-label="Metric"><strong>Feasible Crops</strong></td>
+                    <td data-label="Drip Irrigation">Vegetables, Fruits, Orchards (High-value)</td>
+                    <td data-label="Vertical Farming (VF)"><span class="advantage">Leafy Greens, Herbs, Berries</span></td>
+                    <td data-label="Sprinkler (Modern)">Fodder, Cereals, Row crops (Extensive)</td>
+                </tr>
+                <tr>
+                    <td data-label="Metric"><strong>Initial Cost</strong></td>
+                    <td data-label="Drip Irrigation">Moderate</td>
+                    <td data-label="Vertical Farming (VF)"><span class="challenge">Very High</span> (Infrastructure & Tech)</td>
+                    <td data-label="Sprinkler (Modern)">Moderate to High</td>
+                </tr>
+            </tbody>
+        </table>
+
+    </div>
+
+    <script>
+        // --- Theme Switcher Logic ---
+        const themeToggleButton = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        function setIcon(isLight) {
+            const iconSpan = themeToggleButton.querySelector('.mode-icon');
+            iconSpan.textContent = isLight ? '🌙' : '☀️'; 
+            themeToggleButton.title = isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode';
+        }
+
+        function toggleTheme() {
+            const isLight = body.classList.toggle('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            setIcon(isLight);
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+
+            let isLightMode = false;
+            
+            if (savedTheme === 'light') {
+                isLightMode = true;
+            } else if (savedTheme === null && prefersLight) {
+                isLightMode = true;
+            }
+
+            if (isLightMode) {
+                body.classList.add('light-mode');
+            }
+            setIcon(isLightMode);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            loadTheme();
+            themeToggleButton.addEventListener('click', toggleTheme);
+        });
+    </script>
+</body>
+</html>

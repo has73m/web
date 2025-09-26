@@ -5,18 +5,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Us - Our Team</title>
     <style>
-        /* 🎨 CSS: Updated for 3 boxes and White Content */
+        /* 🎨 THEME VARIABLES - Dark Mode is the default */
 
         :root {
             /* Required Colors */
-            --color-dark: #253528;
-            --color-medium: #49654E;
-            --color-light: #8BA889;
+            --color-dark: #253528; /* Deep Green/Background Start */
+            --color-medium: #49654E; /* Mid Green */
+            --color-light: #8BA889; /* Light Green/Accent */
 
-            --text-color-main: #ffffff; /* Main body text color (white) */
-            --text-color-box: #ffffff; /* Text color inside the transparent boxes */
+            /* Theme Colors (Dark Mode) */
+            --bg-gradient-start: var(--color-dark);
+            --bg-gradient-mid: var(--color-medium);
+            --bg-gradient-end: var(--color-light);
+
+            --text-color-main: #ffffff;
+            --text-color-box: #ffffff;
             --box-bg-transparency: rgba(255, 255, 255, 0.15); 
+            --box-border: rgba(255, 255, 255, 0.2);
+            --shadow-color: rgba(0, 0, 0, 0.3);
+            --accent-color: var(--color-light); /* Accent for headings/icons */
+            
             --border-radius: 12px;
+        }
+
+        /* 💡 Light Mode Overrides */
+        .light-mode {
+            /* Background Gradient Colors (Lighter Theme) */
+            --bg-gradient-start: #f0f0f0; 
+            --bg-gradient-mid: #ffffff; 
+            --bg-gradient-end: #e0e0e0; 
+            
+            /* Text and Box Colors (Light Theme) */
+            --text-color-main: #222222;
+            --text-color-box: #222222;
+            --box-bg-transparency: rgba(255, 255, 255, 0.85); /* Less transparent white box */
+            --box-border: rgba(0, 0, 0, 0.15);
+            --shadow-color: rgba(0, 0, 0, 0.15);
+            --accent-color: var(--color-medium); /* Darker accent for contrast */
         }
 
         body {
@@ -28,21 +53,32 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            
+            /* Apply Theme Variables */
             color: var(--text-color-main);
-            background: linear-gradient(135deg, var(--color-dark) 3%, var(--color-medium) 38%, var(--color-light));
+            background: linear-gradient(135deg, var(--bg-gradient-start) 3%, var(--bg-gradient-mid) 38%, var(--bg-gradient-end));
+            
             padding: 20px;
             box-sizing: border-box;
             position: relative;
+            transition: background 0.5s ease, color 0.5s ease;
         }
 
-        /* --- Back Button Styling --- */
-        .back-button {
+        /* --- Controls Container for Fixed Buttons --- */
+        .controls-container {
             position: absolute;
             top: 20px;
-            left: 20px; 
-            background: rgba(255, 255, 255, 0.2);
+            left: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        /* --- Back Button & Theme Toggle Base Style --- */
+        .back-button, #theme-toggle {
+            background: var(--box-bg-transparency);
             color: var(--text-color-main);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid var(--box-border);
             padding: 10px 15px;
             border-radius: var(--border-radius);
             cursor: pointer;
@@ -50,13 +86,13 @@
             font-weight: bold;
             display: flex;
             align-items: center;
-            transition: background-color 0.3s ease, transform 0.1s ease;
+            transition: background-color 0.3s ease, transform 0.1s ease, border-color 0.5s ease;
             text-decoration: none;
-            z-index: 10;
+            box-shadow: 0 4px 8px var(--shadow-color);
         }
 
-        .back-button:hover {
-            background-color: rgba(255, 255, 255, 0.4);
+        .back-button:hover, #theme-toggle:hover {
+            background-color: rgba(255, 255, 255, 0.3); /* Slightly brighter hover */
             transform: scale(1.05);
         }
 
@@ -71,30 +107,40 @@
             -webkit-backdrop-filter: blur(5px);
             padding: 40px;
             border-radius: var(--border-radius);
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--box-border); 
+            box-shadow: 0 8px 32px 0 var(--shadow-color);
             width: 100%;
             max-width: 900px;
             text-align: center;
             margin: 20px auto;
+            transition: background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
         }
 
         /* --- Headings --- */
         h1 {
-            color: var(--color-light); 
+            color: var(--accent-color); 
             margin-bottom: 20px;
             font-weight: 700;
             font-size: 2.5rem;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            transition: color 0.5s ease;
         }
 
         h3 {
-            color: var(--color-light);
+            color: var(--accent-color);
             margin-top: 30px;
-            border-bottom: 2px solid var(--color-light);
+            border-bottom: 2px solid var(--accent-color);
             padding-bottom: 10px;
             display: inline-block;
+            transition: color 0.5s ease, border-color 0.5s ease;
         }
+        
+        /* General paragraph text */
+        .description, p {
+            color: var(--text-color-main);
+            transition: color 0.5s ease;
+        }
+
 
         /* --- Description Section --- */
         .description {
@@ -107,49 +153,53 @@
         /* --- Team Members Grid --- */
         .team-grid {
             display: grid;
-            /* Ensure exactly 3 columns on large screens */
             grid-template-columns: repeat(3, 1fr); 
             gap: 30px;
             margin-top: 40px;
         }
 
         .member-card {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: var(--box-bg-transparency); /* Reusing variable for consistency */
             padding: 20px;
             border-radius: var(--border-radius);
             text-align: center;
-            transition: transform 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-color-box); /* White color for all text inside the box */
+            transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.5s ease;
+            border: 1px solid var(--box-border);
         }
 
         .member-card:hover {
             transform: translateY(-5px);
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.3); /* Slightly brighter hover */
+        }
+        .light-mode .member-card:hover {
+             background-color: rgba(0, 0, 0, 0.1);
         }
 
         .member-card .photo {
             font-size: 4rem; 
             margin-bottom: 15px;
-            color: var(--color-light);
+            color: var(--accent-color);
+            transition: color 0.5s ease;
         }
 
         .member-card h4 {
-            color: var(--text-color-box); /* Ensure white color */
+            color: var(--text-color-box); 
             margin: 0 0 5px 0;
             font-size: 1.4rem;
-            font-weight: 900; /* Heavy weight for titles */
+            font-weight: 900; 
             text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
+            transition: color 0.5s ease;
         }
 
         .member-card p {
             font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.9); /* Slightly subdued white for body text */
+            /* Use a slightly different transparency for secondary text */
+            color: var(--text-color-box); 
+            opacity: 0.9;
         }
 
         /* --- Responsive Adjustments --- */
         @media (max-width: 900px) {
-            /* Change to 2 columns on medium screens */
             .team-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -163,12 +213,14 @@
                 font-size: 2rem;
             }
             .team-grid {
-                /* Change to 1 column on small screens (mobile) */
                 grid-template-columns: 1fr;
             }
-            .back-button {
+            .controls-container {
+                flex-direction: column;
                 top: 10px;
                 left: 10px;
+            }
+            .back-button, #theme-toggle {
                 padding: 8px 12px;
                 font-size: 1rem;
             }
@@ -178,16 +230,21 @@
 </head>
 <body>
     
-    <a href="javascript:history.back()" class="back-button">
-        <span>&larr;</span> Back
-    </a>
+    <div class="controls-container">
+        <a href="javascript:history.back()" class="back-button">
+            <span>&larr;</span> Back
+        </a>
+        <button id="theme-toggle" class="back-button" title="Toggle Dark/Light Mode">
+            <span class="mode-icon">☀️</span> 
+        </button>
+    </div>
 
     <div class="container">
         <h1>🌱 About Our Dedicated Team</h1>
         
         <h3>Our Mission</h3>
         <p class="description">
-            We are a team passionate about sustainable agriculture and empowering local communities. Our mission is to bridge the gap between local produce and consumers, ensuring freshness, quality, and fair trade practices for all involved. We utilize technology to support traditional farming methods and enhance the quality of life for our dedicated farmers.
+            We are a team passionate about **sustainable agriculture** and empowering local communities. Our mission is to bridge the gap between local produce and consumers, ensuring **freshness, quality, and fair trade practices** for all involved. We utilize technology to support traditional farming methods and enhance the quality of life for our dedicated farmers.
         </p>
         
         <h3>Meet Our Core Members</h3>
@@ -218,5 +275,57 @@
             </div>
         
     </div>
+
+    <script>
+        const themeToggleButton = document.getElementById('theme-toggle');
+        const body = document.body;
+        
+        // Function to update the button icon
+        function setIcon(isLight) {
+            const iconSpan = themeToggleButton.querySelector('.mode-icon');
+            // Sun for Dark Mode (currently viewing light) / Moon for Light Mode (currently viewing dark)
+            iconSpan.textContent = isLight ? '🌙' : '☀️'; 
+            themeToggleButton.title = isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode';
+        }
+
+        // Function to switch themes
+        function toggleTheme() {
+            // Toggle the 'light-mode' class and determine if it's currently light mode
+            const isLight = body.classList.toggle('light-mode');
+            
+            // Save the user's preference to local storage
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            setIcon(isLight);
+        }
+
+        // Function to load the saved or preferred theme on page load
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+
+            let isLightMode = false;
+            
+            // 1. Load saved theme
+            if (savedTheme === 'light') {
+                isLightMode = true;
+            } 
+            // 2. If no saved theme, check system preference
+            else if (savedTheme === null && prefersLight) {
+                isLightMode = true;
+            }
+            // 3. Otherwise, stick to default (Dark Mode)
+
+            if (isLightMode) {
+                body.classList.add('light-mode');
+            }
+            setIcon(isLightMode);
+        }
+
+        // Initialize theme and attach listener when the document is ready
+        document.addEventListener("DOMContentLoaded", () => {
+            loadTheme();
+            themeToggleButton.addEventListener('click', toggleTheme);
+        });
+    </script>
 </body>
 </html>

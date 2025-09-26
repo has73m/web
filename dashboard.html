@@ -5,22 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jordan Agriculture Dashboard</title>
     <style>
-        /* 🎨 CSS: Consistent Glassmorphism Design with White Titles & Counter Circles */
+        /* 🎨 THEME VARIABLES - Dark Mode is the default classless style */
 
+        /* Default (Dark Mode) Variables - Based on your original design */
         :root {
-            /* Required Colors */
-            --color-dark: #253528;
-            --color-medium: #49654E;
-            --color-light: #8BA889;
-            --color-accent: #A3C49B;
+            --bg-gradient-start: #253528;
+            --bg-gradient-mid: #49654E;
+            --bg-gradient-end: #8BA889;
 
-            --text-color-main: #ffffff; 
-            --box-bg-transparency: rgba(255, 255, 255, 0.1); 
-            --border-radius: 15px; 
-            --success-color: #38b44a; 
+            --text-color-main: #ffffff;
+            --box-bg-transparency: rgba(255, 255, 255, 0.1); /* Glassmorphism background */
+            --glass-border-color: rgba(255, 255, 255, 0.3);
+            --shadow-color: rgba(0, 0, 0, 0.4); /* General shadow for glass elements */
+            --filter-button-hover-bg: rgba(255, 255, 255, 0.4);
+
+            --accent-color-light: #8BA889; /* For stat circle border/shadow, active filter text */
+            --accent-color-dark: #A3C49B;  /* For strong tags, hover filter border */
+            
+            --filter-active-bg: var(--accent-color-light); /* Active filter background */
+            --filter-active-text: var(--bg-gradient-start); /* Active filter text */
+            --filter-active-border: var(--bg-gradient-start); /* Active filter border */
+            --filter-active-shadow: rgba(139, 168, 137, 0.8);
+
+            --table-header-bg: var(--bg-gradient-mid);
+
+            --success-color: #38b44a;
             --danger-color: #dc3545;
+
+            --button-text-color-on-accent: var(--bg-gradient-start); /* For status badge text on colored background */
+
+            --border-radius-main: 15px;
+            --border-radius-small: 8px;
         }
 
+        /* Light Mode Overrides */
+        .light-mode {
+            --bg-gradient-start: #f0f0f0;
+            --bg-gradient-mid: #ffffff;
+            --bg-gradient-end: #e0e0e0;
+
+            --text-color-main: #333333; /* Dark text for light background */
+            --box-bg-transparency: rgba(255, 255, 255, 0.7); /* Lighter, less transparent box */
+            --glass-border-color: rgba(0, 0, 0, 0.1);
+            --shadow-color: rgba(0, 0, 0, 0.15); /* Lighter shadow for light mode */
+            --filter-button-hover-bg: rgba(0, 0, 0, 0.1);
+
+            --accent-color-light: #6C8C6B; /* A bit darker accent for light mode contrast */
+            --accent-color-dark: #49654E;  /* Even darker accent */
+
+            --filter-active-bg: var(--accent-color-light); 
+            --filter-active-text: #ffffff; 
+            --filter-active-border: var(--accent-color-dark);
+            --filter-active-shadow: rgba(108, 140, 107, 0.6);
+
+            --table-header-bg: var(--accent-color-light); /* Use accent for table header in light mode */
+
+            --button-text-color-on-accent: #ffffff; /* White text on accent background in light mode */
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -29,35 +71,47 @@
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+            
+            /* Apply theme variables */
             color: var(--text-color-main);
-            background: linear-gradient(135deg, var(--color-dark) 3%, var(--color-medium) 38%, var(--color-light));
+            background: linear-gradient(135deg, var(--bg-gradient-start) 3%, var(--bg-gradient-mid) 38%, var(--bg-gradient-end));
+            transition: background 0.6s ease, color 0.6s ease; /* Smooth transition for theme change */
+            
             padding: 20px;
             box-sizing: border-box;
             position: relative;
         }
 
-        /* --- Back Button --- */
-        .back-button {
+        /* --- Controls Container for Buttons --- */
+        .controls-container {
             position: absolute;
             top: 25px;
             left: 25px; 
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        /* --- Back Button & Theme Toggle Base Style --- */
+        .back-button, #theme-toggle {
             background: rgba(255, 255, 255, 0.2);
             color: var(--text-color-main);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid var(--glass-border-color);
             padding: 10px 15px;
-            border-radius: var(--border-radius);
+            border-radius: var(--border-radius-main);
             cursor: pointer;
             font-size: 1.2rem;
             font-weight: bold;
             display: flex;
             align-items: center;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
             text-decoration: none;
-            z-index: 10;
+            box-shadow: 0 4px 10px var(--shadow-color); /* Add a subtle shadow to buttons */
         }
 
-        .back-button:hover {
-            background-color: rgba(255, 255, 255, 0.4);
+        .back-button:hover, #theme-toggle:hover {
+            background-color: var(--filter-button-hover-bg);
+            border-color: var(--accent-color-light);
         }
 
         /* --- Dashboard Container --- */
@@ -66,19 +120,21 @@
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             padding: 50px;
-            border-radius: var(--border-radius);
-            border: 1px solid rgba(255, 255, 255, 0.3); 
-            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
+            border-radius: var(--border-radius-main);
+            border: 1px solid var(--glass-border-color); 
+            box-shadow: 0 12px 40px 0 var(--shadow-color);
             width: 100%;
             max-width: 1300px;
             text-align: center;
             margin: 60px auto 20px;
+            transition: background-color 0.6s ease, box-shadow 0.6s ease, border-color 0.6s ease;
         }
 
-        /* --- White Titles --- */
+        /* --- Titles --- */
         h1, .dashboard-container h2, .dashboard-container h3, .province-card h2 {
             color: var(--text-color-main) !important; 
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+            transition: color 0.6s ease;
         }
 
         /* --- Counter Circles --- */
@@ -100,24 +156,27 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            border: 3px solid var(--color-light);
-            box-shadow: 0 0 15px rgba(139, 168, 137, 0.7);
+            border: 3px solid var(--accent-color-light);
+            box-shadow: 0 0 15px var(--accent-color-light);
             flex: 1 1 100px;
             max-width: 200px;
+            transition: all 0.6s ease;
         }
 
         .stat-circle .count {
             font-size: 3rem;
             font-weight: 900;
             color: var(--text-color-main);
-            text-shadow: 1px 1px 3px var(--color-dark);
+            text-shadow: 1px 1px 3px var(--bg-gradient-start); /* Darker shadow for count */
+            transition: color 0.6s ease, text-shadow 0.6s ease;
         }
 
         .stat-circle .label {
             font-size: 0.9rem;
             font-weight: 500;
-            color: var(--color-light);
+            color: var(--accent-color-dark); /* Use darker accent for label for readability */
             margin-top: 5px;
+            transition: color 0.6s ease;
         }
 
         /* --- Filter Bar Styling --- */
@@ -134,7 +193,7 @@
             color: var(--text-color-main);
             padding: 12px 25px;
             border: 2px solid transparent;
-            border-radius: 8px;
+            border-radius: var(--border-radius-small);
             cursor: pointer;
             font-size: 1.1rem;
             font-weight: 600;
@@ -145,15 +204,15 @@
         }
 
         .filter-button:hover {
-            background-color: rgba(255, 255, 255, 0.4);
-            border-color: var(--color-accent);
+            background-color: var(--filter-button-hover-bg);
+            border-color: var(--accent-color-dark);
         }
         
         .filter-button.active {
-            background-color: var(--color-light);
-            color: var(--color-dark);
-            border-color: var(--color-dark);
-            box-shadow: 0 0 10px rgba(139, 168, 137, 0.8);
+            background-color: var(--filter-active-bg);
+            color: var(--filter-active-text);
+            border-color: var(--filter-active-border);
+            box-shadow: 0 0 10px var(--filter-active-shadow);
         }
 
         /* --- Summary Table --- */
@@ -164,22 +223,25 @@
             overflow-x: auto;
             display: block;
             -webkit-overflow-scrolling: touch;
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: var(--box-bg-transparency); /* Use transparency for table background */
+            transition: background-color 0.6s ease;
         }
 
         .summary-table th, .summary-table td {
             width: 28%;
             padding: 15px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--glass-border-color);
             color: var(--text-color-main);
             font-weight: 400;
             white-space: nowrap;
+            transition: color 0.6s ease, border-color 0.6s ease;
         }
         
         .summary-table th {
-            background-color: var(--color-medium);
+            background-color: var(--table-header-bg);
             font-weight: 700;
             font-size: 1.1rem;
+            transition: background-color 0.6s ease;
         }
 
         /* --- Provinces Grid --- */
@@ -192,17 +254,17 @@
 
         /* --- Province Card --- */
         .province-card {
-            background-color: rgba(255, 255, 255, 0.1);
+            background-color: var(--box-bg-transparency);
             padding: 30px;
-            border-radius: var(--border-radius);
+            border-radius: var(--border-radius-main);
             text-align: left;
             transition: transform 0.4s ease, background-color 0.4s ease;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid var(--glass-border-color);
         }
 
         .province-card:hover {
             transform: scale(1.03);
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: var(--filter-button-hover-bg); /* Use hover background for consistency */
         }
 
         .province-card p {
@@ -215,17 +277,19 @@
 
         .province-card strong {
             font-weight: 600;
-            color: var(--color-accent);
+            color: var(--accent-color-dark); /* Use darker accent for strong text */
+            transition: color 0.6s ease;
         }
 
         /* --- Status Badge --- */
         .status-badge {
             padding: 6px 12px;
-            border-radius: 8px;
+            border-radius: var(--border-radius-small);
             font-weight: 700;
             font-size: 1rem;
-            color: var(--color-dark);
+            color: var(--button-text-color-on-accent); /* Text color on accent */
             text-shadow: none;
+            transition: background-color 0.6s ease, color 0.6s ease;
         }
 
         .status-badge.suitable {
@@ -234,7 +298,7 @@
 
         .status-badge.unsuitable {
             background-color: var(--danger-color);
-            color: #fff;
+            color: #fff; /* Ensure contrast for danger color in both modes */
         }
 
         /* --- Responsiveness --- */
@@ -270,25 +334,36 @@
                 flex-direction: row;
                 justify-content: space-between;
                 padding: 0 20px;
-                border-radius: var(--border-radius);
+                border-radius: var(--border-radius-main); /* Use main border-radius */
             }
             .stat-circle .label {
                 text-align: left;
             }
+            .controls-container {
+                top: 15px;
+                left: 15px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .dashboard-container {
+                margin-top: 100px; /* Adjust margin for smaller screen controls */
+            }
         }
 
-        /* 📱 ضمان الريسپونسيف 100% */
+        /* 📱 100% Responsive Guarantee */
         * {
             max-width: 100%;
             box-sizing: border-box;
         }
     </style>
 </head>
-<body>
-    
-    <a href="javascript:history.back()" class="back-button">
-        <span>&larr;</span> Back
-    </a>
+<body class="dark-mode"> <div class="controls-container">
+        <a href="javascript:history.back()" class="back-button">
+            <span>&larr;</span> Back
+        </a>
+        <button id="theme-toggle" title="Toggle Dark/Light Mode">
+            <span class="mode-icon">☀️</span> </button>
+    </div>
 
     <div class="dashboard-container">
         <h1>📊 Jordan Agriculture Overview</h1>
@@ -337,8 +412,6 @@
     </div>
 
     <script>
-        // 💻 JavaScript & JSON Data Store
-
         const jordanProvincesData = [
             { name: "Amman", region: "Center", agriculture_percent: 35, rain_percent: 60, suitable_for_farming: true },
             { name: "Irbid", region: "North", agriculture_percent: 75, rain_percent: 85, suitable_for_farming: true },
@@ -357,15 +430,54 @@
         const gridContainer = document.getElementById('provincesGrid');
         const summaryTableBody = document.getElementById('summaryTableBody');
         const filterButtons = document.querySelectorAll('.filter-button');
+        const themeToggleButton = document.getElementById('theme-toggle');
         let currentFilter = 'All'; 
+
+        // 💡 Theme Switcher Logic
+        function setIcon(isLight) {
+            const iconSpan = themeToggleButton.querySelector('.mode-icon');
+            iconSpan.textContent = isLight ? '🌙' : '☀️'; // Moon for Light Mode, Sun for Dark Mode
+            themeToggleButton.title = isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode';
+        }
+
+        function toggleTheme() {
+            const isLight = document.body.classList.toggle('light-mode');
+            
+            if (isLight) {
+                localStorage.setItem('theme', 'light');
+            } else {
+                localStorage.setItem('theme', 'dark');
+            }
+            setIcon(isLight);
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+
+            // Apply light mode if saved preference is 'light' OR (no saved preference AND system prefers light)
+            let isLightMode = false;
+            if (savedTheme === 'light') {
+                isLightMode = true;
+            } else if (savedTheme === null && prefersLight) {
+                isLightMode = true;
+            }
+
+            if (isLightMode) {
+                 document.body.classList.add('light-mode');
+            } else {
+                 document.body.classList.remove('light-mode'); // Ensure default is dark mode
+            }
+            setIcon(isLightMode);
+        }
 
         // --- Counter Animation Logic ---
         function animateCounters(data) {
             const totalProvinces = data.length;
             const totalRain = data.reduce((sum, p) => sum + p.rain_percent, 0);
-            const avgRain = Math.round(totalRain / totalProvinces);
+            const avgRain = totalProvinces > 0 ? Math.round(totalRain / totalProvinces) : 0;
             const totalAgri = data.reduce((sum, p) => sum + p.agriculture_percent, 0);
-            const avgAgri = Math.round(totalAgri / totalProvinces);
+            const avgAgri = totalProvinces > 0 ? Math.round(totalAgri / totalProvinces) : 0;
 
             const targets = [
                 { element: document.querySelector('.stat-circle:nth-child(1) .count'), target: totalProvinces },
@@ -379,6 +491,8 @@
                 const duration = 1500;
                 const startTime = performance.now();
 
+                item.element.textContent = startValue; 
+
                 function step(currentTime) {
                     const elapsed = currentTime - startTime;
                     const progress = Math.min(elapsed / duration, 1);
@@ -391,13 +505,19 @@
                         item.element.textContent = targetValue;
                     }
                 }
-                requestAnimationFrame(step);
+                if (item.element) {
+                    requestAnimationFrame(step);
+                }
             });
         }
         
         // --- Summary Table Logic ---
         function renderSummaryTable(data) {
             const totalProvinces = data.length;
+            if (totalProvinces === 0) {
+                 summaryTableBody.innerHTML = '<tr><td colspan="4">No data available for this region.</td></tr>';
+                 return;
+            }
             const suitableCount = data.filter(p => p.suitable_for_farming).length;
             
             const totalRain = data.reduce((sum, p) => sum + p.rain_percent, 0);
@@ -474,13 +594,19 @@
             animateCounters(filteredData); 
         }
         
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                filterProvinces(button.dataset.region);
-            });
-        });
+        // --- Event Listeners and Initial Load ---
+        document.addEventListener('DOMContentLoaded', () => {
+             loadTheme(); // Load theme preference on page load
+             themeToggleButton.addEventListener('click', toggleTheme); // Add event listener for theme toggle
 
-        filterProvinces(currentFilter);
+             filterButtons.forEach(button => {
+                 button.addEventListener('click', () => {
+                     filterProvinces(button.dataset.region);
+                 });
+             });
+
+             filterProvinces(currentFilter); // Initial render of data
+        });
     </script>
 </body>
 </html>
