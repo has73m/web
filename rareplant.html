@@ -5,6 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Rare & Wild Plants of Jordan</title>
   <style>
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 6px;
+      background: linear-gradient(to right, #f7f183, #ffd501);
+      z-index: 1000;
+      transition: width 0.3s ease;
+    }
     * {
       margin: 0;
       padding: 0;
@@ -673,7 +683,6 @@
       }
       .content {
         height: auto;
-        width:200px;
       }
       .navbar ul {
         flex-direction: column;
@@ -698,10 +707,10 @@
       }
       .intro-image {
         flex: none;
-        width:50%;
+        width: 100%;
       }
       .intro-image img {
-        width:70%;
+        width: 100%;
         max-width: 100%;
       }
       .intro-text {
@@ -793,6 +802,7 @@
   </style>
 </head>
 <body>
+  <div id="progress-bar"></div>
   <div class="container">
     <header>
       <nav class="navbar">
@@ -874,6 +884,13 @@
   </div>
 
   <script>
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.pageYOffset;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      document.getElementById('progress-bar').style.width = scrollPercent + '%';
+    });
+
     // Extended dataset with images & descriptions
     const plants = [
       { name: "Black Iris", latin: "Iris nigricans", type: "Rare", description: "National flower of Jordan, found in limited regions.", img: "/images/BlackIris.png" },

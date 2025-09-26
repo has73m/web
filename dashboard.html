@@ -81,7 +81,17 @@
             box-sizing: border-box;
             position: relative;
         }
-
+        
+         #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 6px;
+            background: linear-gradient(to right, #82e77a, #000000);
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
         /* --- Controls Container for Buttons --- */
         .controls-container {
             position: absolute;
@@ -358,6 +368,7 @@
     </style>
 </head>
 <body class="dark-mode"> <div class="controls-container">
+     <div id="progress-bar"></div>
         <a href="javascript:history.back()" class="back-button">
             <span>&larr;</span> Back
         </a>
@@ -412,6 +423,13 @@
     </div>
 
     <script>
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.pageYOffset;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      document.getElementById('progress-bar').style.width = scrollPercent + '%';
+    });
+
         const jordanProvincesData = [
             { name: "Amman", region: "Center", agriculture_percent: 35, rain_percent: 60, suitable_for_farming: true },
             { name: "Irbid", region: "North", agriculture_percent: 75, rain_percent: 85, suitable_for_farming: true },

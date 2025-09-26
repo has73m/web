@@ -31,7 +31,17 @@
             color: var(--text-color);
             background: linear-gradient(135deg, var(--color-dark) 3%, var(--color-medium) 38%, var(--color-light));
         }
-
+           
+         #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 6px;
+            background: linear-gradient(to right, #82e77a, #000000);
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
         .login-container {
             background-color: var(--box-bg-transparency);
             backdrop-filter: blur(5px);
@@ -148,7 +158,7 @@
     </style>
 </head>
 <body>
-
+   <div id="progress-bar"></div>
     <div class="login-container">
         <h2>🔒 User Login</h2>
         <form id="loginForm">
@@ -170,6 +180,14 @@
     </div>
 
     <script>
+
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.pageYOffset;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      document.getElementById('progress-bar').style.width = scrollPercent + '%';
+    });
+    
         // 💻 JavaScript for Data Storage and Validation (22 Users)
 
         // Local JSON Data Store (22 Users)

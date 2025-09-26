@@ -70,7 +70,17 @@
             transition: background 0.5s ease, color 0.5s ease;
             overflow-y: auto; 
         }
-
+        
+         #progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 6px;
+            background: linear-gradient(to right, #82e77a, #000000);
+            z-index: 1000;
+            transition: width 0.3s ease;
+        }
         /* --- Controls Container --- */
         .controls-container {
             position: fixed; 
@@ -285,7 +295,7 @@
     </style>
 </head>
 <body>
-    
+    <div id="progress-bar"></div> 
     <div class="controls-container">
         <a href="javascript:history.back()" class="back-button">
             <span>&larr;</span> Back
@@ -560,6 +570,12 @@
     </div>
 
     <script>
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.pageYOffset;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      document.getElementById('progress-bar').style.width = scrollPercent + '%';
+    });
         // --- Theme Switcher Logic ---
         const themeToggleButton = document.getElementById('theme-toggle');
         const body = document.body;
