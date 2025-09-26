@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jordan: Governorates and Agricultural Diversity</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    
+    <style>
+        /* 🎨 THEME VARIABLES - Dark Mode is the default */
+
+        :root {
+            /* Core Green Palette */
+            --color-dark: #253528; 
+            --color-medium: #49654E; 
+            --color-light: #8BA889; 
+
+            /* Theme Colors (Dark Mode) */
+            --bg-primary: var(--color-dark);
+            --bg-secondary: #314234; 
+            --bg-card: rgba(73, 101, 78, 0.4); 
+            --text-color-main: #ffffff;
+            --text-color-secondary: #D4E4D3; 
+            --accent-color: #A3C49B; 
+            
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --border-radius: 15px;
+            --chart-bg: rgba(255, 255, 255, 0.05); /* Chart background in dark mode */
+        }
+
+        /* 💡 Light Mode Overrides */
+        .light-mode {
+            --bg-primary: #f8f8f8; 
+            --bg-secondary: #e0e0e0; 
+            --bg-card: #ffffff; 
+            --text-color-main: #222222; 
+            --text-color-secondary: #555555; 
+            --accent-color: var(--color-medium); 
+            --shadow-color: rgba(0, 0, 0, 0.1);
+            --chart-bg: #ffffff; /* Chart background in light mode */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif; 
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-primary);
+            color: var(--text-color-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 20px;
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        /* --- Utility & Controls Container --- */
+        .controls-container {
+            position: fixed; 
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            z-index: 1000;
+        }
+
+        /* --- Back Button & Theme Toggle Base Style --- */
+        .control-button {
+            background-color: var(--bg-secondary);
+            color: var(--text-color-main);
+            border: 2px solid var(--accent-color);
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px var(--shadow-color);
+            text-decoration: none; 
+            display: flex;
+            align-items: center;
+        }
+        .control-button:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-primary);
+            transform: scale(1.03);
+        }
+        .mode-icon { margin-left: 5px; }
+
+        /* --- Main Layout --- */
+        .container {
+            width: 95%;
+            max-width: 1200px; 
+            margin: 80px auto 40px auto; 
+            padding: 20px;
+        }
+
+        h1 {
+            color: var(--accent-color); 
+            font-weight: 900;
+            font-size: 3.5rem;
+            text-align: center;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-color-secondary);
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+            font-style: italic;
+        }
+
+        /* --- Interactive & Chart Sections --- */
+        .interactive-sections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .section-box {
+            background-color: var(--bg-card);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px var(--shadow-color);
+            border-top: 5px solid var(--accent-color);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+        }
+        
+        .section-box h2 {
+            font-size: 1.8rem;
+            color: var(--accent-color);
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid var(--color-light);
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        /* --- Map Simulation Styles --- */
+        .map-simulation {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 15px;
+            background-color: var(--bg-secondary);
+            border-radius: var(--border-radius);
+        }
+        .governorate-tile {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color-main);
+            padding: 15px 10px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            border: 1px solid transparent;
+            font-size: 0.9rem;
+        }
+        .governorate-tile:hover {
+            background-color: var(--accent-color);
+            color: var(--bg-primary);
+            transform: scale(1.05);
+            border-color: var(--text-color-main);
+        }
+        
+        /* Highlight Class for Interactivity */
+        .governorate-tile.active {
+            /* We will use JS to set the background color on click based on region type, 
+               but this class ensures a consistent style. */
+            color: white;
+            border-color: white;
+            box-shadow: 0 0 10px var(--accent-color);
+            transform: scale(1.08);
+        }
+        
+        /* Map Key/Legend */
+        .map-legend {
+            margin-top: 20px;
+            text-align: left;
+            font-size: 0.9rem;
+            color: var(--text-color-secondary);
+        }
+        .legend-item {
+            margin-bottom: 5px;
+        }
+        .legend-item span {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+        
+        /* --- Chart Styles --- */
+        .chart-container {
+            position: relative;
+            max-height: auto;
+            max-width: auto;
+            background-color: var(--chart-bg);
+            padding: 10px;
+            border-radius: var(--border-radius);
+        }
+
+        /* --- Data Cards Section --- */
+        .data-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .data-card {
+            /* Initial state for dynamic toggle */
+            display: none; 
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.5s ease-out;
+
+            background-color: var(--bg-card);
+            padding: 25px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 3px 10px var(--shadow-color);
+            border-left: 5px solid var(--color-light);
+        }
+        .data-card.show {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .data-card h3 {
+            color: var(--text-color-main);
+            margin-top: 0;
+            font-size: 1.4rem;
+        }
+        .data-card p {
+            color: var(--text-color-secondary);
+            line-height: 1.6;
+            font-size: 0.95rem;
+            margin: 5px 0;
+        }
+        .data-card strong {
+            color: var(--accent-color);
+            font-size: 1.1rem;
+            display: block;
+            margin-top: 10px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 992px) {
+            .interactive-sections {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 576px) {
+            h1 { font-size: 2rem; }
+            .governorate-tile { font-size: 0.8rem; padding: 10px 5px; }
+            .map-simulation { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="controls-container">
+        <a href="javascript:history.back()" class="control-button" title="Go back to the previous page">
+            <span>&larr; Back</span>
+        </a>
+        
+        <button id="theme-toggle" class="control-button" title="Toggle Dark/Light Mode">
+            Toggle Theme <span class="mode-icon">☀️</span> 
+        </button>
+    </div>
+
+    <div class="container">
+        <h1>🌳 Jordan: Governorates and Agricultural Diversity 📈</h1>
+        <p class="subtitle">Exploring the regional distribution of key economic activities and primary crops.</p>
+
+        <div class="interactive-sections">
+            
+            <div class="section-box">
+                <h2>Regional Focus Map (Click to View Data)</h2>
+                
+                <div class="map-simulation" id="governorate-map">
+                    <div class="governorate-tile" data-region="North" data-gov="Irbid" data-crop="Olives/Citrus">Irbid</div>
+                    <div class="governorate-tile" data-region="North" data-gov="Ajloun" data-crop="Olives/Grapes">Ajloun</div>
+                    <div class="governorate-tile" data-region="North" data-gov="Jerash" data-crop="Olives/Grapes">Jerash</div>
+                    <div class="governorate-tile" data-region="North" data-gov="Mafraq" data-crop="Field Crops/Fodder">Mafraq</div>
+                    
+                    <div class="governorate-tile" data-region="Center" data-gov="Amman" data-crop="Cereals/Vegetables">Amman</div>
+                    <div class="governorate-tile" data-region="Center" data-gov="Zarqa" data-crop="Industrial/Poultry">Zarqa</div>
+                    <div class="governorate-tile" data-region="Center" data-gov="Balqa" data-crop="Bananas/Tomatoes">Balqa</div>
+                    <div class="governorate-tile" data-region="Center" data-gov="Madaba" data-crop="Cereals/Legumes">Madaba</div>
+                    
+                    <div class="governorate-tile" data-region="South" data-gov="Karak" data-crop="Olives/Grains">Karak</div>
+                    <div class="governorate-tile" data-region="South" data-gov="Tafilah" data-crop="Grapes/Fruits">Tafilah</div>
+                    <div class="governorate-tile" data-region="South" data-gov="Ma'an" data-crop="Dates/Vegetables">Ma'an</div>
+                    <div class="governorate-tile" data-region="South" data-gov="Aqaba" data-crop="Dates/Melons">Aqaba</div>
+                </div>
+                
+                <div class="map-legend">
+                    <p><strong>Primary Activity Key:</strong></p>
+                    <div class="legend-item"><span style="background-color: #33a02c;"></span> Highland Agriculture (Olives, Fruits)</div>
+                    <div class="legend-item"><span style="background-color: #6a3d9a;"></span> Jordan Valley (High-Value Crops)</div>
+                    <div class="legend-item"><span style="background-color: #ff7f00;"></span> Badia/Desert Farming (Dates, Field Crops)</div>
+                    <div class="legend-item"><span style="background-color: #1f78b4;"></span> Industrial/Urban Focus</div>
+                </div>
+            </div>
+            
+            <div class="section-box">
+                <h2>Sectoral Contribution to GDP (Est.)</h2>
+                <div class="chart-container">
+                    <canvas id="sectorChart"></canvas>
+                </div>
+                <p style="text-align: center; margin-top: 20px;">
+                    This chart illustrates the estimated contribution of key sectors to the national economy, highlighting the modest but critical role of agriculture.
+                </p>
+            </div>
+            
+        </div>
+        
+        <h2 style="text-align: center; color: var(--accent-color); font-size: 2rem; margin-top: 40px;">Regional Agricultural Highlights</h2>
+        <p class="subtitle" style="margin-bottom: 30px;">Click a governorate above to view its key facts.</p>
+
+        <div class="data-cards-grid">
+            
+            <div class="data-card" id="card-Irbid">
+                <h3>Irbid - The Northern Pearl</h3>
+                <p>Characterized by its dense population and fertile land. Irbid is a major producer of cereals and olives in the northern highlands.</p>
+                <p><strong>Regional Focus:</strong> Mixed Farming, Olive Oil Production.</p>
+                <strong>Primary Crop: Olives 🫒</strong>
+            </div>
+
+            <div class="data-card" id="card-Balqa">
+                <h3>Balqa - The Valley Gateway</h3>
+                <p>The Balqa region, particularly the area near the Dead Sea and Jordan Valley, is vital for highly efficient irrigated agriculture.</p>
+                <p><strong>Regional Focus:</strong> Intensive Irrigated Farming, High-Value Vegetables.</p>
+                <strong>Primary Crop: Bananas and Tomatoes 🍅</strong>
+            </div>
+            
+            <div class="data-card" id="card-Aqaba">
+                <h3>Aqaba - The Coastal Climate</h3>
+                <p>Benefits from a warmer, frost-free climate ideal for early-season produce and desert farming innovations like date palms.</p>
+                <p><strong>Regional Focus:</strong> Dates, Aquaculture (limited), Tourism.</p>
+                <strong>Primary Crop: Dates 🌴</strong>
+            </div>
+            
+            <div class="data-card" id="card-Zarqa">
+                <h3>Zarqa - Industrial Hub</h3>
+                <p>Known for its heavy industry, Zarqa also supports large-scale livestock and poultry farms, relying heavily on specialized feed and water from the eastern aquifer.</p>
+                <p><strong>Regional Focus:</strong> Industry, Poultry, Livestock.</p>
+                <strong>Primary Activity: Poultry Production 🐔</strong>
+            </div>
+
+            <div class="data-card" id="card-Ma'an">
+                <h3>Ma'an - The Southern Badia</h3>
+                <p>The largest governorate by area. Contains significant desert farming projects leveraging deep groundwater for specialized, large-scale production, primarily dates.</p>
+                <p><strong>Regional Focus:</strong> Desert Agriculture, Strategic Crops (Dates).</p>
+                <strong>Primary Crop: Dates 🌴</strong>
+            </div>
+
+            <div class="data-card" id="card-Amman">
+                <h3>Amman - Capital's Demand</h3>
+                <p>While largely urban, the surrounding areas focus on rainfed cereals and some protected agriculture (greenhouses) to supply the immense demand of the capital region.</p>
+                <p><strong>Regional Focus:</strong> Urban Supply, Cereals, Greenhouse Veg.</p>
+                <strong>Primary Crop: Wheat/Barley 🌾</strong>
+            </div>
+            
+            <div class="data-card" id="card-Ajloun">
+                <h3>Ajloun - Forested Heights</h3>
+                <p>Famous for its dense oak forests and historical sites. Agriculture is dominated by rainfed crops and fruit trees in the hilly terrain.</p>
+                <p><strong>Regional Focus:</strong> Rainfed Fruits, Olives, Tourism.</p>
+                <strong>Primary Crop: Grapes and Olives 🍇</strong>
+            </div>
+            
+            <div class="data-card" id="card-Jerash">
+                <h3>Jerash - Roman Heritage</h3>
+                <p>Known globally for its Roman ruins. The fertile lands around Jerash primarily support fruit production and olive cultivation.</p>
+                <p><strong>Regional Focus:</strong> Fruit Orchards, Olives, Tourism.</p>
+                <strong>Primary Crop: Olives and Pomegranates 🌳</strong>
+            </div>
+            
+            <div class="data-card" id="card-Mafraq">
+                <h3>Mafraq - Eastern Steppe</h3>
+                <p>A vast, dry region bordering Syria, relying on groundwater and rainfall for field crops, particularly in large-scale farming projects.</p>
+                <p><strong>Regional Focus:</strong> Field Crops, Livestock Fodder.</p>
+                <strong>Primary Crop: Alfalfa/Barley 🌾</strong>
+            </div>
+            
+            <div class="data-card" id="card-Madaba">
+                <h3>Madaba - Mosaic Lands</h3>
+                <p>Famous for its Byzantine mosaics. The economy is largely dependent on rainfed cereal cultivation and tourism.</p>
+                <p><strong>Regional Focus:</strong> Cereals, Legumes, Religious Tourism.</p>
+                <strong>Primary Crop: Wheat and Lentils 🌱</strong>
+            </div>
+            
+            <div class="data-card" id="card-Karak">
+                <h3>Karak - The Citadel of Salt</h3>
+                <p>A major southern plateau area. Highland farming focuses on rainfed winter crops and stone fruits, supported by the cooler climate.</p>
+                <p><strong>Regional Focus:</strong> Rainfed Crops, Grains, Livestock.</p>
+                <strong>Primary Crop: Olives and Grains 🐏</strong>
+            </div>
+            
+            <div class="data-card" id="card-Tafilah">
+                <h3>Tafilah - Southern Heights</h3>
+                <p>Known for its unique geology and natural reserves. Agriculture is generally small-scale and concentrated in wadis and higher elevations.</p>
+                <p><strong>Regional Focus:</strong> Mountain Fruits, Grapes, Stone Fruits.</p>
+                <strong>Primary Crop: Apricots and Grapes 🍑</strong>
+            </div>
+            
+
+        </div>
+
+    </div>
+
+    <script>
+        // --- Theme Switcher Logic ---
+        const themeToggleButton = document.getElementById('theme-toggle');
+        const body = document.body;
+        let sectorChart; 
+        let lastActiveGov = null; // Track the last clicked governorate for the toggle feature
+
+        function setIcon(isLight) {
+            const iconSpan = themeToggleButton.querySelector('.mode-icon');
+            iconSpan.textContent = isLight ? '🌙' : '☀️'; 
+            themeToggleButton.title = isLight ? 'Switch to Dark Mode' : 'Switch to Light Mode';
+        }
+
+        function toggleTheme() {
+            const isLight = body.classList.toggle('light-mode');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            setIcon(isLight);
+            if (sectorChart) {
+                updateChartTheme(isLight);
+            }
+        }
+
+        function loadTheme() {
+            const savedTheme = localStorage.getItem('theme');
+            const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+
+            let isLightMode = false;
+            
+            if (savedTheme === 'light') {
+                isLightMode = true;
+            } else if (savedTheme === null && prefersLight) {
+                isLightMode = true;
+            }
+
+            if (isLightMode) {
+                body.classList.add('light-mode');
+            }
+            setIcon(isLightMode);
+            return isLightMode;
+        }
+        
+        // --- Chart.js Logic (Unchanged) ---
+        function getChartColors(isLightMode) {
+            const accent = isLightMode ? '#49654E' : '#A3C49B';
+            const text = isLightMode ? '#222222' : '#ffffff';
+            
+            return {
+                accent: accent,
+                text: text,
+                borderColor: isLightMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.2)',
+                sectorColors: [
+                    '#4CAF50', 
+                    '#FFC107', 
+                    '#2196F3', 
+                    '#FF5722'  
+                ]
+            };
+        }
+
+        function initializeChart(isLightMode) {
+            const ctx = document.getElementById('sectorChart').getContext('2d');
+            const colors = getChartColors(isLightMode);
+            
+            const data = {
+                labels: ['Agriculture', 'Tourism', 'Services (Incl. Finance)', 'Industry & Mining'],
+                datasets: [{
+                    label: 'Estimated % Contribution to GDP',
+                    data: [4, 10, 60, 26], 
+                    backgroundColor: colors.sectorColors,
+                    borderColor: colors.borderColor,
+                    borderWidth: 1
+                }]
+            };
+
+            const options = {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: colors.text,
+                            font: { size: 14 }
+                        }
+                    },
+                    title: {
+                        display: false,
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            };
+
+            if (sectorChart) {
+                sectorChart.destroy(); 
+            }
+            
+            sectorChart = new Chart(ctx, {
+                type: 'pie',
+                data: data,
+                options: options
+            });
+        }
+        
+        function updateChartTheme(isLightMode) {
+            const colors = getChartColors(isLightMode);
+            sectorChart.options.plugins.legend.labels.color = colors.text;
+            sectorChart.data.datasets[0].borderColor = colors.borderColor;
+            sectorChart.update();
+        }
+
+        // --- Map Interactivity Logic (Modified for Toggle) ---
+        
+        function updateMapLegend(selectedTile) {
+            const govMap = {
+                'Irbid': '#33a02c', 'Ajloun': '#33a02c', 'Jerash': '#33a02c', 
+                'Amman': '#1f78b4', 'Madaba': '#33a02c', 
+                'Zarqa': '#1f78b4', 
+                'Balqa': '#6a3d9a', 
+                'Karak': '#33a02c', 'Tafilah': '#33a02c', 
+                'Ma\'an': '#ff7f00', 'Aqaba': '#ff7f00', 
+            };
+            const selectedGov = selectedTile ? selectedTile.dataset.gov : null;
+            
+            // Remove active state and reset background for all tiles first
+            document.querySelectorAll('.governorate-tile').forEach(tile => {
+                tile.classList.remove('active');
+                // Reset to default background color
+                tile.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'; 
+            });
+
+            if (selectedGov && selectedTile && selectedGov !== lastActiveGov) {
+                 // Highlight the newly selected tile
+                selectedTile.classList.add('active');
+                selectedTile.style.backgroundColor = govMap[selectedGov] || '#A3C49B';
+            }
+        }
+        
+        function updateDataCards(selectedGov) {
+            const cardId = `card-${selectedGov}`;
+            const selectedCard = document.getElementById(cardId);
+            const allCards = document.querySelectorAll('.data-card');
+
+            if (selectedCard) {
+                // If the same button is clicked again
+                if (selectedGov === lastActiveGov) {
+                    // TOGGLE OFF: Hide the active card
+                    selectedCard.classList.remove('show');
+                    lastActiveGov = null; // Reset tracker
+                } else {
+                    // TOGGLE ON: Hide all cards first
+                    allCards.forEach(card => {
+                        card.classList.remove('show');
+                    });
+
+                    // Show the selected card
+                    selectedCard.classList.add('show');
+                    lastActiveGov = selectedGov; // Update tracker
+                    
+                    // Smoothly scroll the card into view
+                    setTimeout(() => {
+                        selectedCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100); 
+                }
+            } else {
+                // If a governorate without a specific card is clicked, clear all and reset
+                allCards.forEach(card => card.classList.remove('show'));
+                lastActiveGov = null;
+            }
+        }
+
+
+        // --- Initialization ---
+        document.addEventListener("DOMContentLoaded", () => {
+            const isLightMode = loadTheme();
+            themeToggleButton.addEventListener('click', toggleTheme);
+            initializeChart(isLightMode);
+            
+            // Map interactivity handler
+            document.getElementById('governorate-map').addEventListener('click', function(event) {
+                const target = event.target;
+                if (target.classList.contains('governorate-tile')) {
+                    const selectedGov = target.dataset.gov;
+                    
+                    // 1. Update the visual map highlight (handles toggle logic internally)
+                    updateMapLegend(target); 
+                    
+                    // 2. Toggle the visibility of the corresponding data card
+                    updateDataCards(selectedGov);
+                }
+            });
+            
+            // Initial map state: hide all cards and set default colors
+            updateMapLegend(null); 
+        });
+    </script>
+</body>
+</html>
