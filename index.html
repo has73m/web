@@ -9,6 +9,39 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
     <style>
+        /* 🎨 THEME VARIABLES - Default is Light Mode (will be set via JS on first load) */
+        :root {
+            /* Light Mode */
+            --bg-start: #f0f0f0;
+            --bg-end: #ffffff;
+            --main-bg: linear-gradient(315deg, #f0f0f0 3%, #ffffff 38%, #e0e0e0 68%);
+            --text-color: #253528;
+            --section-box-bg: rgba(255, 255, 255, 0.7);
+            --navbar-bg: rgba(240, 240, 240, 0.95);
+            --navbar-text: #253528;
+            --accent-color: #49654E;
+            --footer-bg: rgba(220, 220, 220, 0.95);
+            --footer-text: #49654E;
+            --wave-color: rgb(0 0 0 / 15%);
+        }
+
+        /* 🌙 Dark Mode Overrides */
+        .dark-mode {
+            /* Dark Mode */
+            --bg-start: #253528;
+            --bg-end: #8BA889;
+            --main-bg: linear-gradient(315deg, #253528 3%, #49654E 38%, #8BA889 68%);
+            --text-color: #ffffff;
+            --section-box-bg: rgba(255, 255, 255, 0.1);
+            --navbar-bg: rgba(37, 53, 40, 0.95);
+            --navbar-text: #ffffff;
+            --accent-color: #8BA889;
+            --footer-bg: rgba(0, 0, 0, 0.8);
+            --footer-text: #8BA889;
+            --wave-color: rgb(255 255 255 / 25%);
+        }
+        
+        /* Apply smooth scrolling */
         html {
             scroll-behavior: smooth;
         }
@@ -17,13 +50,15 @@
             margin: 0;
             font-family: -apple-system, BlinkMacSystemFont, sans-serif;
             overflow-x: hidden;
-            background: linear-gradient(315deg, #253528 3%,#49654E 38%, #8BA889 68%);
+            /* Use CSS Variable for main background */
+            background: var(--main-bg);
             animation: gradient 15s ease infinite;
             background-size: 400% 400%;
             background-attachment: fixed;
-            color: white;
-            /* 1. Ensure body padding-top matches navbar height (60px) */
+            /* Use CSS Variable for main text color */
+            color: var(--text-color);
             padding-top: 60px; 
+            transition: background 0.6s ease, color 0.6s ease;
         }
 
         @keyframes gradient {
@@ -38,13 +73,15 @@
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(37, 53, 40, 0.95); 
+            /* Use CSS Variable for navbar background */
+            background: var(--navbar-bg); 
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
             z-index: 1000;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 60px;
+            padding: 0 10px; /* Add slight padding for button */
         }
 
         .nav-links {
@@ -55,10 +92,16 @@
             max-width: 1100px;
             width: 90%;
             justify-content: space-around;
+            align-items: center;
+        }
+
+        .nav-links li {
+            display: inline-block;
         }
 
         .nav-links a {
-            color: #ffffff;
+            /* Use CSS Variable for navbar link color */
+            color: var(--navbar-text);
             text-decoration: none;
             padding: 10px 15px;
             font-weight: 500;
@@ -68,13 +111,34 @@
         }
 
         .nav-links a:hover {
-            color: #8BA889; 
+            /* Use CSS Variable for hover effects */
+            color: var(--accent-color); 
+            background-color: rgba(139, 168, 137, 0.1);
+        }
+        
+        /* 💡 Theme Toggle Button Style */
+        #theme-toggle {
+            background: none;
+            border: none;
+            color: var(--navbar-text);
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border-radius: 5px;
+            transition: color 0.3s, background-color 0.3s;
+            margin-left: 10px;
+        }
+        
+        #theme-toggle:hover {
+            color: var(--accent-color);
             background-color: rgba(139, 168, 137, 0.1);
         }
 
-        /* --- Wave Animation (Kept) --- */
+        /* --- Wave Animation --- */
         .wave {
-            background: rgb(255 255 255 / 25%);
+            /* Use CSS Variable for wave color */
+            background: var(--wave-color);
             border-radius: 1000% 1000% 0 0;
             position: fixed;
             width: 200%;
@@ -96,12 +160,14 @@
         .title {
             text-align: center;
             font-size: 55px;
-            color: white;
-            /* Adjusted margin-top to account for navbar height on page load */
+            /* Use CSS Variable for title color */
+            color: var(--text-color);
             margin-top: 20px; 
             margin-bottom: 30px; 
             font-weight: bold;
             letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(0,0,0,0.5);
+            transition: color 0.6s ease;
         }
         
         /* New Introduction Section */
@@ -110,17 +176,22 @@
             width: 90%;
             margin: 0 auto 80px auto; 
             padding: 40px;
-            background: rgba(255, 255, 255, 0.1);
+            /* Use CSS Variable for box background */
+            background: var(--section-box-bg);
             backdrop-filter: blur(5px);
             border-radius: 15px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.4);
             text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: background 0.6s ease;
         }
 
         .introduction p {
             font-size: 1.15rem;
             line-height: 1.7;
             margin-bottom: 25px;
+            color: var(--text-color);
+            transition: color 0.6s ease;
         }
 
         .key-points {
@@ -135,14 +206,16 @@
         .key-points li {
             font-size: 1rem;
             font-weight: 600;
-            background: #8BA889;
-            color: #253528;
+            /* Use CSS Variable for key point background/text */
+            background: var(--accent-color);
+            color: var(--bg-start); /* Dark color for text on accent background */
             padding: 10px 15px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: background 0.6s ease;
         }
 
-        /* --- Section Styles --- */
+        /* --- Section Styles (Anchor Fix maintained) --- */
         section {
             min-height: 100vh;
             display: flex;
@@ -155,16 +228,13 @@
             z-index: 0;
             overflow: hidden;
             
-            /* 2. ANCHOR OFFSET FIX for fixed navbar */
-            /* The height of the fixed navbar is 60px. We use 70px to add a little gap. */
             padding-top: 70px;
             margin-top: -70px; 
         }
 
         section:first-of-type {
-            /* Remove the anchor fix from the very first section so it sits correctly below the title */
             margin-top: 0;
-            padding-top: 60px; /* Reset padding to a normal section height */
+            padding-top: 60px;
         }
 
         section::before {
@@ -186,10 +256,10 @@
         #vertical { background-image: url('https://www.almamlakatv.com//images/articles/big/2018/08/main_image5b67fbfd7be1f.jpeg'); } 
         #diseases { background-image: url('https://www.almamlakatv.com//images/articles/big/2024/2/65c3227c6b0aa.jpeg'); }
 
-
         .section-box {
             max-width: 900px;
-            background: rgba(255,255,255,0.1);
+            /* Use CSS Variable for section box background */
+            background: var(--section-box-bg);
             backdrop-filter: blur(8px);
             padding: 40px;
             border-radius: 20px;
@@ -197,31 +267,36 @@
             text-align: center;
             animation: fadeIn 1.2s ease;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: background 0.6s ease;
         }
 
         .section-box h2 {
             font-size: 2.5rem;
             margin-bottom: 20px;
-            color: #ffffff;
+            /* Use CSS Variable for heading color */
+            color: var(--text-color);
             text-shadow: 0 0 10px rgba(0,0,0,0.8);
+            transition: color 0.6s ease;
         }
 
         .section-box p {
             font-size: 1.2rem;
             line-height: 1.8;
-            color: #f5f5f5;
+            color: var(--text-color);
             margin-bottom: 30px;
+            transition: color 0.6s ease;
         }
 
         .section-box a {
             display: inline-block;
             padding: 12px 24px;
-            background: #8BA889;
-            color: #253528;
+            /* Use CSS Variable for button colors */
+            background: var(--accent-color);
+            color: var(--bg-start);
             font-weight: bold;
             border-radius: 8px;
             text-decoration: none;
-            transition: background 0.3s, transform 0.3s;
+            transition: background 0.3s, transform 0.3s, color 0.3s;
         }
 
         .section-box a:hover {
@@ -230,139 +305,87 @@
             transform: translateY(-3px);
         }
 
-        /* Footer (Kept) */
+        /* Footer */
         footer {
-            background: rgba(0,0,0,0.8);
-            color: #e0e0e0;
+            /* Use CSS Variable for footer background */
+            background: var(--footer-bg);
+            color: var(--text-color);
             padding: 50px 20px 30px;
             font-size: 0.95rem;
-            border-top: 4px solid #8BA889;
+            /* Use CSS Variable for border color */
+            border-top: 4px solid var(--accent-color);
+            transition: background 0.6s ease, color 0.6s ease, border-color 0.6s ease;
         }
-        /* ... other footer styles (kept) ... */
-
-        .footer-content {
-
-            max-width: 1100px;
-
-            margin: auto;
-
-            display: flex;
-
-            flex-wrap: wrap;
-
-            justify-content: space-between;
-
-            gap: 30px;
-
-            padding-bottom: 20px;
-
-        }
-
-
-
-        .footer-section {
-
-            flex: 1;
-
-            min-width: 200px;
-
-        }
-
-
+        
+        /* ... other footer styles (Use variables where possible) ... */
 
         .footer-section h4 {
-
-            color: #8BA889;
-
+            /* Use CSS Variable for footer heading color */
+            color: var(--footer-text);
             font-size: 1.2rem;
-
             margin-bottom: 15px;
-
             border-bottom: 2px solid rgba(139, 168, 137, 0.3);
-
             padding-bottom: 5px;
-
         }
-
-
-
-        .footer-section p, .footer-section ul {
-
-            margin: 0;
-
-            padding: 0;
-
-            list-style: none;
-
-        }
-
-
-
-        .footer-section ul li {
-
-            margin-bottom: 10px;
-
-        }
-
-
-
+        
         .footer-section a {
-
-            color: #e0e0e0;
-
+            color: var(--text-color);
             text-decoration: none;
-
             transition: color 0.3s;
-
         }
-
-
 
         .footer-section a:hover {
-
-            color: #8BA889;
-
+            color: var(--accent-color);
             text-decoration: underline;
-
         }
-
-
 
         .social-links a {
-
             font-size: 1.5rem;
-
             margin-right: 15px;
-
-            color: #8BA889;
-
+            /* Use CSS Variable for social icon color */
+            color: var(--footer-text);
             transition: color 0.3s;
-
         }
-
-
 
         .social-links a:hover {
-
             color: #ffffff;
+        }
+        /* ... remaining footer styles (kept structural) ... */
 
+        .footer-content {
+            max-width: 1100px;
+            margin: auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 30px;
+            padding-bottom: 20px;
         }
 
+        .footer-section {
+            flex: 1;
+            min-width: 200px;
+        }
 
+        .footer-section p, .footer-section ul {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
 
         .footer-bottom {
-
             text-align: center;
-
             margin-top: 30px;
-
             padding-top: 20px;
-
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-
             font-size: 0.85rem;
-
         }
+        
+        /* Media Queries for responsiveness (omitted for brevity but should be added here) */
     </style>
 </head>
 <body>
@@ -374,6 +397,7 @@
             <li><a href="#plants">Plants</a></li>
             <li><a href="dashboard.html">Dashboard</a></li>
             <li><a href="about.html">About</a></li>
+            <li><button id="theme-toggle" aria-label="Toggle Dark or Light Mode">Switch Theme 🌙</button></li>
         </ul>
     </nav>
 
@@ -528,5 +552,43 @@
             awareness and education.
         </div>
     </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const body = document.body;
+            const toggleButton = document.getElementById('theme-toggle');
+
+            // Function to change theme and save preference
+            function toggleTheme() {
+                // Toggles the 'dark-mode' class on the body
+                body.classList.toggle('dark-mode'); 
+
+                // Saves the current theme preference
+                if (body.classList.contains('dark-mode')) {
+                    localStorage.setItem('theme', 'dark');
+                    toggleButton.innerHTML = 'Switch to Light Mode ☀️';
+                } else {
+                    localStorage.setItem('theme', 'light');
+                    toggleButton.innerHTML = 'Switch to Dark Mode 🌙';
+                }
+            }
+
+            // Check for saved preference or system preference on load
+            const savedTheme = localStorage.getItem('theme');
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+            if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+                // If saved theme is dark OR (no saved theme AND system preference is dark)
+                body.classList.add('dark-mode');
+                toggleButton.innerHTML = 'Switch to Light Mode ☀️';
+            } else {
+                // Default to light mode (or saved light preference)
+                toggleButton.innerHTML = 'Switch to Dark Mode 🌙';
+            }
+
+            // Event listener for the button click
+            toggleButton.addEventListener('click', toggleTheme);
+        });
+    </script>
 </body>
 </html>
