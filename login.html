@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login</title>
+    <style>
+        /* 🎨 CSS for Beautiful, Responsive, and Transparent Design */
+
+        :root {
+            /* الألوان المطلوبة */
+            --color-dark: #253528;
+            --color-medium: #49654E;
+            --color-light: #8BA889;
+
+            --success-color: #28a745; 
+            --danger-color: #dc3545; 
+            --text-color: #ffffff; 
+            --box-bg-transparency: rgba(255, 255, 255, 0.15); 
+            --border-radius: 12px;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-color);
+            background: linear-gradient(135deg, var(--color-dark) 3%, var(--color-medium) 38%, var(--color-light));
+        }
+
+        .login-container {
+            background-color: var(--box-bg-transparency);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-sizing: border-box; 
+        }
+
+        /* --- Headings --- */
+        h2 {
+            color: var(--color-light); 
+            margin-bottom: 30px;
+            font-weight: 700;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        /* --- Form Group Styling --- */
+        .form-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 1rem;
+            color: var(--color-light);
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 14px;
+            background-color: rgba(255, 255, 255, 0.1); 
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: var(--text-color);
+            border-radius: var(--border-radius);
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-color: var(--color-light);
+            outline: none;
+        }
+
+        /* --- Button Styling --- */
+        .btn {
+            background-color: var(--color-light); 
+            color: var(--color-dark);
+            padding: 14px 25px;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1.1rem;
+            width: 100%;
+            transition: background-color 0.3s ease, transform 0.1s ease, color 0.3s ease;
+            font-weight: 700;
+            margin-top: 15px;
+        }
+
+        .btn:hover {
+            background-color: #A3C49B; 
+            color: var(--color-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        /* --- Message Area Styling --- */
+        #message {
+            margin-top: 30px;
+            padding: 12px;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            text-align: center;
+            display: none; 
+            color: var(--color-dark); 
+        }
+
+        .success {
+            background-color: #c3e6cb;
+            color: var(--success-color);
+            border: 1px solid var(--success-color);
+        }
+
+        .error {
+            background-color: #f5c6cb;
+            color: var(--danger-color);
+            border: 1px solid var(--danger-color);
+        }
+
+        /* --- Media Query for Responsiveness --- */
+        @media (max-width: 600px) {
+            .login-container {
+                margin: 20px;
+                padding: 30px;
+            }
+        }
+        
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h2>🔒 User Login</h2>
+        <form id="loginForm">
+            
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required autocomplete="username" placeholder=" use 'admin'">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password" placeholder=" use '123'">
+            </div>
+            
+            <button type="submit" class="btn">Log In</button>
+            
+            <div id="message"></div>
+        </form>
+    </div>
+
+    <script>
+        // 💻 JavaScript for Data Storage and Validation (22 Users)
+
+        // Local JSON Data Store (22 Users)
+        const users = [
+            { username: "admin", password: "123" },
+            { username: "john.doe", password: "pass" },
+            { username: "susan.smith", password: "abc" },
+            { username: "michael.b", password: "mb456" },
+            { username: "emily.w", password: "ew789" },
+            { username: "david.lee", password: "dl111" },
+            { username: "sarah.k", password: "sk222" },
+            { username: "chris.p", password: "cp333" },
+            { username: "anna.f", password: "af444" },
+            { username: "jason.r", password: "jr555" },
+            { username: "maria.g", password: "mg666" },
+            { username: "peter.h", password: "ph777" },
+            { username: "olivia.m", password: "om888" },
+            { username: "kevin.t", password: "kt999" },
+            { username: "nicole.x", password: "nx000" },
+            { username: "robert.l", password: "rl121" },
+            { username: "laura.d", password: "ld343" },
+            { username: "eric.f", password: "ef565" },
+            { username: "monica.v", password: "mv787" },
+            { username: "alex.z", password: "az909" },
+            { username: "testuser", password: "test" }, 
+            { username: "developer", password: "dev" }
+        ];
+
+        // Get references to form elements
+        const loginForm = document.getElementById('loginForm');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const messageDiv = document.getElementById('message');
+
+        function handleLogin(event) {
+            event.preventDefault(); 
+
+            const enteredUsername = usernameInput.value.trim();
+            const enteredPassword = passwordInput.value.trim();
+
+            const foundUser = users.find(user => 
+                user.username === enteredUsername && user.password === enteredPassword
+            );
+
+            if (foundUser) {
+                // 🚀 التعديل المطلوب: التوجيه إلى صفحة index.html
+                displayMessage(`✅ Login Successful! Redirecting to index.html...`, "success");
+                
+                // تأخير التوجيه قليلاً (ثانية واحدة) للسماح للمستخدم برؤية رسالة النجاح
+                setTimeout(() => {
+                    window.location.href = 'index.html'; 
+                }, 1000); 
+                
+            } else {
+                displayMessage("❌ Invalid Username or Password. Please try again.", "error");
+            }
+        }
+
+        function displayMessage(msg, type) {
+            messageDiv.textContent = msg;
+            messageDiv.className = ''; 
+            messageDiv.classList.add(type); 
+            messageDiv.style.display = 'block'; 
+        }
+
+        loginForm.addEventListener('submit', handleLogin);
+    </script>
+</body>
+</html>

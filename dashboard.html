@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jordan Agriculture Dashboard</title>
+    <style>
+        /* 🎨 CSS: Consistent Glassmorphism Design with White Titles & Counter Circles */
+
+        :root {
+            /* Required Colors */
+            --color-dark: #253528;
+            --color-medium: #49654E;
+            --color-light: #8BA889;
+            --color-accent: #A3C49B;
+
+            --text-color-main: #ffffff; 
+            --box-bg-transparency: rgba(255, 255, 255, 0.1); 
+            --border-radius: 15px; 
+            --success-color: #38b44a; 
+            --danger-color: #dc3545;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--text-color-main);
+            background: linear-gradient(135deg, var(--color-dark) 3%, var(--color-medium) 38%, var(--color-light));
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        /* --- Back Button --- */
+        .back-button {
+            position: absolute;
+            top: 25px;
+            left: 25px; 
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--text-color-main);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            transition: background-color 0.3s ease;
+            text-decoration: none;
+            z-index: 10;
+        }
+
+        .back-button:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* --- Dashboard Container --- */
+        .dashboard-container {
+            background-color: var(--box-bg-transparency);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 50px;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.3); 
+            box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 1300px;
+            text-align: center;
+            margin: 60px auto 20px;
+        }
+
+        /* --- White Titles --- */
+        h1, .dashboard-container h2, .dashboard-container h3, .province-card h2 {
+            color: var(--text-color-main) !important; 
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+        }
+
+        /* --- Counter Circles --- */
+        .stats-circles {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 40px;
+            gap: 20px;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
+        .stat-circle {
+            background-color: rgba(255, 255, 255, 0.2);
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border: 3px solid var(--color-light);
+            box-shadow: 0 0 15px rgba(139, 168, 137, 0.7);
+            flex: 1 1 100px;
+            max-width: 200px;
+        }
+
+        .stat-circle .count {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--text-color-main);
+            text-shadow: 1px 1px 3px var(--color-dark);
+        }
+
+        .stat-circle .label {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--color-light);
+            margin-top: 5px;
+        }
+
+        /* --- Filter Bar Styling --- */
+        .filter-bar {
+            margin: 30px 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .filter-button {
+            background-color: rgba(255, 255, 255, 0.2);
+            color: var(--text-color-main);
+            padding: 12px 25px;
+            border: 2px solid transparent;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            flex: 1 1 auto;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .filter-button:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            border-color: var(--color-accent);
+        }
+        
+        .filter-button.active {
+            background-color: var(--color-light);
+            color: var(--color-dark);
+            border-color: var(--color-dark);
+            box-shadow: 0 0 10px rgba(139, 168, 137, 0.8);
+        }
+
+        /* --- Summary Table --- */
+        .summary-table {
+            width: 100%;
+            margin: 0 auto 40px;
+            border-collapse: collapse;
+            overflow-x: auto;
+            display: block;
+            -webkit-overflow-scrolling: touch;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .summary-table th, .summary-table td {
+            width: 28%;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-color-main);
+            font-weight: 400;
+            white-space: nowrap;
+        }
+        
+        .summary-table th {
+            background-color: var(--color-medium);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        /* --- Provinces Grid --- */
+        .provinces-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        /* --- Province Card --- */
+        .province-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: var(--border-radius);
+            text-align: left;
+            transition: transform 0.4s ease, background-color 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .province-card:hover {
+            transform: scale(1.03);
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .province-card p {
+            margin: 10px 0;
+            font-size: 1.1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .province-card strong {
+            font-weight: 600;
+            color: var(--color-accent);
+        }
+
+        /* --- Status Badge --- */
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--color-dark);
+            text-shadow: none;
+        }
+
+        .status-badge.suitable {
+            background-color: var(--success-color);
+        }
+
+        .status-badge.unsuitable {
+            background-color: var(--danger-color);
+            color: #fff;
+        }
+
+        /* --- Responsiveness --- */
+        @media (max-width: 1024px) {
+            .summary-table {
+                width: 100%;
+            }
+            .stats-circles {
+                flex-wrap: wrap;
+            }
+            .stat-circle {
+                width: 120px;
+                height: 120px;
+            }
+            .stat-circle .count {
+                font-size: 2.5rem;
+            }
+        }
+        @media (max-width: 600px) {
+            .dashboard-container {
+                padding: 25px;
+            }
+            .provinces-grid {
+                grid-template-columns: 1fr;
+            }
+            .stats-circles {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .stat-circle {
+                width: 100%;
+                height: 80px;
+                flex-direction: row;
+                justify-content: space-between;
+                padding: 0 20px;
+                border-radius: var(--border-radius);
+            }
+            .stat-circle .label {
+                text-align: left;
+            }
+        }
+
+        /* 📱 ضمان الريسپونسيف 100% */
+        * {
+            max-width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    
+    <a href="javascript:history.back()" class="back-button">
+        <span>&larr;</span> Back
+    </a>
+
+    <div class="dashboard-container">
+        <h1>📊 Jordan Agriculture Overview</h1>
+        
+        <div class="stats-circles">
+            <div class="stat-circle">
+                <div class="count" data-target="12">0</div>
+                <div class="label">Total Provinces</div>
+            </div>
+            <div class="stat-circle">
+                <div class="count" data-target="50">0</div>
+                <div class="label">Avg. Rain Rate (%)</div>
+            </div>
+            <div class="stat-circle">
+                <div class="count" data-target="50">0</div>
+                <div class="label">Avg. Agriculture Rate (%)</div>
+            </div>
+        </div>
+
+        <h3>Regional Summary</h3>
+        <table class="summary-table">
+            <thead>
+                <tr>
+                    <th>Total Provinces</th>
+                    <th>Avg. Rain Rate (%)</th>
+                    <th>Avg. Agriculture Rate (%)</th>
+                    <th>Suitable for Farming</th>
+                </tr>
+            </thead>
+            <tbody id="summaryTableBody">
+                </tbody>
+        </table>
+
+        <h3>Filter by Region</h3>
+        <div class="filter-bar">
+            <button class="filter-button active" data-region="All">Show All</button>
+            <button class="filter-button" data-region="North">North</button>
+            <button class="filter-button" data-region="Center">Center</button>
+            <button class="filter-button" data-region="South">South</button>
+            <button class="filter-button" data-region="East">East</button>
+        </div>
+
+        <div class="provinces-grid" id="provincesGrid">
+            </div>
+        
+    </div>
+
+    <script>
+        // 💻 JavaScript & JSON Data Store
+
+        const jordanProvincesData = [
+            { name: "Amman", region: "Center", agriculture_percent: 35, rain_percent: 60, suitable_for_farming: true },
+            { name: "Irbid", region: "North", agriculture_percent: 75, rain_percent: 85, suitable_for_farming: true },
+            { name: "Zarqa", region: "Center", agriculture_percent: 20, rain_percent: 30, suitable_for_farming: false },
+            { name: "Balqa", region: "Center", agriculture_percent: 55, rain_percent: 70, suitable_for_farming: true },
+            { name: "Karak", region: "South", agriculture_percent: 65, rain_percent: 75, suitable_for_farming: true },
+            { name: "Ma'an", region: "South", agriculture_percent: 15, rain_percent: 20, suitable_for_farming: false },
+            { name: "Mafraq", region: "East", agriculture_percent: 40, rain_percent: 45, suitable_for_farming: false },
+            { name: "Jerash", region: "North", agriculture_percent: 80, rain_percent: 90, suitable_for_farming: true },
+            { name: "Ajloun", region: "North", agriculture_percent: 90, rain_percent: 95, suitable_for_farming: true },
+            { name: "Tafilah", region: "South", agriculture_percent: 50, rain_percent: 65, suitable_for_farming: true },
+            { name: "Madaba", region: "Center", agriculture_percent: 45, rain_percent: 55, suitable_for_farming: true },
+            { name: "Aqaba", region: "South", agriculture_percent: 5, rain_percent: 10, suitable_for_farming: false }
+        ];
+
+        const gridContainer = document.getElementById('provincesGrid');
+        const summaryTableBody = document.getElementById('summaryTableBody');
+        const filterButtons = document.querySelectorAll('.filter-button');
+        let currentFilter = 'All'; 
+
+        // --- Counter Animation Logic ---
+        function animateCounters(data) {
+            const totalProvinces = data.length;
+            const totalRain = data.reduce((sum, p) => sum + p.rain_percent, 0);
+            const avgRain = Math.round(totalRain / totalProvinces);
+            const totalAgri = data.reduce((sum, p) => sum + p.agriculture_percent, 0);
+            const avgAgri = Math.round(totalAgri / totalProvinces);
+
+            const targets = [
+                { element: document.querySelector('.stat-circle:nth-child(1) .count'), target: totalProvinces },
+                { element: document.querySelector('.stat-circle:nth-child(2) .count'), target: avgRain },
+                { element: document.querySelector('.stat-circle:nth-child(3) .count'), target: avgAgri }
+            ];
+
+            targets.forEach(item => {
+                let startValue = 0;
+                const targetValue = item.target;
+                const duration = 1500;
+                const startTime = performance.now();
+
+                function step(currentTime) {
+                    const elapsed = currentTime - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const value = Math.floor(progress * targetValue);
+
+                    item.element.textContent = value;
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    } else {
+                        item.element.textContent = targetValue;
+                    }
+                }
+                requestAnimationFrame(step);
+            });
+        }
+        
+        // --- Summary Table Logic ---
+        function renderSummaryTable(data) {
+            const totalProvinces = data.length;
+            const suitableCount = data.filter(p => p.suitable_for_farming).length;
+            
+            const totalRain = data.reduce((sum, p) => sum + p.rain_percent, 0);
+            const avgRain = totalRain / totalProvinces;
+            
+            const totalAgri = data.reduce((sum, p) => sum + p.agriculture_percent, 0);
+            const avgAgri = totalAgri / totalProvinces;
+
+            summaryTableBody.innerHTML = `
+                <tr>
+                    <td>${totalProvinces}</td>
+                    <td>${avgRain.toFixed(1)}%</td>
+                    <td>${avgAgri.toFixed(1)}%</td>
+                    <td>${suitableCount} / ${totalProvinces}</td>
+                </tr>
+            `;
+        }
+
+        // --- Dashboard Card Rendering Logic ---
+        function renderDashboard(dataToRender) {
+            gridContainer.innerHTML = ''; 
+            
+            dataToRender.forEach(province => {
+                const statusText = province.suitable_for_farming ? "Suitable" : "Unsuitable";
+                const statusClass = province.suitable_for_farming ? "suitable" : "unsuitable";
+                
+                const cardHTML = `
+                    <div class="province-card">
+                        <h2>${province.name} (${province.region})</h2>
+                        
+                        <p>
+                            <span>Agriculture Rate:</span>
+                            <strong>${province.agriculture_percent}%</strong>
+                        </p>
+                        
+                        <p>
+                            <span>Rainfall Rate:</span>
+                            <strong>${province.rain_percent}%</strong>
+                        </p>
+                        
+                        <p>
+                            <span>Farming Suitability:</span>
+                            <span class="status-badge ${statusClass}">
+                                ${statusText}
+                            </span>
+                        </p>
+                    </div>
+                `;
+                
+                gridContainer.insertAdjacentHTML('beforeend', cardHTML);
+            });
+        }
+
+        // --- Filtering Logic ---
+        function filterProvinces(region) {
+            filterButtons.forEach(button => {
+                button.classList.remove('active');
+                if (button.dataset.region === region) {
+                    button.classList.add('active');
+                }
+            });
+
+            currentFilter = region;
+
+            let filteredData;
+            if (region === 'All') {
+                filteredData = jordanProvincesData;
+            } else {
+                filteredData = jordanProvincesData.filter(p => p.region === region);
+            }
+
+            renderDashboard(filteredData);
+            renderSummaryTable(filteredData);
+            animateCounters(filteredData); 
+        }
+        
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                filterProvinces(button.dataset.region);
+            });
+        });
+
+        filterProvinces(currentFilter);
+    </script>
+</body>
+</html>
