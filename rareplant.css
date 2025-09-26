@@ -50,6 +50,7 @@ li a{
 }
 
 li a:hover{
+    
     background-color: rgba(66, 99, 66, 0.847);
     color:antiquewhite;
     padding: 10px;
