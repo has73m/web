@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jordan Agriculture Stats - Comprehensive Data</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        /* 🎨 CSS: Comprehensive Design with Stability Fix */
+        :root {
+            --color-dark: #253528;
+            --color-medium: #49654E;
+            --color-light: #8BA889;
+            --color-accent: #A3C49B;
+
+            --text-color-main: #fff;
+            --box-bg: rgba(255, 255, 255, 0.12);
+            --border-radius: 14px;
+            --button-bg: rgba(255, 255, 255, 0.1);
+            --button-hover: rgba(255, 255, 255, 0.3);
+        }
+
+        body {
+            margin: 0;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            
+            /* Fix for Stability: Centers content and prevents global scrolling */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden; 
+            
+            color: var(--text-color-main);
+            background: linear-gradient(135deg, var(--color-dark) 5%, var(--color-medium) 40%, var(--color-light));
+        }
+
+        /* ✅ Main Container */
+        .stats-container {
+            width: 95%;
+            max-width: 900px;
+            max-height: 95vh; 
+            overflow-y: auto; /* Allows scrolling inside the container */
+            padding: 30px;
+            background: var(--box-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+            text-align: center;
+            margin: 0;
+            
+            /* Scrollbar styling for a cleaner look */
+            scrollbar-width: thin;
+            scrollbar-color: var(--color-accent) transparent;
+            /* للتنقل السلس */
+            scroll-behavior: smooth; 
+        }
+
+        .stats-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .stats-container::-webkit-scrollbar-thumb {
+            background: var(--color-accent);
+            border-radius: 10px;
+        }
+
+        /* 🛑 Filter Bar Styling 🛑 */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .filter-button {
+            background: var(--button-bg);
+            color: var(--text-color-main);
+            border: none;
+            padding: 10px 15px;
+            border-radius: var(--border-radius);
+            font-size: 0.95rem;
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.1s ease;
+            white-space: nowrap; /* Prevent button text wrapping */
+        }
+
+        .filter-button:hover {
+            background: var(--button-hover);
+            transform: translateY(-2px);
+        }
+
+        h1, h2, h3, h4 {
+            margin: 0 0 15px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+            text-align: center; 
+        }
+        h1 { font-size: clamp(2rem, 3vw, 2.6rem); }
+        h2 { font-size: clamp(1.5rem, 2.5vw, 1.9rem); margin-top: 30px; }
+        h4 { font-size: 1.1rem; color: var(--color-accent); margin-bottom: 12px; }
+
+        p {
+            font-size: clamp(0.95rem, 1vw, 1rem);
+            line-height: 1.6;
+            margin-bottom: 15px; 
+            color: rgba(255,255,255,0.85);
+            text-align: justify;
+        }
+
+        /* Styling for the introductory paragraph above each chart */
+        .chart-description {
+            margin: 30px 0 20px;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius);
+            border-left: 4px solid var(--color-accent);
+        }
+        .chart-description p {
+            margin-bottom: 0;
+            text-align: justify;
+        }
+
+        ul {
+            text-align: left;
+            margin: 10px 0 20px;
+            padding-left: 18px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+        
+        li strong {
+            font-weight: normal; 
+        }
+
+        /* ✅ Chart Sections */
+        .chart-section {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+            margin-bottom: 40px;
+        }
+
+        .chart-box {
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 360px;
+            min-height: 360px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .chart-box canvas {
+            width: 100% !important;
+            height: 260px !important;
+        }
+
+        .text-summary {
+            flex: 1;
+            max-width: 420px;
+            padding: 12px;
+            text-align: left;
+        }
+
+        /* ✅ Back Button (fixed) */
+        .back-button {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            color: var(--text-color-main);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            padding: 8px 14px;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: background 0.3s ease;
+            z-index: 1000;
+        }
+        .back-button:hover {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        /* ✅ Responsiveness */
+        @media (max-width: 768px) {
+            .stats-container {
+                padding: 20px;
+                max-height: 90vh;
+            }
+            .filter-bar {
+                margin-top: 10px;
+                margin-bottom: 20px;
+            }
+            .chart-section {
+                flex-direction: column;
+                align-items: center;
+                margin-bottom: 30px;
+            }
+            .chart-box, .text-summary {
+                max-width: 100%;
+            }
+            .chart-box canvas {
+                height: 300px !important; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="javascript:history.back()" class="back-button">
+        ← Back
+    </a>
+
+    <main class="stats-container">
+        <h1>Jordan Agriculture Focus and Breakdown</h1>
+        
+        <div class="filter-bar">
+            <a href="#chart-rainfed" class="filter-button">Rainfed vs. Irrigated</a>
+            <a href="#chart-regional" class="filter-button">Regional Breakdown</a>
+            <a href="#chart-crops" class="filter-button">Principal Crops</a>
+        </div>
+        
+        <p>
+            Agriculture in Jordan is shaped by a combination of climate, geography, and limited water resources. The country has diverse agro-ecological zones: the Highlands, where rainfall allows for rainfed cultivation of cereals like wheat and barley; the Jordan Valley, which benefits from irrigation and supports intensive horticulture including vegetables, citrus, and olives; and the Badia (Eastern Steppe), dominated by pastoral systems and limited crop production. Rainfed agriculture covers roughly 60% of cultivated land, whereas irrigated agriculture accounts for about 40%. Despite the challenges of water scarcity, agriculture contributes approximately 4–5% of Jordan’s GDP and employs around 3% of the labor force, highlighting its strategic importance for food security and rural livelihoods.
+        </p>
+
+        <h2 id="chart-rainfed">1.1 Rainfed vs. Irrigated Area Estimates</h2>
+        <div class="chart-description">
+            <p>
+                This pie chart visualizes the distribution of Jordan's total cultivated area, which is approximately 270,000 ha, based on the irrigation method used. It clearly shows the dominant role of rainfed agriculture in terms of land coverage compared to the intensive, water-dependent irrigated agriculture. This split highlights the environmental constraints and the strategic focus on different farming models across the country. Data reflects the generally accepted 60/40 split.
+            </p>
+        </div>
+        <section class="chart-section">
+            <div class="chart-box">
+                <h4>Cultivated Area Distribution (60% Rainfed / 40% Irrigated)</h4>
+                <canvas id="chart1_RainfedIrrigated" aria-label="Pie chart showing rainfed versus irrigated agriculture area"></canvas>
+            </div>
+            <div class="text-summary">
+                <p>
+                    The total cultivated area in Jordan is estimated to be around 270,000 ha (0.27 Mha). This land is divided into two primary types:
+                </p>
+                <ul>
+                    <li>Rainfed Agriculture: Covers ~60% (≈170,000 ha), relying on seasonal rainfall, primarily for cereals and olives in the Highlands.</li>
+                    <li>Irrigated Agriculture: Covers ~40% (≈100,000 ha, reflecting the 2019 remote sensing estimate). This is crucial for high-value crops in the Jordan Valley.</li>
+                </ul>
+                <p style="font-size: 0.85rem; color: var(--color-light);">
+                    *Data sourced from Beithou, N. (2022) and Al-Bakri et al., (2022). Area totals vary due to data collection methods.
+                </p>
+            </div>
+        </section>
+
+        <h2 id="chart-regional">1.2 Regional Agriculture Breakdown</h2>
+        <div class="chart-description">
+            <p>
+                The stacked bar chart below illustrates how irrigation methods differ across Jordan's three major agro-ecological zones: the Highlands, the Jordan Valley, and the Badia. The chart reveals the high dependency of the Jordan Valley on irrigation for its intense cultivation, while the Highlands and the Badia remain overwhelmingly reliant on limited rainfall (rainfed). This visualization emphasizes the regional disparity in water resource management.
+            </p>
+        </div>
+        <section class="chart-section">
+            <div class="chart-box">
+                <h4>Irrigated vs. Rainfed Split by Region</h4>
+                <canvas id="chart2_Regional" aria-label="Stacked bar chart showing the percentage of irrigated and rainfed farming in Highlands, Jordan Valley, and Badia"></canvas>
+            </div>
+            <div class="text-summary">
+                <p>
+                    Agricultural practices are largely defined by regional water availability and climate, leading to distinct farming models:
+                </p>
+                <ul>
+                    <li>Jordan Valley: The primary irrigated zone, with 80% irrigation, specializing in high-value horticulture (vegetables, citrus). It contributes ~61% of national agricultural value-added.</li>
+                    <li>Highlands / Mountains: Predominantly rainfed (~90%), supporting olives and winter cereals (wheat, barley) in a Mediterranean-like climate.</li>
+                    <li>Badia (Eastern Steppe): Largely pastoral, with ~95% rainfed land, and very limited crop cultivation due to aridity.</li>
+                </ul>
+            </div>
+        </section>
+
+        <h2 id="chart-crops">1.3 Principal Crops Cultivated</h2>
+        <div class="chart-description">
+            <p>
+                This doughnut chart shows the relative importance and estimated area allocation among Jordan's major crops, utilizing approximated area data. Olives represent the largest single area due to their resilience and long-term economic value. The remaining area is split between high-value, water-intensive crops like Vegetables and Citrus (grown primarily under irrigation), and strategic staple crops like Wheat and Barley (grown primarily rainfed).
+            </p>
+        </div>
+        <section class="chart-section">
+            <div class="chart-box">
+                <h4>Major Crops Distribution (Based on Cultivated Area/Importance)</h4>
+                <canvas id="chart3_Crops" aria-label="Doughnut chart showing the distribution of major crops including olives, vegetables, wheat, and barley"></canvas>
+            </div>
+            <div class="text-summary">
+                <p>
+                    Key crops reflect both national food security priorities and economic value:
+                </p>
+                <ul>
+                    <li>Olives: Around 57,000 ha—the most widespread crop by area, critical for livelihoods and oil production.</li>
+                    <li>Vegetables: Highly important for local consumption and export, dominating the irrigated area.</li>
+                    <li>Wheat & Barley: Key cereals, primarily grown under rainfed conditions to support national food security.</li>
+                    <li>Citrus: Significant high-value fruit crop concentrated in irrigated zones.</li>
+                </ul>
+            </div>
+        </section>
+        
+    </main>
+
+    <script>
+        // --- Chart.js Data & Configuration ---
+
+        // Global Chart Defaults
+        Chart.defaults.color = "rgba(255,255,255,0.9)";
+        Chart.defaults.borderColor = "rgba(255,255,255,0.2)";
+        Chart.defaults.font.family = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+
+        // 1. Rainfed vs. Irrigated Data (Pie Chart) - Based on ~60/40 ratio
+        const rainfedIrrigatedData = {
+            labels: ["Rainfed Agriculture (~60%)", "Irrigated Agriculture (~40%)"],
+            datasets: [{
+                data: [60, 40],
+                backgroundColor: ["#8BA889", "#49654E"],
+                borderColor: "rgba(255,255,255,0.5)",
+                borderWidth: 2
+            }]
+        };
+        
+        // 2. Regional Breakdown Data (Stacked Bar Chart) - Based on provided regional percentages
+        const regionalAgricultureData = {
+            labels: ["Highlands", "Jordan Valley", "Badia"],
+            datasets: [
+                {
+                    label: "Rainfed (%)",
+                    data: [90, 20, 95],
+                    backgroundColor: "#8BA889", 
+                    borderColor: "rgba(255,255,255,0.5)",
+                    borderWidth: 1
+                },
+                {
+                    label: "Irrigated (%)",
+                    data: [10, 80, 5],
+                    backgroundColor: "#49654E", 
+                    borderColor: "rgba(255,255,255,0.5)",
+                    borderWidth: 1
+                }
+            ]
+        };
+
+        // 3. Major Crops Data (Doughnut Chart) - Values based on area/importance
+        const majorCropsData = {
+            labels: ["Olives (57,000 ha)", "Vegetables (High Value)", "Wheat (Staple)", "Barley (Staple)", "Citrus (Irrigated)"],
+            datasets: [{
+                data: [57, 45, 30, 20, 10], 
+                backgroundColor: ["#8BA889", "#49654E", "#253528", "#A3C49B", "#D0E0C0"],
+                borderColor: "rgba(255,255,255,0.5)",
+                borderWidth: 2
+            }]
+        };
+
+        // --- Chart.js Initialization ---
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            // Chart 1: Rainfed vs. Irrigated (Pie)
+            new Chart(document.getElementById("chart1_RainfedIrrigated").getContext("2d"), {
+                type: "pie",
+                data: rainfedIrrigatedData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: "bottom", labels: { padding: 12 } } }
+                }
+            });
+
+            // Chart 2: Regional Breakdown (Stacked Bar)
+            new Chart(document.getElementById("chart2_Regional").getContext("2d"), {
+                type: "bar",
+                data: regionalAgricultureData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { stacked: true, grid: { color: "rgba(255,255,255,0.1)" } },
+                        y: { 
+                            stacked: true, 
+                            beginAtZero: true, 
+                            max: 100, 
+                            grid: { color: "rgba(255,255,255,0.1)" },
+                            ticks: { callback: (value) => value + "%" }
+                        }
+                    },
+                    plugins: { legend: { position: "top" } }
+                }
+            });
+            
+            // Chart 3: Major Crops (Doughnut)
+            new Chart(document.getElementById("chart3_Crops").getContext("2d"), {
+                type: "doughnut",
+                data: majorCropsData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: "bottom", labels: { padding: 12 } } }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
