@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="rareplant.css">
+    <title>Rare plants</title>
+</head>
+<body>
+  <div class="container">
+     <header>
+       <nav class="navbar">
+        <ul class="nav-links">
+            <li><a href="#agriculture">Agriculture</a></li>
+            <li><a href="#irrigation">Irrigation</a></li>
+            <li><a href="#crops">Crops</a></li>
+            <li><a href="#plants">Plants</a></li>
+            <li><a href="#vertical">Vertical Farming</a></li>
+            <li><a href="#diseases">Diseases</a></li>
+        </ul>
+      </nav>
+     </header>
+     <!-- intro about page -->
+    <div class="content">
+         
+    </div>
+     
+    <div class="statistics">
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card"></div>
+        <div class="card"></div>
+
+    </div>
+    
+    <div class="pagination">
+        <button onclick="showPage(1)">1</button>
+        <button onclick="showPage(2)">2</button>
+        
+      </div>
+
+
+    <div id="content">
+        <div class="page" id="page1" style="display: none;">
+            <div class="rareplant">
+                <!-- محتوى اصفحة الاولى  -->
+            </div>   
+        </div>
+        <div class="page" id="page2" style="display: none;">
+            <!-- محتوى الصفحة الثالثة -->
+        </div>
+    </div>
+
+   
+        <script>
+           function showPage(pageNumber) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach((page, index) => {
+                page.style.display = (index === pageNumber - 1) ? 'block' : 'none';
+            });
+            }
+        </script>
+</div>
+
+</body> 
+</html>
