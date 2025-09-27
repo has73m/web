@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
     <title>Jordan: Governorates and Agricultural Diversity</title>
     
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
@@ -26,7 +26,7 @@
             
             --shadow-color: rgba(0, 0, 0, 0.4);
             --border-radius: 15px;
-            --chart-bg: rgba(255, 255, 255, 0.05); /* Chart background in dark mode */
+            --chart-bg: rgba(255, 255, 255, 0.05);
         }
 
         /* 💡 Light Mode Overrides */
@@ -38,7 +38,7 @@
             --text-color-secondary: #555555; 
             --accent-color: var(--color-medium); 
             --shadow-color: rgba(0, 0, 0, 0.1);
-            --chart-bg: #ffffff; /* Chart background in light mode */
+            --chart-bg: #ffffff;
         }
 
         body {
@@ -53,6 +53,7 @@
             align-items: center;
             padding-top: 20px;
             transition: background-color 0.5s ease, color 0.5s ease;
+            overflow-x: hidden;
         }
 
         /* --- Utility & Controls Container --- */
@@ -75,7 +76,7 @@
             padding: 10px 15px;
             border-radius: var(--border-radius);
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: clamp(0.9rem, 0.8rem + 0.5vw, 1.1rem); /* Fluid Font Size */
             font-weight: bold;
             transition: all 0.3s ease;
             box-shadow: 0 4px 10px var(--shadow-color);
@@ -101,7 +102,7 @@
         h1 {
             color: var(--accent-color); 
             font-weight: 900;
-            font-size: 3.5rem;
+            font-size: clamp(2.25rem, 1rem + 5vw, 3.5rem); 
             text-align: center;
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
@@ -110,7 +111,7 @@
         .subtitle {
             text-align: center;
             color: var(--text-color-secondary);
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 0.8rem + 0.75vw, 1.2rem); 
             margin-bottom: 50px;
             font-style: italic;
         }
@@ -125,7 +126,7 @@
         
         .section-box {
             background-color: var(--bg-card);
-            padding: 30px;
+            padding: clamp(1.25rem, 1rem + 2vw, 1.875rem); 
             border-radius: var(--border-radius);
             box-shadow: 0 5px 15px var(--shadow-color);
             border-top: 5px solid var(--accent-color);
@@ -134,7 +135,7 @@
         }
         
         .section-box h2 {
-            font-size: 1.8rem;
+            font-size: clamp(1.5rem, 1.2rem + 1vw, 1.8rem); 
             color: var(--accent-color);
             margin-top: 0;
             padding-bottom: 10px;
@@ -163,7 +164,7 @@
             transition: all 0.3s ease;
             font-weight: 600;
             border: 1px solid transparent;
-            font-size: 0.9rem;
+            font-size: clamp(0.8rem, 0.75rem + 0.25vw, 0.9rem);
         }
         .governorate-tile:hover {
             background-color: var(--accent-color);
@@ -172,10 +173,7 @@
             border-color: var(--text-color-main);
         }
         
-        /* Highlight Class for Interactivity */
         .governorate-tile.active {
-            /* We will use JS to set the background color on click based on region type, 
-               but this class ensures a consistent style. */
             color: white;
             border-color: white;
             box-shadow: 0 0 10px var(--accent-color);
@@ -203,8 +201,9 @@
         /* --- Chart Styles --- */
         .chart-container {
             position: relative;
-            max-height: auto;
-            max-width: auto;
+            /* MODIFIED: Set a max-width and center the chart container for better scaling */
+            max-width: 500px;
+            margin: 0 auto;
             background-color: var(--chart-bg);
             padding: 10px;
             border-radius: var(--border-radius);
@@ -218,14 +217,12 @@
             margin-top: 50px;
         }
         .data-card {
-            /* Initial state for dynamic toggle */
             display: none; 
             opacity: 0;
             transform: translateY(10px);
             transition: all 0.5s ease-out;
-
             background-color: var(--bg-card);
-            padding: 25px;
+            padding: clamp(1.2rem, 1rem + 1.5vw, 1.5rem);
             border-radius: var(--border-radius);
             box-shadow: 0 3px 10px var(--shadow-color);
             border-left: 5px solid var(--color-light);
@@ -259,10 +256,17 @@
                 grid-template-columns: 1fr;
             }
         }
+        
+        @media (max-width: 768px) {
+             .map-simulation { 
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 576px) {
-            h1 { font-size: 2rem; }
-            .governorate-tile { font-size: 0.8rem; padding: 10px 5px; }
-            .map-simulation { grid-template-columns: repeat(2, 1fr); }
+            .map-simulation { 
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -424,7 +428,7 @@
         const themeToggleButton = document.getElementById('theme-toggle');
         const body = document.body;
         let sectorChart; 
-        let lastActiveGov = null; // Track the last clicked governorate for the toggle feature
+        let lastActiveGov = null;
 
         function setIcon(isLight) {
             const iconSpan = themeToggleButton.querySelector('.mode-icon');
@@ -444,12 +448,9 @@
         function loadTheme() {
             const savedTheme = localStorage.getItem('theme');
             const prefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
-
             let isLightMode = false;
             
-            if (savedTheme === 'light') {
-                isLightMode = true;
-            } else if (savedTheme === null && prefersLight) {
+            if (savedTheme === 'light' || (savedTheme === null && prefersLight)) {
                 isLightMode = true;
             }
 
@@ -460,21 +461,13 @@
             return isLightMode;
         }
         
-        // --- Chart.js Logic (Unchanged) ---
+        // --- Chart.js Logic ---
         function getChartColors(isLightMode) {
-            const accent = isLightMode ? '#49654E' : '#A3C49B';
             const text = isLightMode ? '#222222' : '#ffffff';
-            
             return {
-                accent: accent,
                 text: text,
                 borderColor: isLightMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.2)',
-                sectorColors: [
-                    '#4CAF50', 
-                    '#FFC107', 
-                    '#2196F3', 
-                    '#FF5722'  
-                ]
+                sectorColors: ['#4CAF50', '#FFC107', '#2196F3', '#FF5722']
             };
         }
 
@@ -497,25 +490,14 @@
                 responsive: true,
                 maintainAspectRatio: true,
                 plugins: {
-                    legend: {
-                        labels: {
-                            color: colors.text,
-                            font: { size: 14 }
-                        }
-                    },
-                    title: {
-                        display: false,
-                    },
+                    legend: { labels: { color: colors.text, font: { size: 14 }}},
+                    title: { display: false },
                     tooltip: {
                         callbacks: {
                             label: function(context) {
                                 let label = context.label || '';
-                                if (label) {
-                                    label += ': ';
-                                }
-                                if (context.parsed !== null) {
-                                    label += context.parsed + '%';
-                                }
+                                if (label) { label += ': '; }
+                                if (context.parsed !== null) { label += context.parsed + '%'; }
                                 return label;
                             }
                         }
@@ -523,15 +505,8 @@
                 }
             };
 
-            if (sectorChart) {
-                sectorChart.destroy(); 
-            }
-            
-            sectorChart = new Chart(ctx, {
-                type: 'pie',
-                data: data,
-                options: options
-            });
+            if (sectorChart) sectorChart.destroy(); 
+            sectorChart = new Chart(ctx, { type: 'pie', data: data, options: options });
         }
         
         function updateChartTheme(isLightMode) {
@@ -541,28 +516,22 @@
             sectorChart.update();
         }
 
-        // --- Map Interactivity Logic (Modified for Toggle) ---
-        
+        // --- Map Interactivity Logic ---
         function updateMapLegend(selectedTile) {
             const govMap = {
                 'Irbid': '#33a02c', 'Ajloun': '#33a02c', 'Jerash': '#33a02c', 
-                'Amman': '#1f78b4', 'Madaba': '#33a02c', 
-                'Zarqa': '#1f78b4', 
-                'Balqa': '#6a3d9a', 
-                'Karak': '#33a02c', 'Tafilah': '#33a02c', 
+                'Amman': '#1f78b4', 'Madaba': '#33a02c', 'Zarqa': '#1f78b4', 
+                'Balqa': '#6a3d9a', 'Karak': '#33a02c', 'Tafilah': '#33a02c', 
                 'Ma\'an': '#ff7f00', 'Aqaba': '#ff7f00', 
             };
             const selectedGov = selectedTile ? selectedTile.dataset.gov : null;
             
-            // Remove active state and reset background for all tiles first
             document.querySelectorAll('.governorate-tile').forEach(tile => {
                 tile.classList.remove('active');
-                // Reset to default background color
                 tile.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'; 
             });
 
             if (selectedGov && selectedTile && selectedGov !== lastActiveGov) {
-                 // Highlight the newly selected tile
                 selectedTile.classList.add('active');
                 selectedTile.style.backgroundColor = govMap[selectedGov] || '#A3C49B';
             }
@@ -574,33 +543,20 @@
             const allCards = document.querySelectorAll('.data-card');
 
             if (selectedCard) {
-                // If the same button is clicked again
                 if (selectedGov === lastActiveGov) {
-                    // TOGGLE OFF: Hide the active card
                     selectedCard.classList.remove('show');
-                    lastActiveGov = null; // Reset tracker
+                    lastActiveGov = null;
                 } else {
-                    // TOGGLE ON: Hide all cards first
-                    allCards.forEach(card => {
-                        card.classList.remove('show');
-                    });
-
-                    // Show the selected card
+                    allCards.forEach(card => card.classList.remove('show'));
                     selectedCard.classList.add('show');
-                    lastActiveGov = selectedGov; // Update tracker
-                    
-                    // Smoothly scroll the card into view
-                    setTimeout(() => {
-                        selectedCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 100); 
+                    lastActiveGov = selectedGov;
+                    setTimeout(() => selectedCard.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100); 
                 }
             } else {
-                // If a governorate without a specific card is clicked, clear all and reset
                 allCards.forEach(card => card.classList.remove('show'));
                 lastActiveGov = null;
             }
         }
-
 
         // --- Initialization ---
         document.addEventListener("DOMContentLoaded", () => {
@@ -608,21 +564,15 @@
             themeToggleButton.addEventListener('click', toggleTheme);
             initializeChart(isLightMode);
             
-            // Map interactivity handler
             document.getElementById('governorate-map').addEventListener('click', function(event) {
                 const target = event.target;
                 if (target.classList.contains('governorate-tile')) {
                     const selectedGov = target.dataset.gov;
-                    
-                    // 1. Update the visual map highlight (handles toggle logic internally)
                     updateMapLegend(target); 
-                    
-                    // 2. Toggle the visibility of the corresponding data card
                     updateDataCards(selectedGov);
                 }
             });
             
-            // Initial map state: hide all cards and set default colors
             updateMapLegend(null); 
         });
     </script>

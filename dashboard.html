@@ -9,6 +9,7 @@
 
         /* Default (Dark Mode) Variables - Based on your original design */
         :root {
+
             --bg-gradient-start: #253528;
             --bg-gradient-mid: #49654E;
             --bg-gradient-end: #8BA889;
@@ -20,8 +21,8 @@
             --filter-button-hover-bg: rgba(255, 255, 255, 0.4);
 
             --accent-color-light: #8BA889; /* For stat circle border/shadow, active filter text */
-            --accent-color-dark: #A3C49B;  /* For strong tags, hover filter border */
-            
+            --accent-color-dark: #A3C49B; /* For strong tags, hover filter border */
+
             --filter-active-bg: var(--accent-color-light); /* Active filter background */
             --filter-active-text: var(--bg-gradient-start); /* Active filter text */
             --filter-active-border: var(--bg-gradient-start); /* Active filter border */
@@ -51,10 +52,10 @@
             --filter-button-hover-bg: rgba(0, 0, 0, 0.1);
 
             --accent-color-light: #6C8C6B; /* A bit darker accent for light mode contrast */
-            --accent-color-dark: #49654E;  /* Even darker accent */
+            --accent-color-dark: #49654E; /* Even darker accent */
 
-            --filter-active-bg: var(--accent-color-light); 
-            --filter-active-text: #ffffff; 
+            --filter-active-bg: var(--accent-color-light);
+            --filter-active-text: #ffffff;
             --filter-active-border: var(--accent-color-dark);
             --filter-active-shadow: rgba(108, 140, 107, 0.6);
 
@@ -82,7 +83,8 @@
             position: relative;
         }
         
-         #progress-bar {
+        /* 🛠️ MODIFIED: Progress Bar (fixed) */
+        #progress-bar {
             position: fixed;
             top: 0;
             left: 0;
@@ -92,14 +94,28 @@
             z-index: 1000;
             transition: width 0.3s ease;
         }
-        /* --- Controls Container for Buttons --- */
+        
+        /* 🛠️ MODIFIED: Controls Container (fixed and spread) */
         .controls-container {
-            position: absolute;
-            top: 25px;
-            left: 25px; 
+            position: fixed; /* ⬅️ جعل الحاوية ثابتة */
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 25px; /* زيادة التباعد لإبعاد الأزرار عن الحافة */
             display: flex;
+            justify-content: space-between; /* ⬅️ توزيع الأزرار على الجانبين */
+            align-items: center;
             gap: 10px;
             z-index: 10;
+            /* خلفية شفافة للحاوية لتبدو الأزرار فوق المحتوى عند التمرير */
+            background-color: rgba(37, 53, 40, 0.6); 
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            transition: background-color 0.6s ease;
+        }
+        /* Light Mode Controls Container background adjustment */
+        .light-mode .controls-container {
+            background-color: rgba(240, 240, 240, 0.8); 
         }
 
         /* --- Back Button & Theme Toggle Base Style --- */
@@ -123,6 +139,16 @@
             background-color: var(--filter-button-hover-bg);
             border-color: var(--accent-color-light);
         }
+        
+        /* 🛠️ MODIFIED: Swapped button order */
+        /* Now: [Back Button] ... [Toggle] */
+        .back-button { 
+            order: 1; /* ⬅️ جعل زر الرجوع في اليسار */
+        }
+        #theme-toggle {
+            order: 2; /* ⬅️ جعل زر تبديل الوضع في اليمين */
+        }
+
 
         /* --- Dashboard Container --- */
         .dashboard-container {
@@ -136,7 +162,7 @@
             width: 100%;
             max-width: 1300px;
             text-align: center;
-            margin: 60px auto 20px;
+            margin: 100px auto 20px; /* ⬅️ زيادة المسافة العلوية لكي لا يغطي شريط التحكم على المحتوى */
             transition: background-color 0.6s ease, box-shadow 0.6s ease, border-color 0.6s ease;
         }
 
@@ -327,15 +353,19 @@
                 font-size: 2.5rem;
             }
         }
+        
         @media (max-width: 600px) {
             .dashboard-container {
                 padding: 25px;
+                margin-top: 100px; /* Reduced margin for smaller screen */
             }
             .provinces-grid {
                 grid-template-columns: 1fr;
             }
             .stats-circles {
                 flex-direction: column;
+                justify-content: center;
+                align-items: center;
                 gap: 15px;
             }
             .stat-circle {
@@ -344,19 +374,21 @@
                 flex-direction: row;
                 justify-content: space-between;
                 padding: 0 20px;
-                border-radius: var(--border-radius-main); /* Use main border-radius */
+                border-radius: var(--border-radius-main);
             }
             .stat-circle .label {
                 text-align: left;
             }
+            
+            /* 🛠️ MODIFIED: Controls on small screen */
             .controls-container {
-                top: 15px;
-                left: 15px;
-                flex-direction: column;
-                align-items: flex-start;
+                padding: 15px; /* Smaller padding */
+                flex-wrap: wrap; 
+                justify-content: space-between;
             }
-            .dashboard-container {
-                margin-top: 100px; /* Adjust margin for smaller screen controls */
+            .back-button, #theme-toggle {
+                padding: 8px 12px;
+                font-size: 1rem;
             }
         }
 
@@ -367,13 +399,17 @@
         }
     </style>
 </head>
-<body class="dark-mode"> <div class="controls-container">
-     <div id="progress-bar"></div>
+<body class="dark-mode">
+    <div class="controls-container">
+        <button id="theme-toggle" title="Toggle Dark/Light Mode">
+            <span class="mode-icon">☀️</span>
+        </button>
+        
+        <div id="progress-bar"></div>
+
         <a href="javascript:history.back()" class="back-button">
             <span>&larr;</span> Back
         </a>
-        <button id="theme-toggle" title="Toggle Dark/Light Mode">
-            <span class="mode-icon">☀️</span> </button>
     </div>
 
     <div class="dashboard-container">
@@ -405,7 +441,7 @@
                 </tr>
             </thead>
             <tbody id="summaryTableBody">
-                </tbody>
+            </tbody>
         </table>
 
         <h3>Filter by Region</h3>
@@ -418,12 +454,13 @@
         </div>
 
         <div class="provinces-grid" id="provincesGrid">
-            </div>
+        </div>
         
     </div>
 
     <script>
     window.addEventListener('scroll', () => {
+      // Logic for the Progress Bar (remains the same)
       const scrollTop = window.pageYOffset;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercent = (scrollTop / docHeight) * 100;

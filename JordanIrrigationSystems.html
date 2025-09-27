@@ -13,40 +13,46 @@
             --color-dark: #253528; 
             --color-medium: #49654E; 
             --color-light: #8BA889; 
+            --color-accent-dark: #A3C49B; /* Slightly brighter green for highlights */
+            --color-accent-light: #6A994E; /* Darker accent for light mode */
 
             /* Theme Colors (Dark Mode) */
-            --bg-gradient-start: var(--color-dark);
-            --bg-gradient-mid: var(--color-medium);
-            --bg-gradient-end: var(--color-light);
+            --bg-gradient-start: #19231b; /* Darker start */
+            --bg-gradient-mid: var(--color-dark);
+            --bg-gradient-end: var(--color-medium);
 
             --text-color-main: #ffffff;
-            --text-color-secondary: rgba(255, 255, 255, 0.85); 
-            --box-bg-transparency: rgba(255, 255, 255, 0.15); 
-            --box-border: rgba(255, 255, 255, 0.2);
-            --shadow-color: rgba(0, 0, 0, 0.3);
-            --accent-color: #A3C49B; /* Slightly brighter green for highlights */
+            --text-color-secondary: rgba(255, 255, 255, 0.8); 
+            --box-bg-transparency: rgba(255, 255, 255, 0.1); /* Lighter transparency for boxes */
+            --box-bg-secondary: rgba(255, 255, 255, 0.05); /* Very light background for paragraphs */
+            --box-border: rgba(255, 255, 255, 0.15);
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --accent-color: var(--color-accent-dark);
+            --accent-glow: 0 0 10px rgba(163, 196, 155, 0.5); /* Subtle glow for dark mode */
             
-            --table-header-bg: rgba(255, 255, 255, 0.25);
-            --table-row-hover: rgba(255, 255, 255, 0.1);
+            --table-header-bg: rgba(255, 255, 255, 0.2);
+            --table-row-hover: rgba(255, 255, 255, 0.08);
             
-            --border-radius: 12px;
+            --border-radius: 15px; /* Slightly larger border radius */
         }
 
         /* 💡 Light Mode Overrides */
         .light-mode {
             /* Background Gradient Colors (Lighter Theme) */
-            --bg-gradient-start: #f0f0f0; 
+            --bg-gradient-start: #e9e9e9; 
             --bg-gradient-mid: #ffffff; 
-            --bg-gradient-end: #e0e0e0; 
+            --bg-gradient-end: #f0f0f0; 
             
             /* Text and Box Colors (Light Theme) */
             --text-color-main: #222222; 
-            --text-color-secondary: #555555; 
-            --box-bg-transparency: rgba(255, 255, 255, 0.9); 
-            --box-border: rgba(0, 0, 0, 0.15);
+            --text-color-secondary: #444444; 
+            --box-bg-transparency: rgba(255, 255, 255, 0.85); /* More opaque */
+            --box-bg-secondary: rgba(0, 0, 0, 0.03); /* Light background for paragraphs */
+            --box-border: rgba(0, 0, 0, 0.1);
             --shadow-color: rgba(0, 0, 0, 0.15);
-            --accent-color: var(--color-medium); 
-
+            --accent-color: var(--color-accent-light); 
+            --accent-glow: 0 0 5px rgba(106, 153, 78, 0.3);
+            
             --table-header-bg: rgba(0, 0, 0, 0.1);
             --table-row-hover: rgba(0, 0, 0, 0.05);
         }
@@ -71,22 +77,26 @@
             overflow-y: auto; 
         }
         
-         #progress-bar {
+          #progress-bar {
             position: fixed;
             top: 0;
             left: 0;
             width: 0%;
             height: 6px;
-            background: linear-gradient(to right, #82e77a, #000000);
+            background: linear-gradient(to right, var(--accent-color), var(--color-dark));
             z-index: 1000;
             transition: width 0.3s ease;
         }
         /* --- Controls Container --- */
         .controls-container {
+            width: 90%;
             position: fixed; 
             top: 20px;
-            left: 20px;
+         
+       
+          
             display: flex;
+            justify-content: space-between;
             gap: 10px;
             z-index: 1000;
         }
@@ -107,6 +117,9 @@
             text-decoration: none;
             box-shadow: 0 4px 8px var(--shadow-color);
         }
+        .controls-container a { /* Position the back button to the left */
+            margin-right: auto;
+        }
 
         .back-button:hover, #theme-toggle:hover {
             background-color: rgba(255, 255, 255, 0.3); 
@@ -119,35 +132,60 @@
         /* --- Main Container (Glassmorphism) --- */
         .container {
             background-color: var(--box-bg-transparency);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
+            backdrop-filter: blur(8px); /* Increased blur */
+            -webkit-backdrop-filter: blur(8px);
             padding: 40px;
             border-radius: var(--border-radius);
             border: 1px solid var(--box-border); 
             box-shadow: 0 8px 32px 0 var(--shadow-color);
-            width: 100%;
-            max-width: 1000px; 
+            width: 70%; /* Increased width for better use of space */
+            /* Max width constraint */
+           
             text-align: center;
             margin: 80px auto 20px auto; 
             transition: background-color 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
         }
-
+        
+        /* --- NEW: Content Box for Paragraphs --- */
+        .content-box {
+            background-color: var(--box-bg-secondary); /* Subtle background for paragraphs */
+            border-radius: var(--border-radius);
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            text-align: left;
+            border: 1px solid var(--box-border);
+            box-shadow: var(--accent-glow);
+            transition: background-color 0.5s ease, border-color 0.5s ease;
+        }
+        .content-box:hover {
+            border-color: var(--accent-color);
+        }
+        
         /* --- Headings --- */
         h1 {
             color: var(--accent-color); 
             margin-bottom: 30px;
             font-weight: 900;
             font-size: 3rem;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+            text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.6);
         }
 
         h2 {
             color: var(--text-color-main);
             margin-top: 45px;
             padding-bottom: 12px;
-            text-align: left;
+            text-align: center; /* Center section titles */
             font-size: 2rem;
             font-weight: 700;
+        }
+        h3 {
+            color: var(--accent-color);
+            text-align: left;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+            border-bottom: 2px solid rgba(163, 196, 155, 0.3);
+            padding-bottom: 5px;
         }
 
         /* Section Separator */
@@ -158,20 +196,22 @@
             margin: 40px 0;
         }
         .light-mode .section-separator {
-             background-image: linear-gradient(to right, rgba(0, 0, 0, 0), var(--accent-color), rgba(0, 0, 0, 0));
+              background-image: linear-gradient(to right, rgba(0, 0, 0, 0), var(--accent-color), rgba(0, 0, 0, 0));
         }
 
         /* General paragraph text */
         p {
             color: var(--text-color-secondary);
             text-align: justify;
-            line-height: 1.8;
-            font-size: 1.1rem;
-            margin-bottom: 25px; 
+            line-height: 1.7;
+            font-size: 1.05rem;
+            margin-bottom: 18px; 
+            margin-top: 0;
         }
         
         p strong {
             color: var(--accent-color); 
+            font-weight: 700;
         }
 
         /* Key Stats Section */
@@ -191,15 +231,16 @@
         }
         .key-stat strong {
             display: block;
-            font-size: 2.2rem;
+            font-size: 2.5rem; /* Larger numbers */
             color: var(--text-color-main);
-            text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
         }
         .key-stat p {
             color: var(--accent-color);
             margin: 0;
-            font-size: 1rem;
+            font-size: 0.9rem;
             font-weight: 600;
+            text-align: center;
         }
 
         /* --- Animated Stats Section Styling --- */
@@ -220,8 +261,11 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            box-shadow: var(--accent-glow), 0 0 20px rgba(0, 0, 0, 0.3);
             transition: all 0.5s ease;
+        }
+        .stat-circle:hover {
+             transform: scale(1.05);
         }
         .stat-number {
             font-size: 4rem; 
@@ -235,17 +279,25 @@
             text-align: center;
             margin-top: 5px;
         }
-
-        /* --- Table Styling --- */
+        
+        /* --- New Wrapper for Responsive Tables --- */
+        .table-responsive-wrapper {
+            overflow-x: auto; 
+            width: 100%; 
+            margin: 40px auto; /* Center the wrapper */
+        }
+        
+        /* --- Table Styling (MODIFIED) --- */
         table {
             width: 100%;
+            margin: 0; 
             border-collapse: separate;
             border-spacing: 0;
-            margin: 40px 0;
             overflow: hidden;
             border-radius: var(--border-radius);
             box-shadow: 0 4px 15px var(--shadow-color);
             text-align: left;
+            min-width: 650px; /* Minimum width to prevent squishing on small screens */
         }
         th, td {
             padding: 15px 18px;
@@ -267,29 +319,64 @@
             background-color: var(--table-row-hover);
         }
         .light-mode td {
-            background-color: rgba(255, 255, 255, 0.7);
+            background-color: rgba(255, 255, 255, 0.85);
         }
         .light-mode tr:hover td {
-            background-color: rgba(0, 0, 0, 0.1);
+            background-color: rgba(0, 0, 0, 0.05);
         }
 
         /* --- Responsive Adjustments --- */
+        @media (max-width: 992px) {
+             .container {
+                 width: 85%;
+             }
+        }
         @media (max-width: 768px) {
+            
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.8rem; }
+            .content-box { padding: 15px 20px; }
+            
             .stat-circle {
                 width: 120px; 
                 height: 120px;
                 border-width: 3px;
+                margin-bottom: 10px;
             }
             .stat-number {
                 font-size: 2.5rem;
             }
             .stat-label {
-                font-size: 0.8rem;
+                font-size: 0.85rem;
             }
             .animated-stats-container {
                 flex-wrap: wrap;
                 gap: 20px;
             }
+            .key-stat strong {
+                 font-size: 2rem;
+            }
+            
+            /* Table-specific adjustments for smaller screens */
+            th, td {
+                padding: 10px;
+                font-size: 0.8rem; 
+                white-space: nowrap; 
+            }
+        }
+        @media (max-width: 480px) {
+             .controls-container {
+                 top: 10px;
+             }
+             .back-button, #theme-toggle {
+                 padding: 8px 12px;
+                 font-size: 1rem;
+             }
+             .container {
+                 padding: 20px;
+                 margin-top: 60px;
+             }
+             h1 { font-size: 2rem; }
         }
         
     </style>
@@ -306,11 +393,13 @@
     </div>
 
     <div class="container">
-        <h1>Jordan's Water Security: The Pivot to Modern Irrigation</h1>
+        <h1>Jordan's Water Security: The Shift to Modern Irrigation</h1>
         
-        <p>
-            Jordan is categorized as one of the **four most water-scarce countries** globally. With a rapidly growing population and diminishing resources, the agricultural sector, which consumes around **50-70%** of the country's total water output (depending on the year and source), is critical to national food security. The shift from traditional, wasteful methods to **highly efficient, modern irrigation systems** is not just an agricultural policy—it is a national survival strategy.
-        </p>
+        <div class="content-box">
+            <p>
+                Jordan is classified as one of the **four most water-scarce countries** globally. With a rapidly growing population and diminishing resources, the agricultural sector—which consumes between **50-70%** of the country's total water (depending on the year and source)—is critical to national food security. The transition from wasteful traditional methods to **highly efficient modern irrigation systems** is not just an agricultural policy; it is a national strategy for survival.
+            </p>
+        </div>
 
         <div class="key-stat">
             <div>
@@ -323,34 +412,36 @@
             </div>
             <div>
                 <strong>300m³</strong>
-                <p>Annual Water Share Per Capita</p>
+                <p>Annual Water Share per Capita</p>
             </div>
             <div>
-                <strong>300,000+ ha</strong>
-                <p>Approx. Irrigable Land Area</p>
+                <strong>+300,000 Hectares</strong>
+                <p>Approx. Irrigable Area</p>
             </div>
         </div>
         
         <hr class="section-separator">
-        <h2>1. Precision Farming: Drip and Micro-Irrigation Systems</h2>
+        <h2>1. Precision Agriculture: Drip and Micro-Irrigation Systems</h2>
         <hr class="section-separator">
         
-        <p>
-            **Drip irrigation** (also known as trickle irrigation or micro-irrigation) is the cornerstone of Jordan's modern agricultural success, particularly in the **Jordan Valley**. This system delivers water and nutrients directly to the plant's root zone, drop by drop, minimizing water loss due to evaporation and deep percolation. Its adoption is heavily subsidized and encouraged by the government.
-        </p>
+        <div class="content-box">
+            <p>
+                **Drip irrigation** (also known as trickle or micro-irrigation) is the cornerstone of modern agricultural success in Jordan, particularly in the **Jordan Valley** region. This system delivers water and nutrients directly to the plant's root zone, drop by drop, minimizing water loss due to evaporation and deep percolation. Its adoption is heavily supported and promoted by the government.
+            </p>
 
-        <p>
-            **Unrivaled Efficiency:** This method reaches an estimated water use efficiency of **90% to 95%**, significantly outperforming traditional methods by reducing water loss due to evaporation and runoff.
-        </p>
-        <p>
-            **Fertigation and Chemigation:** The system allows for the precise control and delivery of **fertilizers and chemicals** dissolved in the irrigation water, a technique known as Fertigation, which boosts yields while simultaneously reducing nutrient runoff and environmental impact.
-        </p>
-        <p>
-            **Primary Crops:** Drip irrigation is essential for high-value, water-intensive crops like **vegetables** (tomatoes, cucumbers), **citrus fruits**, and **bananas**. It is also widely used for modern **olive groves** and vineyards, ensuring maximum returns on limited water use.
-        </p>
-        <p>
-            **Economic Impact:** The reliability and efficiency of drip systems in the Jordan Valley enable farmers to produce two to three harvests per year, making it the most productive agricultural region despite water constraints.
-        </p>
+            <p>
+                **Unmatched Efficiency:** Water use efficiency for this method is estimated to reach **90% to 95%**, significantly outperforming traditional methods by reducing water loss from evaporation and surface runoff.
+            </p>
+            <p>
+                **Fertigation:** The system allows for precise control of delivering dissolved **fertilizers and chemicals** within the irrigation water, a technique known as **Fertigation**, boosting production while minimizing nutrient runoff and environmental impact.
+            </p>
+            <p>
+                **Key Crops:** Drip irrigation is essential for high-value, water-intensive crops such as **vegetables** (tomatoes and cucumbers), **citrus**, and **bananas**. It is also widely used in modern **olive groves** and vineyards, ensuring maximum return from limited water use.
+            </p>
+            <p>
+                **Economic Impact:** The reliability and efficiency of drip systems in the Jordan Valley enable farmers to produce two to three crops annually, making it the most productive agricultural region despite the water constraints.
+            </p>
+        </div>
         
         <div class="animated-stats-container">
             <div class="stat-circle">
@@ -359,76 +450,80 @@
             </div>
             <div class="stat-circle">
                 <span class="stat-number" data-target="50" data-suffix="%">1</span>
-                <span class="stat-label">Water Saving Potential</span>
+                <span class="stat-label">Potential Water Savings</span>
             </div>
             <div class="stat-circle">
                 <span class="stat-number" data-target="3" data-suffix="X">1</span>
-                <span class="stat-label">Harvests Per Year (JV)</span>
+                <span class="stat-label">Crops Per Year (Jordan Valley)</span>
             </div>
         </div>
         
-        <table>
-            <thead>
-                <tr>
-                    <th>System Type</th>
-                    <th>Water Efficiency</th>
-                    <th>Application</th>
-                    <th>Water Saving Potential (vs. Flood)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>**Drip (Micro-Irrigation)**</td>
-                    <td>90% - 95%</td>
-                    <td>Row crops, Orchards (Jordan Valley)</td>
-                    <td>Up to 50%</td>
-                </tr>
-                <tr>
-                    <td>**Fixed Sprinkler**</td>
-                    <td>70% - 85%</td>
-                    <td>Horticulture, Small Fields (Highlands)</td>
-                    <td>Up to 30%</td>
-                </tr>
-                <tr>
-                    <td>**Flood (Traditional)**</td>
-                    <td>40% - 60%</td>
-                    <td>Rarely used (Phasing out)</td>
-                    <td>Baseline (0%)</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>System Type</th>
+                        <th>Water Use Efficiency</th>
+                        <th>Application</th>
+                        <th>Potential Water Savings (vs. Flooding)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>**Drip (Micro-Irrigation)**</td>
+                        <td>90% - 95%</td>
+                        <td>Row crops, Orchards (Jordan Valley)</td>
+                        <td>Up to 50%</td>
+                    </tr>
+                    <tr>
+                        <td>**Stationary Sprinkler**</td>
+                        <td>70% - 85%</td>
+                        <td>Landscaping, Small fields (Mountainous regions)</td>
+                        <td>Up to 30%</td>
+                    </tr>
+                    <tr>
+                        <td>**Flood (Traditional)**</td>
+                        <td>40% - 60%</td>
+                        <td>Rarely used (Being phased out)</td>
+                        <td>Baseline (0%)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <hr class="section-separator">
-        <h2>2. Conventional and Semi-Modern Systems</h2>
+        <h2>2. Traditional and Semi-Modern Systems</h2>
         <hr class="section-separator">
         
-        <p>
-            While drip irrigation dominates high-value horticulture, **sprinkler irrigation** remains vital for larger fields and certain crop types, offering a middle ground in terms of efficiency and cost. **Flood irrigation** is now strongly discouraged and largely confined to legacy systems or areas with minimal regulatory oversight.
-        </p>
+        <div class="content-box">
+            <p>
+                While drip irrigation dominates high-value horticulture, **sprinkler irrigation** remains vital for larger fields and certain crop types, providing a middle ground in efficiency and cost. **Flood irrigation** is now heavily discouraged and largely confined to old systems or areas with limited regulatory control.
+            </p>
 
-        <h3>Sprinkler Irrigation: The Intermediate Solution</h3>
-        <p>
-            Sprinkler systems spray water over the crops, simulating rainfall. While offering better coverage than flooding, they are susceptible to water loss from **wind drift** and **evaporation**, especially during Jordan’s hot, dry summers. The efficiency typically ranges from 70% to 85%.
-        </p>
-        <p>
-            **Mechanized Systems:** **Center Pivot & Lateral Move** systems are large, mechanized irrigators used primarily in the **Badia** (Eastern Desert) and plateau regions where large-scale, extensive agriculture (like fodder crops) is practiced, often relying on deep well water sources.
-        </p>
-        <p>
-            **Key Applications:** Sprinkler systems are mainly used for **fodder crops** (e.g., alfalfa) and **winter cereals** (wheat/barley) that receive supplemental irrigation to ensure a minimum yield in rain-fed years.
-        </p>
+            <h3>Sprinkler Irrigation: The Middle Ground</h3>
+            <p>
+                Sprinkler systems spray water over crops, simulating rainfall. While offering better coverage than flood irrigation, they are susceptible to water loss from **wind drift** and **evaporation**, especially during Jordan's hot, dry summers. Efficiency typically ranges from 70% to 85%.
+            </p>
+            <p>
+                **Automated Systems:** Large automated irrigation systems—**Center Pivot and Lateral Move**—are primarily used in the **Badia** (desert) and plateau areas where large-scale farming (like fodder crops) is practiced, often relying on deep groundwater sources.
+            </p>
+            <p>
+                **Key Applications:** Sprinkler systems are mainly used for **forage crops** (such as alfalfa) and **winter cereals** (wheat/barley) that receive supplementary irrigation to ensure minimum production in rain-fed years.
+            </p>
 
-        <h3>Flood/Surface Irrigation: A Declining Practice</h3>
-        <p>
-            This is the oldest and least efficient method, involving simply flooding the cultivated area. It leads to significant losses through percolation below the root zone and surface runoff. Its water use efficiency can be as low as **40%**.
-        </p>
-        <p>
-            **Policy:** The Ministry of Agriculture actively discourages new flood irrigation projects and promotes conversion to modern systems due to its enormous **water footprint**.
-        </p>
+            <h3>Flood/Surface Irrigation: A Declining Practice</h3>
+            <p>
+                This is the oldest and least efficient method, involving simply flooding the cropped area. It leads to significant losses through percolation below the root zone and surface runoff. Water use efficiency can be as low as **40%**.
+            </p>
+            <p>
+                **Policy:** The Ministry of Agriculture actively encourages conversion to modern systems and discourages new flood irrigation projects due to their enormous **water footprint**.
+            </p>
+        </div>
         
         <div class="animated-stats-container">
             <div class="stat-circle">
                 <span class="stat-number" data-target="75" data-suffix="%">1</span>
-                <span class="stat-label">Sprinkler Average Efficiency</span>
+                <span class="stat-label">Avg. Sprinkler Efficiency</span>
             </div>
             <div class="stat-circle">
                 <span class="stat-number" data-target="40" data-suffix="%">1</span>
@@ -436,58 +531,62 @@
             </div>
             <div class="stat-circle">
                 <span class="stat-number" data-target="2" data-suffix="X">1</span>
-                <span class="stat-label">Water Used By Flood</span>
+                <span class="stat-label">Water Use vs. Drip</span>
             </div>
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>System Drawback</th>
-                    <th>Drip Irrigation</th>
-                    <th>Sprinkler Irrigation</th>
-                    <th>Flood Irrigation</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>**Evaporation Loss**</td>
-                    <td>Negligible (Sub-surface or close contact)</td>
-                    <td>High (Exposed to wind/sun)</td>
-                    <td>Moderate to High</td>
-                </tr>
-                <tr>
-                    <td>**Energy Cost**</td>
-                    <td>Low (Low pressure needed)</td>
-                    <td>High (High pressure needed)</td>
-                    <td>Very Low (Gravity-fed)</td>
-                </tr>
-                <tr>
-                    <td>**Salinity Risk**</td>
-                    <td>Low (Salts pushed away from roots)</td>
-                    <td>Medium</td>
-                    <td>High (Poor drainage)</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>System Drawbacks</th>
+                        <th>Drip Irrigation</th>
+                        <th>Sprinkler Irrigation</th>
+                        <th>Flood Irrigation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>**Evaporative Loss**</td>
+                        <td>Negligible (Subsurface or close contact)</td>
+                        <td>High (Exposed to wind/sun)</td>
+                        <td>Medium to High</td>
+                    </tr>
+                    <tr>
+                        <td>**Energy Cost**</td>
+                        <td>Low (Low pressure required)</td>
+                        <td>High (High pressure required)</td>
+                        <td>Very Low (Gravity-fed)</td>
+                    </tr>
+                    <tr>
+                        <td>**Salinity Risk**</td>
+                        <td>Low (Salts pushed away from roots)</td>
+                        <td>Medium</td>
+                        <td>High (Poor drainage)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <hr class="section-separator">
         <h2>3. Non-Conventional Water Resources and Management</h2>
         <hr class="section-separator">
         
-        <p>
-            Jordan cannot rely solely on conventional freshwater sources for irrigation. The country has become a global leader in utilizing **non-conventional water sources**, primarily treated wastewater, to bridge the severe supply-demand gap in agriculture.
-        </p>
+        <div class="content-box">
+            <p>
+                Jordan cannot rely solely on traditional fresh water sources for irrigation. The country has become a global leader in utilizing **non-conventional water sources**, primarily treated wastewater, to bridge the severe supply-demand gap in agriculture.
+            </p>
 
-        <h3>Treated Wastewater (Reused Water)</h3>
-        <p>
-            Treated wastewater is the single most important **non-conventional source** for Jordanian agriculture. The largest quantities are used in the Jordan Valley for restricted crops (e.g., non-eaten fruit trees and certain industrial crops). This water source is **consistent and independent of rainfall**, providing crucial reliability to irrigated farms. National policies aim to increase the amount of highly treated wastewater available for irrigation, adhering to strict health and environmental standards.
-        </p>
+            <h3>Treated Wastewater (Reclaimed Water)</h3>
+            <p>
+                Treated wastewater is the most significant **non-conventional source** for Jordanian agriculture. The largest quantities are used in the Jordan Valley for restricted crops (such as non-edible fruit trees and certain industrial crops). This water source is **stable and not rain-dependent**, providing crucial reliability for irrigated farms. National policies aim to increase the volume of highly treated wastewater available for irrigation, adhering to strict health and environmental standards.
+            </p>
 
-        <h3>Rainwater Harvesting (RWH)</h3>
-        <p>
-            In the rain-fed Highlands and the semi-arid Badia, RWH techniques are crucial for maximizing the use of limited precipitation, providing supplemental water to livestock and perennial crops. Traditional underground **cisterns** and large earth dams (**Hafayer**) capture surface runoff for later use, supporting resilience against drought. Furthermore, **Wadi Diversion** structures are built to slow down and divert flash floods from wadis (seasonal riverbeds) to recharge groundwater or directly irrigate fields during the winter season.
-        </p>
+            <h3>Rainwater Harvesting (RWH)</h3>
+            <p>
+                In the rain-fed highlands and the semi-arid Badia, RWH techniques are essential for maximizing limited rainfall, providing supplementary water for livestock and perennial crops. Traditional **ground cisterns** and large earthen dams (**'Hafayer'**) capture runoff for later use, supporting resilience against drought. Additionally, **wadi diversion structures** are built to slow and divert floodwaters from wadis (seasonal riverbeds) to recharge groundwater or directly irrigate fields during the winter season.
+            </p>
+        </div>
         
         <div class="animated-stats-container">
             <div class="stat-circle">
@@ -500,71 +599,75 @@
             </div>
             <div class="stat-circle">
                 <span class="stat-number" data-target="90" data-suffix="%">1</span>
-                <span class="stat-label">Reclamation Goal</span>
+                <span class="stat-label">Reclamation Target</span>
             </div>
         </div>
 
-        <table>
-            <thead>
-                <tr>
-                    <th>Non-Conventional Source</th>
-                    <th>Primary Use</th>
-                    <th>Contribution to Total Irrigation (Approx.)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>**Treated Wastewater**</td>
-                    <td>Irrigation of fodder and industrial crops</td>
-                    <td>Significant (Major source in Jordan Valley)</td>
-                </tr>
-                <tr>
-                    <td>Rainwater Harvesting**</td>
-                    <td>Supplemental irrigation, Livestock (Badia)</td>
-                    <td>Localized and highly variable</td>
-                </tr>
-                <tr>
-                    <td>**Brackish Water**</td>
-                    <td>Certain salt-tolerant crops</td>
-                    <td>Limited, niche application</td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Non-Conventional Source</th>
+                        <th>Primary Use</th>
+                        <th>Contribution to Total Irrigation (Approx.)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>**Treated Wastewater**</td>
+                        <td>Irrigation of fodder and industrial crops</td>
+                        <td>Significant (Major source in Jordan Valley)</td>
+                    </tr>
+                    <tr>
+                        <td>**Rainwater Harvesting**</td>
+                        <td>Supplementary irrigation, Livestock (Badia)</td>
+                        <td>Localized and highly variable</td>
+                    </tr>
+                    <tr>
+                        <td>**Brackish Water**</td>
+                        <td>Specific salt-tolerant crops</td>
+                        <td>Limited, specialized application</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <hr class="section-separator">
-        <h2>4. Future Outlook: Policy and Technological Integration</h2>
+        <h2>4. Future Outlook: Policy and Technology Integration</h2>
         <hr class="section-separator">
         
-        <p>
-            Jordan's future in agriculture is inextricably linked to **smart water management**. The next phase of development focuses on integrating technology, enforcing water rights, and continuing the transition away from high-water-demand crops.
-        </p>
+        <div class="content-box">
+            <p>
+                The future of agriculture in Jordan is closely tied to **smart water management**. The next phase of development focuses on integrating technology, enforcing water rights, and continuing the shift away from highly water-intensive crops.
+            </p>
 
-        <h3>Smart Agriculture Technology</h3>
-        <p>
-            The integration of technology is boosting water efficiency beyond just the physical system: **Sensors and IoT:** Soil moisture sensors and weather stations provide **real-time data** to automatically adjust irrigation schedules, preventing over-watering and optimizing consumption. **Remote Sensing:** Satellite imagery is used to monitor crop health and detect water stress across large areas, allowing for targeted intervention. **Controlled Environment Agriculture (CEA):** **Greenhouses and net houses** create microclimates that drastically reduce evaporation and allow for precision climate control, further maximizing the benefits of drip systems.
-        </p>
+            <h3>Smart Agriculture Technology</h3>
+            <p>
+                Integrating technology enhances water efficiency beyond the physical system: **Sensors and IoT:** Soil moisture sensors and weather stations provide **real-time data** to automatically adjust irrigation schedules, preventing over-watering and optimizing consumption. **Remote Sensing:** Satellite imagery is used to monitor crop health and detect water stress across large areas, allowing for targeted intervention. **Controlled Environment Agriculture (CEA):** **Greenhouses and net houses** create local climates that significantly reduce evaporation and allow for precise climate control, maximizing the benefits of drip systems.
+            </p>
 
-        <h3>The Crop Mix Strategy</h3>
-        <p>
-            Policy decisions are driving a shift in the agricultural landscape, prioritizing crops that are both economically viable and water-efficient: **Prioritizing Exports:** Focusing irrigation on high-value products (like specific vegetables and fruits) that generate foreign currency, rather than subsidized, water-intensive staples. **Water Pricing:** Implementing higher tariffs for water use in agriculture to incentivize farmers to adopt the most efficient methods and reduce consumption voluntarily.
-        </p>
+            <h3>Crop Mix Strategy</h3>
+            <p>
+                Policy decisions are driving a shift in the agricultural landscape, prioritizing economically viable and water-efficient crops: **Prioritizing Exports:** Focusing irrigation on high-value produce (specific vegetables and fruits) that generate foreign currency, rather than subsidized, water-guzzling staples. **Water Pricing:** Implementing higher tariffs for agricultural water use to incentivize farmers to adopt the most efficient methods and voluntarily reduce consumption.
+            </p>
+        </div>
         
         <div class="key-stat">
             <div>
                 <strong>Smart Meters</strong>
-                <p>Technology for real-time monitoring</p>
+                <p>Technology for Real-Time Monitoring</p>
             </div>
             <div>
                 <strong>Water Audits</strong>
-                <p>Required for large-scale irrigation users</p>
+                <p>Required for Large-Scale Irrigators</p>
             </div>
             <div>
                 <strong>Climate Resilience</strong>
-                <p>Goal of sustainable water management</p>
+                <p>Goal of Sustainable Water Management</p>
             </div>
         </div>
         <p style="font-size: 0.9rem; margin-top: 30px; color: var(--accent-color); text-align: center;">
-            The continuous push for precision irrigation, coupled with the strategic use of treated wastewater, defines Jordan's resilience in the face of acute water scarcity.
+            The continuous push for precision irrigation, coupled with the strategic use of treated wastewater, defines Jordan's resilience against acute water scarcity.
         </p>
 
     </div>
