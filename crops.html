@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
 <title>Jordanian Crops & Agriculture</title>
  <style>
     #progress-bar {
@@ -293,567 +297,79 @@
             font-size: 0.95rem;
             border-top: 4px solid #8BA889;
         }
-        /* ... other footer styles (kept) ... */
+        /* Other footer styles kept and normalized */
 
         .footer-content {
-
             max-width: 1100px;
-
             margin: auto;
-
             display: flex;
-
             flex-wrap: wrap;
-
             justify-content: space-between;
-
             gap: 30px;
-
             padding-bottom: 20px;
-
         }
-
-
 
         .footer-section {
-
             flex: 1;
-
             min-width: 200px;
-
         }
-
-
 
         .footer-section h4 {
-
             color: #8BA889;
-
             font-size: 1.2rem;
-
             margin-bottom: 15px;
-
             border-bottom: 2px solid rgba(139, 168, 137, 0.3);
-
             padding-bottom: 5px;
-
         }
-
-
 
         .footer-section p, .footer-section ul {
-
             margin: 0;
-
             padding: 0;
-
             list-style: none;
-
+               display: flex;
+          flex-direction: column;
+          justify-content: left;
+       
         }
-
-
 
         .footer-section ul li {
-
             margin-bottom: 10px;
-
+          
         }
-
-
 
         .footer-section a {
-
             color: #e0e0e0;
-
             text-decoration: none;
-
             transition: color 0.3s;
-
+                 text-align: left;
+            
         }
-
-
 
         .footer-section a:hover {
-
             color: #8BA889;
-
             text-decoration: underline;
-
         }
-
-
 
         .social-links a {
-
+       
             font-size: 1.5rem;
-
             margin-right: 15px;
-
             color: #8BA889;
-
             transition: color 0.3s;
-
         }
-
-
 
         .social-links a:hover {
-
             color: #ffffff;
-
         }
-
-
 
         .footer-bottom {
-
             text-align: center;
-
             margin-top: 30px;
-
             padding-top: 20px;
-
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-
             font-size: 0.85rem;
-
         }
 
-        
-/* Responsive */
-@media (max-width: 768px) {
-  .intro-section {
-    flex-direction: column;
-    padding: 20px;
-  }
-
-  .intro-image, .intro-text {
-    max-width: 100%;
-  }
-
-  .intro-text h1 {
-    font-size: 28px;
-  }
-
-  .intro-text p {
-    font-size: 15px;
-  }
-}
-
-    /* Responsive */
-    @media (max-width: 768px) {
-      .container {
-        padding: 15px;
-        min-height: auto;
-      }
-      .content {
-        height: auto;
-      }
-      .navbar ul {
-        flex-direction: column;
-        gap: 5px;
-        padding: 10px;
-      }
-      .navbar li {
-        width: 100%;
-      }
-      .navbar li a {
-        display: block;
-        padding: 8px;
-        font-size: 16px;
-        text-align: center;
-      }
-      .intro-section {
-        padding: 15px;
-      }
-      .intro-image img {
-        width: 100%;
-        max-width: 300px;
-      }
-      .intro-text {
-        padding: 20px;
-      }
-      .intro-text h1 {
-        font-size: 26px;
-      }
-      .intro-text p {
-        font-size: 14px;
-      }
-      .statistics {
-        flex-direction: column;
-        gap: 15px;
-        margin-top: 20px;
-      }
-      .card {
-        width: 100%;
-        height: auto;
-        padding: 15px;
-        margin-top: 0;
-        margin-bottom: 15px;
-      }
-      .card h4 {
-        font-size: 16px;
-      }
-      .card .value {
-        font-size: 24px;
-      }
-      .controls {
-        margin-top: 30px;
-      }
-      .search-box input {
-        width: 100%;
-        padding: 12px 20px;
-      }
-      .quick-filters {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        margin-top: 15px;
-      }
-      .filter-btn {
-        padding: 8px 16px;
-        margin: 3px;
-        font-size: 14px;
-      }
-      .plants-area {
-        margin-top: 30px;
-      }
-      .plants-grid {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 15px;
-      }
-      .plant-card {
-        padding: 12px;
-      }
-      .plant-card img {
-        height: 100px;
-      }
-      .plant-card h3 {
-        font-size: 16px;
-      }
-      .plant-card p {
-        font-size: 13px;
-      }
-      .footer-content {
-        flex-direction: column;
-        gap: 20px;
-        padding-bottom: 15px;
-      }
-      .footer-section {
-        text-align: center;
-        min-width: auto;
-      }
-      .footer-section h4 {
-        font-size: 1.1rem;
-      }
-      footer {
-        padding: 30px 15px 20px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      body {
-        overflow-x: hidden;
-      }
-      .container {
-        padding: 5px;
-        width: 100%;
-        box-sizing: border-box;
-      }
-      .navbar ul {
-        padding: 5px;
-      }
-      .navbar li a {
-        font-size: 14px;
-        padding: 6px;
-      }
-      .intro-section {
-        padding: 5px;
-      }
-      .intro-image img {
-        width: 100%;
-        max-width: none;
-      }
-      .intro-text {
-        padding: 10px;
-      }
-      .intro-text h1 {
-        font-size: 20px;
-      }
-      .intro-text p {
-        font-size: 12px;
-      }
-      .statistics {
-        gap: 5px;
-        margin-top: 10px;
-      }
-      .card {
-        padding: 10px;
-        margin-bottom: 5px;
-      }
-      .card h4 {
-        font-size: 14px;
-      }
-      .card .value {
-        font-size: 18px;
-      }
-      .controls {
-        margin-top: 15px;
-      }
-      .search-box input {
-        padding: 8px 12px;
-        font-size: 14px;
-      }
-      .filter-btn {
-        padding: 5px 10px;
-        font-size: 12px;
-      }
-      .plants-area {
-        margin-top: 15px;
-      }
-      .plants-grid {
-        grid-template-columns: 1fr;
-        gap: 8px;
-      }
-      .plant-card {
-        padding: 8px;
-      }
-      .plant-card img {
-        height: 70px;
-      }
-      .plant-card h3 {
-        font-size: 14px;
-      }
-      .plant-card p {
-        font-size: 11px;
-      }
-      .footer-content {
-        gap: 10px;
-      }
-      .footer-section h4 {
-        font-size: 0.9rem;
-      }
-      footer {
-        padding: 15px 5px 10px;
-        font-size: 0.8rem;
-      }
-      .footer-bottom {
-        font-size: 0.7rem;
-      }
-    }
-
-    @media (max-width: 320px) {
-      .container {
-        padding: 2px;
-      }
-      .navbar ul {
-        padding: 2px;
-      }
-      .navbar li a {
-        font-size: 12px;
-        padding: 4px;
-      }
-      .intro-section {
-        padding: 2px;
-      }
-      .intro-image img {
-        width: 100%;
-      }
-      .intro-text {
-        padding: 5px;
-      }
-      .intro-text h1 {
-        font-size: 18px;
-      }
-      .intro-text p {
-        font-size: 11px;
-      }
-      .statistics {
-        gap: 2px;
-        margin-top: 5px;
-      }
-      .card {
-        padding: 5px;
-        margin-bottom: 2px;
-      }
-      .card h4 {
-        font-size: 12px;
-      }
-      .card .value {
-        font-size: 16px;
-      }
-      .controls {
-        margin-top: 10px;
-      }
-      .search-box input {
-        padding: 6px 8px;
-        font-size: 12px;
-      }
-      .filter-btn {
-        padding: 4px 8px;
-        font-size: 11px;
-      }
-      .plants-area {
-        margin-top: 10px;
-      }
-      .plants-grid {
-        gap: 5px;
-      }
-      .plant-card {
-        padding: 5px;
-      }
-      .plant-card img {
-        height: 60px;
-      }
-      .plant-card h3 {
-        font-size: 13px;
-      }
-      .plant-card p {
-        font-size: 10px;
-      }
-      .footer-content {
-        gap: 5px;
-      }
-      .footer-section h4 {
-        font-size: 0.8rem;
-      }
-      footer {
-        padding: 10px 2px 5px;
-        font-size: 0.7rem;
-      }
-      .footer-bottom {
-        font-size: 0.6rem;
-      }
-    }
-
-    @media (max-width: 200px) {
-      body {
-        overflow-x: hidden;
-        text-align: center;
-      }
-      .container {
-        padding: 0;
-        width: 100%;
-        box-sizing: border-box;
-      }
-      .content {
-        height: auto;
-      }
-      .navbar ul {
-        flex-direction: column;
-        padding: 0;
-        gap: 0;
-      }
-      .navbar li {
-        width: 100%;
-      }
-      .navbar li a {
-        font-size: 8px;
-        padding: 1px;
-        display: block;
-        text-align: center;
-      }
-      .intro-section {
-        flex-direction: column;
-        padding: 0;
-        gap: 5px;
-        align-items: center;
-        justify-content: center;
-      }
-      .intro-image {
-        flex: none;
-        width: 100%;
-      }
-      .intro-image img {
-        width: 100%;
-        max-width: 100%;
-      }
-      .intro-text {
-        flex: none;
-        width: 100%;
-        padding: 2px;
-        max-width: 100%;
-      }
-      .intro-text h1 {
-        font-size: 14px;
-      }
-      .intro-text p {
-        font-size: 9px;
-      }
-      .statistics {
-        flex-direction: column;
-        gap: 0;
-        margin-top: 2px;
-      }
-      .card {
-        width: 100%;
-        padding: 2px;
-        margin-bottom: 0;
-      }
-      .card h4 {
-        font-size: 9px;
-      }
-      .card .value {
-        font-size: 12px;
-      }
-      .controls {
-        margin-top: 3px;
-      }
-      .search-box input {
-        width: 100%;
-        padding: 3px 4px;
-        font-size: 9px;
-      }
-      .quick-filters {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1px;
-      }
-      .filter-btn {
-        padding: 2px 4px;
-        font-size: 8px;
-        margin: 0;
-      }
-      .plants-area {
-        margin-top: 3px;
-      }
-      .plants-grid {
-        grid-template-columns: 1fr;
-        gap: 2px;
-      }
-      .plant-card {
-        padding: 2px;
-      }
-      .plant-card img {
-        height: 40px;
-      }
-      .plant-card h3 {
-        font-size: 11px;
-      }
-      .plant-card p {
-        font-size: 8px;
-      }
-      .footer-content {
-        flex-direction: column;
-        gap: 2px;
-        padding-bottom: 2px;
-      }
-      .footer-section {
-        min-width: auto;
-        text-align: center;
-      }
-      .footer-section h4 {
-        font-size: 0.6rem;
-      }
-      footer {
-        padding: 3px 0 2px;
-        font-size: 0.5rem;
-      }
-      .footer-bottom {
-        font-size: 0.4rem;
-      }
-    }
   </style>
 </head>
 <body>
@@ -925,30 +441,49 @@
 
 <!-- Footer -->
 <footer>
-  <div class="footer-content">
-    <div class="footer-section about">
-      <h4>About Agriculture Jordan</h4>
-      <p>Promoting sustainable farming and food security in Jordan with updated crop information and modern techniques.</p>
-    </div>
-    <div class="footer-section links">
-      <h4>Quick Links</h4>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Crops</a></li>
-        <li><a href="#">Regions</a></li>
-        <li><a href="#">Calendar</a></li>
-        <li><a href="#">Weather</a></li>
-      </ul>
-    </div>
-    <div class="footer-section contact">
-      <h4>Contact</h4>
-      <p>Email: info@jordanagriculture.jo</p>
-      <p>Phone: +962 7 9999 9999</p>
-      <p>Address: Amman, Jordan</p>
-    </div>
-  </div>
-  <div class="footer-bottom">&copy; 2025 Jordan Agriculture. All rights reserved.</div>
-</footer>
+        <div class="footer-content">
+            <div class="footer-section about">
+                <h4>About Food Security Jordan</h4>
+                <p>
+                    Dedicated to exploring and promoting sustainable agricultural
+                    practices and food resilience in the Hashemite Kingdom of Jordan.
+                </p>
+            </div>
+            <div class="footer-section links">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#agriculture">Agriculture Types</a></li>
+                    <li><a href="#irrigation">Irrigation</a></li>
+                    <li><a href="#vertical">Vertical Farming</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section contact">
+                <h4>Contact Us</h4>
+                <p><i class="fas fa-envelope"></i> info@foodsecurityjo.com</p>
+                <p><i class="fas fa-phone"></i> +962 6 XXX XXXX</p>
+                <p><i class="fas fa-map-marker-alt"></i> Amman, Jordan</p>
+            </div>
+            <div class="footer-section social">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#" target="_blank" title="Facebook"
+                      ><i class="fab fa-facebook"></i
+                    ></a>
+                    <a href="#" target="_blank" title="Twitter"
+                      ><i class="fab fa-twitter"></i
+                    ></a>
+                    <a href="#" target="_blank" title="Instagram"
+                      ><i class="fab fa-instagram"></i
+                    ></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2025 Food Security Jordan. All rights reserved. | Designed for
+            awareness and education.
+        </div>
+    </footer>
 
 <script>
   // Progress bar
