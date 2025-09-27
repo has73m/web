@@ -99,12 +99,14 @@
     /* Controls (search + filters) */
     .controls {
       margin-top: 40px;
-      text-align: center;
-      
+      margin-bottom: 40px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
     }
 
     .search-box input {
-        
       padding: 10px 20px;
       width: 60%;
       border-radius: 20px;
@@ -122,7 +124,6 @@
       border-radius: 20px;
       border: none;
       cursor: pointer;
-    
     }
 
     .filter-btn.active {
@@ -177,23 +178,23 @@
     }
     
 
-    .intro-section {
+.intro-section {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 30px;
   align-items: center;
   justify-content: center;
-  padding: 30px;
+  padding: 40px;
 }
 
 .intro-image {
   flex: 1;
-  min-width: 280px;
-  max-width: 500px;
+  min-width: 300px;
+  max-width: 600px;
 }
 
 .intro-image img {
-  width: 50%;
+  width: 60%;
   border-radius: 20px;
   box-shadow: 0 8px 25px rgba(0,0,0,0.2);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -206,7 +207,7 @@
 
 .intro-text {
   flex: 1;
-  min-width: 280px;
+  min-width: 300px;
   max-width: 600px;
   background: rgba(255,255,255,0.2);
   border: 1px solid rgba(255,255,255,0.3);
@@ -220,12 +221,12 @@
 
 .intro-text h1 {
   font-size: 32px;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
 }
 
 .intro-text p {
   font-size: 16px;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .intro-text:hover {
@@ -273,31 +274,19 @@
   font-style: italic;
 }
 
-  /* Controls */
-  .controls { margin-bottom:40px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
-  /* .controls select, .controls input { padding:10px 15px; border-radius:20px; border:1px solid #ccc; outline:none; min-width:150px; } */
-
-  /* Plants Grid */
-  .plants-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap:20px; }
-  .plant-card { background: rgba(255,255,255,0.5); border:1px solid rgba(0,0,0,0.1); border-radius:15px; padding:15px; text-align:center; box-shadow:0 4px 20px rgba(0,0,0,0.1); }
-  .plant-card img { width:100%; height:150px; object-fit:cover; border-radius:10px; margin-bottom:10px; }
-  .plant-card h3 { font-size:18px; color:#123a26; margin-bottom:5px; }
-  .plant-card p { font-size:14px; color:#333; margin-bottom:5px; }
-  .empty { text-align:center; font-size:16px; color:#444; margin-top:20px; }
-
  /* Footer (Kept) */
         footer {
             background: rgba(0,0,0,0.8);
             color: #e0e0e0;
-            padding: 50px 20px 30px;
-            font-size: 0.95rem;
+            padding: 30px 15px 20px;
+            font-size: 0.8rem;
             border-top: 4px solid #8BA889;
         }
         /* ... other footer styles (kept) ... */
 
         .footer-content {
 
-            max-width: 1100px;
+            max-width: 900px;
 
             margin: auto;
 
@@ -307,9 +296,9 @@
 
             justify-content: space-between;
 
-            gap: 30px;
+            gap: 20px;
 
-            padding-bottom: 20px;
+            padding-bottom: 15px;
 
         }
 
@@ -342,13 +331,12 @@
 
 
         .footer-section p, .footer-section ul {
-
             margin: 0;
-
             padding: 0;
-
             list-style: none;
-
+            overflow-wrap: break-word;
+            word-break: break-word;
+            hyphens: auto;
         }
 
 
@@ -362,13 +350,10 @@
 
 
         .footer-section a {
-
             color: #e0e0e0;
-
             text-decoration: none;
-
             transition: color 0.3s;
-
+            font-size: 12px;
         }
 
 
@@ -406,20 +391,322 @@
 
 
         .footer-bottom {
-
             text-align: center;
-
             margin-top: 30px;
-
             padding-top: 20px;
-
             border-top: 1px solid rgba(255, 255, 255, 0.1);
-
             font-size: 0.85rem;
-
         }
 
-        
+
+/* Additional Responsive Media Queries */
+@media (max-width: 1100px) {
+  .container {
+    padding: 20px;
+  }
+  .intro-text h1 {
+    font-size: 25px;
+  }
+  .intro-text p {
+    font-size: 14px;
+  }
+  .card h4 {
+    font-size: 17.5px;
+  }
+  .card .value {
+    font-size: 27px;
+  }
+  .plant-card h3 {
+    font-size: 17.5px;
+  }
+  .plant-card p {
+    font-size: 13.5px;
+  }
+  .navbar li a {
+    font-size: 18px;
+  }
+  footer {
+    padding: 45px 18px 27px;
+  }
+  .footer-section h4 {
+    font-size: 1.15rem;
+  }
+}
+
+@media (max-width: 920px) {
+  .container {
+    padding: 20px;
+  }
+  .intro-text h1 {
+    font-size: 20px;
+  }
+  .intro-text p {
+    font-size: 14px;
+  }
+  .card h4 {
+    font-size: 17px;
+  }
+  .card .value {
+    font-size: 26px;
+  }
+  .plant-card h3 {
+    font-size: 17px;
+  }
+  .plant-card p {
+    font-size: 13px;
+  }
+  .navbar li a {
+    font-size: 17px;
+  }
+  footer {
+    padding: 40px 16px 24px;
+  }
+  .footer-section h4 {
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 830px) {
+  .container {
+    padding: 20px;
+  }
+  .intro-text h1 {
+    font-size: 22px;
+  }
+  .intro-text p {
+    font-size: 13px;
+  }
+  .card h4 {
+    font-size: 16.5px;
+  }
+  .card .value {
+    font-size: 25px;
+  }
+  .plant-card h3 {
+    font-size: 16.5px;
+  }
+  .plant-card p {
+    font-size: 12.5px;
+  }
+  .navbar li a {
+    font-size: 16px;
+  }
+  footer {
+    padding: 35px 14px 21px;
+  }
+  .footer-section h4 {
+    font-size: 1.05rem;
+  }
+}
+
+@media (max-width: 730px) {
+  .container {
+    padding: 30px;
+  }
+  .intro-text h1 {
+    font-size: 28px;
+  }
+  .intro-text p {
+    font-size: 14px;
+  }
+  .card h4 {
+    font-size: 16px;
+  }
+  .card .value {
+    font-size: 24px;
+  }
+  .plant-card h3 {
+    font-size: 16px;
+  }
+  .plant-card p {
+    font-size: 12px;
+  }
+  .navbar li a {
+    font-size: 15px;
+  }
+  footer {
+    padding: 30px 12px 18px;
+  }
+  .footer-section h4 {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 460px) {
+  body {
+    overflow-x: hidden;
+  }
+  .container {
+    padding: 4px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .navbar ul {
+    padding: 4px;
+  }
+  .navbar li a {
+    font-size: 13px;
+    padding: 5px;
+  }
+  .intro-section {
+    padding: 4px;
+  }
+  .intro-image img {
+    width: 100%;
+    max-width: none;
+  }
+  .intro-text {
+    padding: 9px;
+  }
+  .intro-text h1 {
+    font-size: 19px;
+  }
+  .intro-text p {
+    font-size: 11.5px;
+  }
+  .statistics {
+    gap: 4px;
+    margin-top: 9px;
+  }
+  .card {
+    padding: 9px;
+    margin-bottom: 4px;
+  }
+  .card h4 {
+    font-size: 13px;
+  }
+  .card .value {
+    font-size: 17px;
+  }
+  .controls {
+    margin-top: 14px;
+  }
+  .search-box input {
+    padding: 7px 11px;
+    font-size: 13px;
+  }
+  .filter-btn {
+    padding: 4.5px 9px;
+    font-size: 11.5px;
+  }
+  .plants-area {
+    margin-top: 14px;
+  }
+  .plants-grid {
+    grid-template-columns: 1fr;
+    gap: 7px;
+  }
+  .plant-card {
+    padding: 7px;
+  }
+  .plant-card img {
+    height: 65px;
+  }
+  .plant-card h3 {
+    font-size: 13px;
+  }
+  .plant-card p {
+    font-size: 10.5px;
+  }
+  .footer-content {
+    gap: 9px;
+  }
+  .footer-section h4 {
+    font-size: 0.85rem;
+  }
+  footer {
+    padding: 14px 4px 9px;
+    font-size: 0.75rem;
+  }
+  .footer-bottom {
+    font-size: 0.65rem;
+  }
+}
+
+@media (max-width: 359px) {
+  .container {
+    padding: 1.5px;
+  }
+  .navbar ul {
+    padding: 1.5px;
+  }
+  .navbar li a {
+    font-size: 11px;
+    padding: 3px;
+  }
+  .intro-section {
+    padding: 1.5px;
+  }
+  .intro-image img {
+    width: 100%;
+  }
+  .intro-text {
+    padding: 4px;
+  }
+  .intro-text h1 {
+    font-size: 17px;
+  }
+  .intro-text p {
+    font-size: 10.5px;
+  }
+  .statistics {
+    gap: 1.5px;
+    margin-top: 4px;
+  }
+  .card {
+    padding: 4px;
+    margin-bottom: 1.5px;
+  }
+  .card h4 {
+    font-size: 11px;
+  }
+  .card .value {
+    font-size: 15px;
+  }
+  .controls {
+    margin-top: 9px;
+  }
+  .search-box input {
+    padding: 5px 7px;
+    font-size: 11px;
+  }
+  .filter-btn {
+    padding: 3px 6px;
+    font-size: 10px;
+  }
+  .plants-area {
+    margin-top: 9px;
+  }
+  .plants-grid {
+    gap: 4px;
+  }
+  .plant-card {
+    padding: 4px;
+  }
+  .plant-card img {
+    height: 55px;
+  }
+  .plant-card h3 {
+    font-size: 12px;
+  }
+  .plant-card p {
+    font-size: 9.5px;
+  }
+  .footer-content {
+    gap: 4px;
+  }
+  .footer-section h4 {
+    font-size: 0.75rem;
+  }
+  footer {
+    padding: 9px 1.5px 4px;
+    font-size: 0.65rem;
+  }
+  .footer-bottom {
+    font-size: 0.55rem;
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .intro-section {
@@ -727,103 +1014,75 @@
     }
 
     @media (max-width: 200px) {
-      body {
-        overflow-x: hidden;
-        text-align: center;
-      }
       .container {
-        padding: 0;
-        width: 100%;
-        box-sizing: border-box;
-      }
-      .content {
-        height: auto;
+        padding: 1px;
       }
       .navbar ul {
-        flex-direction: column;
-        padding: 0;
-        gap: 0;
-      }
-      .navbar li {
-        width: 100%;
+        padding: 1px;
       }
       .navbar li a {
-        font-size: 8px;
-        padding: 1px;
-        display: block;
-        text-align: center;
+        font-size: 10px;
+        padding: 3px;
       }
       .intro-section {
+      
+        padding: 1px;
+        max-width: 80%;
+        flex-wrap: wrap;
+        display: flex;
         flex-direction: column;
-        padding: 0;
-        gap: 5px;
-        align-items: center;
         justify-content: center;
-      }
-      .intro-image {
-        flex: none;
-        width: 100%;
+        align-items: center;
       }
       .intro-image img {
-        width: 100%;
-        max-width: 100%;
+        width: 50%;
       }
       .intro-text {
-        flex: none;
-        width: 100%;
         padding: 2px;
-        max-width: 100%;
+        text-wrap: wrap;
+
       }
       .intro-text h1 {
-        font-size: 14px;
+        font-size: 10px;
+        text-wrap: wrap;
+
       }
       .intro-text p {
-        font-size: 9px;
+        font-size: 7px;
       }
       .statistics {
-        flex-direction: column;
-        gap: 0;
-        margin-top: 2px;
+        gap: 1px;
+        margin-top: 3px;
       }
       .card {
-        width: 100%;
-        padding: 2px;
-        margin-bottom: 0;
+        padding: 4px;
+        margin-bottom: 1px;
       }
       .card h4 {
-        font-size: 9px;
+        font-size: 10px;
       }
       .card .value {
-        font-size: 12px;
+        font-size: 14px;
       }
       .controls {
-        margin-top: 3px;
+        margin-top: 8px;
       }
       .search-box input {
-        width: 100%;
-        padding: 3px 4px;
-        font-size: 9px;
-      }
-      .quick-filters {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1px;
+        padding: 4px 6px;
+        font-size: 10px;
       }
       .filter-btn {
-        padding: 2px 4px;
-        font-size: 8px;
-        margin: 0;
+        padding: 3px 6px;
+        font-size: 9px;
       }
       .plants-area {
-        margin-top: 3px;
+        margin-top: 8px;
       }
       .plants-grid {
-        grid-template-columns: 1fr;
-        gap: 2px;
+        gap: 3px;
       }
       .plant-card {
-        padding: 2px;
+        padding: 4px;
       }
       .plant-card img {
         height: 40px;
@@ -835,25 +1094,20 @@
         font-size: 8px;
       }
       .footer-content {
-        flex-direction: column;
-        gap: 2px;
-        padding-bottom: 2px;
-      }
-      .footer-section {
-        min-width: auto;
-        text-align: center;
+        gap: 3px;
       }
       .footer-section h4 {
-        font-size: 0.6rem;
+        font-size: 0.7rem;
       }
       footer {
-        padding: 3px 0 2px;
-        font-size: 0.5rem;
+        padding: 8px 1px 4px;
+        font-size: 0.6rem;
       }
       .footer-bottom {
-        font-size: 0.4rem;
+        font-size: 0.5rem;
       }
     }
+
   </style>
 </head>
 <body>
