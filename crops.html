@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jordanian Crops & Agriculture</title>
+ <style>
+    #progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 6px;
+      background: linear-gradient(to right, #f7f183, #ffd501);
+      z-index: 1000;
+      transition: width 0.3s ease;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    a {
+      color: rgb(12, 50, 28);
+      text-decoration: none;
+    }
+
+    .container {
+      background-image: url('images/bg.jpg');
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: cover;
+      min-height: 150vh;
+      padding: 50px;
+    }
+
+    .navbar, .content, .card {
+      background: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      border-radius: 16px;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .content {
+      height: 50vh;
+      width: 100%;
+      margin-top: 30px;
+    }
+
+    ul {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+    }
+
+    li {
+      list-style: none;
+    }
+
+    li a {
+      font-weight: 400;
+      font-size: 19px;
+    }
+
+    li a:hover {
+      background-color: rgba(66, 99, 66, 0.847);
+      color: antiquewhite;
+      padding: 10px;
+      border-radius: 20px;
+    }
+
+    .statistics {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .card{
+      margin-top:30px;
+      width:23%;
+      height: 37vh;
+      border-radius: 0px 50px;
+      padding: 18px;
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+    }
+
+    .card h4{ font-size:18px; margin-bottom:8px; color: #073a1b; }
+    .card .value{ font-size:28px; font-weight:700; color:#072f18; }
+
+
+    /* Controls (search + filters) */
+    .controls {
+      margin-top: 40px;
+      text-align: center;
+      
+    }
+
+    .search-box input {
+        
+      padding: 10px 20px;
+      width: 60%;
+      border-radius: 20px;
+      border: 1px solid #ccc;
+      outline: none;
+    }
+
+    .quick-filters {
+      margin-top: 20px;
+    }
+
+    .filter-btn {
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+    
+    }
+
+    .filter-btn.active {
+      background: rgba(66, 99, 66, 0.847);
+      color: #fff;
+    }
+
+    /* Plants grid */
+    .plants-area {
+      margin-top: 40px;
+    }
+
+    .plants-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .plant-card {
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid rgba(0,0,0,0.1);
+      border-radius: 15px;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .plant-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+
+    .plant-card h3 {
+      margin-bottom: 5px;
+      font-size: 18px;
+      color: #123a26;
+    }
+
+    .plant-card p {
+      font-size: 14px;
+      color: #333;
+    }
+
+    .empty {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 16px;
+      color: #444;
+    }
+    
+
+    .intro-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+
+.intro-image {
+  flex: 1;
+  min-width: 280px;
+  max-width: 500px;
+}
+
+.intro-image img {
+  width: 50%;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.intro-image img:hover {
+  transform: scale(1.03);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.3);
+}
+
+.intro-text {
+  flex: 1;
+  min-width: 280px;
+  max-width: 600px;
+  background: rgba(255,255,255,0.2);
+  border: 1px solid rgba(255,255,255,0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 25px;
+  color: #0b3d1f;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.intro-text h1 {
+  font-size: 32px;
+  margin-bottom: 15px;
+}
+
+.intro-text p {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.intro-text:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+}
+
+
+
+/* Inputs & Selects */
+.controls input,
+.controls select {
+  padding: 12px 18px;
+  border-radius: 30px;
+  border: none;
+  font-size: 15px;
+  font-weight: 500;
+  outline: none;
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+}
+
+/* Text color inside selects */
+.controls select option {
+  color: #333;
+}
+
+/* Hover & Focus */
+.controls input:focus,
+.controls select:focus {
+  background: rgba(255, 255, 255, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+}
+.controls input{
+    width: 40%;
+}
+/* Placeholder for search input */
+.controls input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+  font-style: italic;
+}
+
+  /* Controls */
+  .controls { margin-bottom:40px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+  /* .controls select, .controls input { padding:10px 15px; border-radius:20px; border:1px solid #ccc; outline:none; min-width:150px; } */
+
+  /* Plants Grid */
+  .plants-grid { display:grid; grid-template-columns: repeat(auto-fill,minmax(220px,1fr)); gap:20px; }
+  .plant-card { background: rgba(255,255,255,0.5); border:1px solid rgba(0,0,0,0.1); border-radius:15px; padding:15px; text-align:center; box-shadow:0 4px 20px rgba(0,0,0,0.1); }
+  .plant-card img { width:100%; height:150px; object-fit:cover; border-radius:10px; margin-bottom:10px; }
+  .plant-card h3 { font-size:18px; color:#123a26; margin-bottom:5px; }
+  .plant-card p { font-size:14px; color:#333; margin-bottom:5px; }
+  .empty { text-align:center; font-size:16px; color:#444; margin-top:20px; }
+
+ /* Footer (Kept) */
+        footer {
+            background: rgba(0,0,0,0.8);
+            color: #e0e0e0;
+            padding: 50px 20px 30px;
+            font-size: 0.95rem;
+            border-top: 4px solid #8BA889;
+        }
+        /* ... other footer styles (kept) ... */
+
+        .footer-content {
+
+            max-width: 1100px;
+
+            margin: auto;
+
+            display: flex;
+
+            flex-wrap: wrap;
+
+            justify-content: space-between;
+
+            gap: 30px;
+
+            padding-bottom: 20px;
+
+        }
+
+
+
+        .footer-section {
+
+            flex: 1;
+
+            min-width: 200px;
+
+        }
+
+
+
+        .footer-section h4 {
+
+            color: #8BA889;
+
+            font-size: 1.2rem;
+
+            margin-bottom: 15px;
+
+            border-bottom: 2px solid rgba(139, 168, 137, 0.3);
+
+            padding-bottom: 5px;
+
+        }
+
+
+
+        .footer-section p, .footer-section ul {
+
+            margin: 0;
+
+            padding: 0;
+
+            list-style: none;
+
+        }
+
+
+
+        .footer-section ul li {
+
+            margin-bottom: 10px;
+
+        }
+
+
+
+        .footer-section a {
+
+            color: #e0e0e0;
+
+            text-decoration: none;
+
+            transition: color 0.3s;
+
+        }
+
+
+
+        .footer-section a:hover {
+
+            color: #8BA889;
+
+            text-decoration: underline;
+
+        }
+
+
+
+        .social-links a {
+
+            font-size: 1.5rem;
+
+            margin-right: 15px;
+
+            color: #8BA889;
+
+            transition: color 0.3s;
+
+        }
+
+
+
+        .social-links a:hover {
+
+            color: #ffffff;
+
+        }
+
+
+
+        .footer-bottom {
+
+            text-align: center;
+
+            margin-top: 30px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+
+            font-size: 0.85rem;
+
+        }
+
+        
+/* Responsive */
+@media (max-width: 768px) {
+  .intro-section {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  .intro-image, .intro-text {
+    max-width: 100%;
+  }
+
+  .intro-text h1 {
+    font-size: 28px;
+  }
+
+  .intro-text p {
+    font-size: 15px;
+  }
+}
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+        min-height: auto;
+      }
+      .content {
+        height: auto;
+      }
+      .navbar ul {
+        flex-direction: column;
+        gap: 5px;
+        padding: 10px;
+      }
+      .navbar li {
+        width: 100%;
+      }
+      .navbar li a {
+        display: block;
+        padding: 8px;
+        font-size: 16px;
+        text-align: center;
+      }
+      .intro-section {
+        padding: 15px;
+      }
+      .intro-image img {
+        width: 100%;
+        max-width: 300px;
+      }
+      .intro-text {
+        padding: 20px;
+      }
+      .intro-text h1 {
+        font-size: 26px;
+      }
+      .intro-text p {
+        font-size: 14px;
+      }
+      .statistics {
+        flex-direction: column;
+        gap: 15px;
+        margin-top: 20px;
+      }
+      .card {
+        width: 100%;
+        height: auto;
+        padding: 15px;
+        margin-top: 0;
+        margin-bottom: 15px;
+      }
+      .card h4 {
+        font-size: 16px;
+      }
+      .card .value {
+        font-size: 24px;
+      }
+      .controls {
+        margin-top: 30px;
+      }
+      .search-box input {
+        width: 100%;
+        padding: 12px 20px;
+      }
+      .quick-filters {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 15px;
+      }
+      .filter-btn {
+        padding: 8px 16px;
+        margin: 3px;
+        font-size: 14px;
+      }
+      .plants-area {
+        margin-top: 30px;
+      }
+      .plants-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 15px;
+      }
+      .plant-card {
+        padding: 12px;
+      }
+      .plant-card img {
+        height: 100px;
+      }
+      .plant-card h3 {
+        font-size: 16px;
+      }
+      .plant-card p {
+        font-size: 13px;
+      }
+      .footer-content {
+        flex-direction: column;
+        gap: 20px;
+        padding-bottom: 15px;
+      }
+      .footer-section {
+        text-align: center;
+        min-width: auto;
+      }
+      .footer-section h4 {
+        font-size: 1.1rem;
+      }
+      footer {
+        padding: 30px 15px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      body {
+        overflow-x: hidden;
+      }
+      .container {
+        padding: 5px;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .navbar ul {
+        padding: 5px;
+      }
+      .navbar li a {
+        font-size: 14px;
+        padding: 6px;
+      }
+      .intro-section {
+        padding: 5px;
+      }
+      .intro-image img {
+        width: 100%;
+        max-width: none;
+      }
+      .intro-text {
+        padding: 10px;
+      }
+      .intro-text h1 {
+        font-size: 20px;
+      }
+      .intro-text p {
+        font-size: 12px;
+      }
+      .statistics {
+        gap: 5px;
+        margin-top: 10px;
+      }
+      .card {
+        padding: 10px;
+        margin-bottom: 5px;
+      }
+      .card h4 {
+        font-size: 14px;
+      }
+      .card .value {
+        font-size: 18px;
+      }
+      .controls {
+        margin-top: 15px;
+      }
+      .search-box input {
+        padding: 8px 12px;
+        font-size: 14px;
+      }
+      .filter-btn {
+        padding: 5px 10px;
+        font-size: 12px;
+      }
+      .plants-area {
+        margin-top: 15px;
+      }
+      .plants-grid {
+        grid-template-columns: 1fr;
+        gap: 8px;
+      }
+      .plant-card {
+        padding: 8px;
+      }
+      .plant-card img {
+        height: 70px;
+      }
+      .plant-card h3 {
+        font-size: 14px;
+      }
+      .plant-card p {
+        font-size: 11px;
+      }
+      .footer-content {
+        gap: 10px;
+      }
+      .footer-section h4 {
+        font-size: 0.9rem;
+      }
+      footer {
+        padding: 15px 5px 10px;
+        font-size: 0.8rem;
+      }
+      .footer-bottom {
+        font-size: 0.7rem;
+      }
+    }
+
+    @media (max-width: 320px) {
+      .container {
+        padding: 2px;
+      }
+      .navbar ul {
+        padding: 2px;
+      }
+      .navbar li a {
+        font-size: 12px;
+        padding: 4px;
+      }
+      .intro-section {
+        padding: 2px;
+      }
+      .intro-image img {
+        width: 100%;
+      }
+      .intro-text {
+        padding: 5px;
+      }
+      .intro-text h1 {
+        font-size: 18px;
+      }
+      .intro-text p {
+        font-size: 11px;
+      }
+      .statistics {
+        gap: 2px;
+        margin-top: 5px;
+      }
+      .card {
+        padding: 5px;
+        margin-bottom: 2px;
+      }
+      .card h4 {
+        font-size: 12px;
+      }
+      .card .value {
+        font-size: 16px;
+      }
+      .controls {
+        margin-top: 10px;
+      }
+      .search-box input {
+        padding: 6px 8px;
+        font-size: 12px;
+      }
+      .filter-btn {
+        padding: 4px 8px;
+        font-size: 11px;
+      }
+      .plants-area {
+        margin-top: 10px;
+      }
+      .plants-grid {
+        gap: 5px;
+      }
+      .plant-card {
+        padding: 5px;
+      }
+      .plant-card img {
+        height: 60px;
+      }
+      .plant-card h3 {
+        font-size: 13px;
+      }
+      .plant-card p {
+        font-size: 10px;
+      }
+      .footer-content {
+        gap: 5px;
+      }
+      .footer-section h4 {
+        font-size: 0.8rem;
+      }
+      footer {
+        padding: 10px 2px 5px;
+        font-size: 0.7rem;
+      }
+      .footer-bottom {
+        font-size: 0.6rem;
+      }
+    }
+
+    @media (max-width: 200px) {
+      body {
+        overflow-x: hidden;
+        text-align: center;
+      }
+      .container {
+        padding: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .content {
+        height: auto;
+      }
+      .navbar ul {
+        flex-direction: column;
+        padding: 0;
+        gap: 0;
+      }
+      .navbar li {
+        width: 100%;
+      }
+      .navbar li a {
+        font-size: 8px;
+        padding: 1px;
+        display: block;
+        text-align: center;
+      }
+      .intro-section {
+        flex-direction: column;
+        padding: 0;
+        gap: 5px;
+        align-items: center;
+        justify-content: center;
+      }
+      .intro-image {
+        flex: none;
+        width: 100%;
+      }
+      .intro-image img {
+        width: 100%;
+        max-width: 100%;
+      }
+      .intro-text {
+        flex: none;
+        width: 100%;
+        padding: 2px;
+        max-width: 100%;
+      }
+      .intro-text h1 {
+        font-size: 14px;
+      }
+      .intro-text p {
+        font-size: 9px;
+      }
+      .statistics {
+        flex-direction: column;
+        gap: 0;
+        margin-top: 2px;
+      }
+      .card {
+        width: 100%;
+        padding: 2px;
+        margin-bottom: 0;
+      }
+      .card h4 {
+        font-size: 9px;
+      }
+      .card .value {
+        font-size: 12px;
+      }
+      .controls {
+        margin-top: 3px;
+      }
+      .search-box input {
+        width: 100%;
+        padding: 3px 4px;
+        font-size: 9px;
+      }
+      .quick-filters {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1px;
+      }
+      .filter-btn {
+        padding: 2px 4px;
+        font-size: 8px;
+        margin: 0;
+      }
+      .plants-area {
+        margin-top: 3px;
+      }
+      .plants-grid {
+        grid-template-columns: 1fr;
+        gap: 2px;
+      }
+      .plant-card {
+        padding: 2px;
+      }
+      .plant-card img {
+        height: 40px;
+      }
+      .plant-card h3 {
+        font-size: 11px;
+      }
+      .plant-card p {
+        font-size: 8px;
+      }
+      .footer-content {
+        flex-direction: column;
+        gap: 2px;
+        padding-bottom: 2px;
+      }
+      .footer-section {
+        min-width: auto;
+        text-align: center;
+      }
+      .footer-section h4 {
+        font-size: 0.6rem;
+      }
+      footer {
+        padding: 3px 0 2px;
+        font-size: 0.5rem;
+      }
+      .footer-bottom {
+        font-size: 0.4rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="progress-bar"></div>
+<div class="container">
+  <!-- Navbar -->
+  <header>
+    <nav class="navbar">
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Crops</a></li>
+        <li><a href="#">Regions</a></li>
+        <li><a href="#">Calendar</a></li>
+        <li><a href="#">Weather</a></li>
+      </ul>
+    </nav>
+  </header>
+ <div class="content">
+  <!-- Intro -->
+  <div class="intro-section">
+    <div class="intro-image">
+      <img src="images/int.jpg" alt="Jordan Agriculture">
+    </div>
+    <div class="intro-text">
+      <h1>Jordanian Crops & Agriculture</h1>
+      <p>Discover the diversity of crops grown across Jordan, including fruits, vegetables, herbs, and grains. Explore planting seasons, yields, and market information, and find which crops thrive in your region.</p>
+    </div>
+  </div>
+</div>
+  <!-- Statistics -->
+  <div class="statistics">
+    <div class="card"><h4>Total Crops</h4><div class="value" id="statTotal">0</div></div>
+    <div class="card"><h4>Fruits</h4><div class="value" id="statFruits">0</div></div>
+    <div class="card"><h4>Vegetables</h4><div class="value" id="statVeg">0</div></div>
+    <div class="card"><h4>Herbs</h4><div class="value" id="statHerbs">0</div></div>
+  </div>
+
+  <!-- Filters -->
+  <div class="controls">
+    <input type="text" id="searchInput" placeholder="Search crop...">
+    <select id="regionFilter">
+      <option value="all">All Regions</option>
+      <option value="Irbid">Irbid</option>
+      <option value="Ajloun">Ajloun</option>
+      <option value="Balqa">Balqa</option>
+      <option value="Amman">Amman</option>
+      <option value="Zarqa">Zarqa</option>
+      <option value="Mafraq">Mafraq</option>
+      <option value="Karak">Karak</option>
+      <option value="Madaba">Madaba</option>
+      <option value="Tafila">Tafila</option>
+      <option value="Aqaba">Aqaba</option>
+      <option value="Ma'an">Ma'an</option>
+      <option value="Jerash">Jerash</option>
+    </select>
+    <select id="typeFilter">
+      <option value="all">All Types</option>
+      <option value="Fruit">Fruit</option>
+      <option value="Vegetable">Vegetable</option>
+      <option value="Herb">Herb</option>
+    </select>
+  </div>
+
+  <!-- Crops Grid -->
+  <div class="plants-grid" id="cropsContainer"></div>
+  <div class="empty" id="noResults" style="display:none;">No crops match your search or filter.</div>
+
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-content">
+    <div class="footer-section about">
+      <h4>About Agriculture Jordan</h4>
+      <p>Promoting sustainable farming and food security in Jordan with updated crop information and modern techniques.</p>
+    </div>
+    <div class="footer-section links">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Crops</a></li>
+        <li><a href="#">Regions</a></li>
+        <li><a href="#">Calendar</a></li>
+        <li><a href="#">Weather</a></li>
+      </ul>
+    </div>
+    <div class="footer-section contact">
+      <h4>Contact</h4>
+      <p>Email: info@jordanagriculture.jo</p>
+      <p>Phone: +962 7 9999 9999</p>
+      <p>Address: Amman, Jordan</p>
+    </div>
+  </div>
+  <div class="footer-bottom">&copy; 2025 Jordan Agriculture. All rights reserved.</div>
+</footer>
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', function(){
+    let scrollTop = window.scrollY;
+    let docHeight = document.body.scrollHeight - window.innerHeight;
+    let scrollPercent = (scrollTop / docHeight) * 100;
+    document.getElementById('progress-bar').style.width = scrollPercent + '%';
+  });
+
+  // Crop dataset
+ const crops = [
+  {name:'Tomato', type:'Vegetable', region:'Amman', season:'Spring-Summer', yield:'High', market:'Local', image:'images/tomato.webp'},
+  {name:'Apple', type:'Fruit', region:'Irbid', season:'Fall', yield:'Medium', market:'Local & Export', image:'images/apple.webp'},
+  {name:'Mint', type:'Herb', region:'Ajloun', season:'Spring', yield:'Medium', market:'Local', image:'images/mint.jpg'},
+  {name:'Strawberry', type:'Fruit', region:'Balqa', season:'Spring', yield:'High', market:'Local', image:'images/Strawberry.jpg'},
+  {name:'Carrot', type:'Vegetable', region:'Mafraq', season:'Winter', yield:'Medium', market:'Local', image:'images/Carrot.webp'},
+  {name:'Basil', type:'Herb', region:'Amman', season:'Summer', yield:'Low', market:'Local', image:'images/Basil.webp'},
+  {name:'Cucumber', type:'Vegetable', region:'Zarqa', season:'Summer', yield:'High', market:'Local', image:'images/Cucumber.jpg'},
+  
+  // New Crops
+  {name:'Olive', type:'Fruit', region:'Jerash', season:'Fall', yield:'High', market:'Local & Export', image:'images/Olive.webp'},
+  {name:'Pomegranate', type:'Fruit', region:'Karak', season:'Fall', yield:'High', market:'Local', image:'images/Pomegranate.webp'},
+  {name:'Grapes', type:'Fruit', region:'Madaba', season:'Summer', yield:'High', market:'Local & Export', image:'images/grapes.webp'},
+  {name:'Wheat', type:'Grain', region:'Mafraq', season:'Spring', yield:'High', market:'Local', image:'images/Wheat.png'},
+  {name:'Barley', type:'Grain', region:'Ma\'an', season:'Spring', yield:'Medium', market:'Local', image:'images/barley.jpg'},
+  {name:'Watermelon', type:'Fruit', region:'Zarqa', season:'Summer', yield:'High', market:'Local', image:'images/watermelon.jpg'},
+  {name:'Melon', type:'Fruit', region:'Tafila', season:'Summer', yield:'Medium', market:'Local', image:'images/Melon.webp'},
+  {name:'Lettuce', type:'Vegetable', region:'Irbid', season:'Winter-Spring', yield:'Medium', market:'Local', image:'images/Lettuce.avif'},
+  {name:'Onion', type:'Vegetable', region:'Balqa', season:'Spring-Summer', yield:'High', market:'Local', image:'images/onion.jpg'},
+  {name:'Garlic', type:'Vegetable', region:'Ajloun', season:'Spring', yield:'Low', market:'Local', image:'images/Garlic.webp'},
+  {name:'Chickpeas', type:'Legume', region:'Mafraq', season:'Spring', yield:'Medium', market:'Local', image:'images/Chickpeas.jpg'},
+  {name:'Lentils', type:'Legume', region:'Karak', season:'Winter', yield:'Medium', market:'Local', image:'images/lentils.jpg'},
+  {name:'Peach', type:'Fruit', region:'Amman', season:'Summer', yield:'Medium', market:'Local', image:'images/Peach.webp'},
+  {name:'Apricot', type:'Fruit', region:'Ajloun', season:'Summer', yield:'Medium', market:'Local', image:'images/Apricot.webp'},
+  {name:'Cherry', type:'Fruit', region:'Jerash', season:'Summer', yield:'Low', market:'Local', image:'images/Cherry.webp'},
+  {name:'Fig', type:'Fruit', region:'Madaba', season:'Summer', yield:'Medium', market:'Local', image:'images/fig.jpg'},
+  {name:'Cabbage', type:'Vegetable', region:'Irbid', season:'Winter', yield:'High', market:'Local', image:'images/cabbage.jpg'},
+  {name:'Cauliflower', type:'Vegetable', region:'Zarqa', season:'Winter', yield:'Medium', market:'Local', image:'images/cauliflower.jpg'},
+  {name:'Spinach', type:'Vegetable', region:'Amman', season:'Winter', yield:'Low', market:'Local', image:'images/spinach.webp'},
+  {name:'Parsley', type:'Herb', region:'Ajloun', season:'Spring', yield:'Medium', market:'Local', image:'images/Parsley.webp'},
+  {name:'Coriander', type:'Herb', region:'Amman', season:'Spring', yield:'Medium', market:'Local', image:'images/Coriander.webp'},
+  {name:'Hot Pepper', type:'Vegetable', region:'Aqaba', season:'Summer', yield:'High', market:'Local & Export', image:'images/HotPepper.webp'},
+  {name:'Potato', type:'Vegetable', region:'Balqa', season:'Spring-Fall', yield:'High', market:'Local & Export', image:'images/potato.webp'},
+  {name:'Date Palm', type:'Fruit', region:'Ma\'an', season:'Summer-Fall', yield:'High', market:'Local & Export', image:'images/Datepalm.jpg'},
+  {name:'Sesame', type:'Seed', region:'Tafila', season:'Summer', yield:'Low', market:'Local', image:'images/Sesame.webp'}
+];
+
+
+  const container = document.getElementById('cropsContainer');
+  const noResults = document.getElementById('noResults');
+  const searchInput = document.getElementById('searchInput');
+  const regionFilter = document.getElementById('regionFilter');
+  const typeFilter = document.getElementById('typeFilter');
+
+  function renderCrops() {
+    const search = searchInput.value.toLowerCase();
+    const region = regionFilter.value;
+    const type = typeFilter.value;
+
+    const filtered = crops.filter(crop => {
+      return (crop.name.toLowerCase().includes(search)) &&
+             (region === 'all' || crop.region === region) &&
+             (type === 'all' || crop.type === type);
+    });
+
+    container.innerHTML = '';
+    if(filtered.length === 0){ 
+      noResults.style.display = 'block'; 
+    } else { 
+      noResults.style.display = 'none';
+      filtered.forEach(crop => {
+        const div = document.createElement('div');
+        div.className = 'plant-card';
+        div.innerHTML = `
+          <img src="${crop.image}" alt="${crop.name}">
+          <h3>${crop.name}</h3>
+          <p>Type: ${crop.type}</p>
+          <p>Region: ${crop.region}</p>
+          <p>Season: ${crop.season}</p>
+          <p>Yield: ${crop.yield}</p>
+          <p>Market: ${crop.market}</p>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // Update stats
+    document.getElementById('statTotal').textContent = filtered.length;
+    document.getElementById('statFruits').textContent = filtered.filter(c => c.type==='Fruit').length;
+    document.getElementById('statVeg').textContent = filtered.filter(c => c.type==='Vegetable').length;
+    document.getElementById('statHerbs').textContent = filtered.filter(c => c.type==='Herb').length;
+  }
+
+  searchInput.addEventListener('input', renderCrops);
+  regionFilter.addEventListener('change', renderCrops);
+  typeFilter.addEventListener('change', renderCrops);
+
+  // Initial render
+  renderCrops();
+</script>
+</body>
+</html>
