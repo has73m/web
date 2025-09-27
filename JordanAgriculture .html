@@ -95,11 +95,15 @@
         }
         /* ✅ Controls Container for Fixed Buttons */
         .controls-container {
+            padding-top: 10px;
+            width: 95%;
             position: fixed;
             top: 15px;
             left: 15px;
+            
             display: flex;
-            gap: 10px;
+            justify-content: space-between;
+       
             z-index: 1000;
         }
 
@@ -267,7 +271,7 @@
         }
         @media (max-width: 768px) {
             .controls-container {
-                flex-direction: column;
+              
                 top: 10px;
                 left: 10px;
             }
