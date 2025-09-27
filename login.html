@@ -38,10 +38,23 @@
             left: 0;
             width: 0%;
             height: 6px;
-            background: linear-gradient(to right, #82e77a, #000000);
+            background: linear-gradient(to right, #dee77a, #ffaf1a);
             z-index: 1000;
             transition: width 0.3s ease;
+         }
+        .container{
+            width: 100%;
+            height: 100vh;
+            background-image: url("images/b.jpg");
+            background-repeat: no-repeat;
+            background-position: center center; 
+            background-size: cover;
+             display: flex;
+            justify-content: center; 
+            align-items: center;   
+            padding: 20px;
         }
+     
         .login-container {
             background-color: var(--box-bg-transparency);
             backdrop-filter: blur(5px);
@@ -58,7 +71,7 @@
 
         /* --- Headings --- */
         h2 {
-            color: var(--color-light); 
+            color:#e6b543;
             margin-bottom: 30px;
             font-weight: 700;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
@@ -75,7 +88,7 @@
             margin-bottom: 8px;
             font-weight: 500;
             font-size: 1rem;
-            color: var(--color-light);
+             color:#e6b543;
         }
 
         input[type="text"],
@@ -114,7 +127,7 @@
         }
 
         .btn:hover {
-            background-color: #A3C49B; 
+            background-color:#d3ad55; 
             color: var(--color-dark);
             transform: translateY(-2px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
@@ -147,11 +160,176 @@
             border: 1px solid var(--danger-color);
         }
 
-        /* --- Media Query for Responsiveness --- */
+        /* --- Media Queries for Responsiveness --- */
+        @media (max-width: 1100px) {
+            .login-container {
+                max-width: 380px;
+                padding: 35px;
+            }
+            h2 {
+                font-size: 1.8rem;
+            }
+            .form-group label {
+                font-size: 0.95rem;
+            }
+            input[type="text"], input[type="password"] {
+                padding: 12px;
+                font-size: 0.95rem;
+            }
+            .btn {
+                padding: 12px 20px;
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 920px) {
+            .login-container {
+                max-width: 360px;
+                padding: 30px;
+            }
+            h2 {
+                font-size: 1.7rem;
+            }
+            .form-group label {
+                font-size: 0.9rem;
+            }
+            input[type="text"], input[type="password"] {
+                padding: 11px;
+                font-size: 0.9rem;
+            }
+            .btn {
+                padding: 11px 18px;
+                font-size: 0.95rem;
+            }
+        }
+
+        @media (max-width: 830px) {
+            .login-container {
+                max-width: 340px;
+                padding: 28px;
+            }
+            h2 {
+                font-size: 1.6rem;
+            }
+            .form-group label {
+                font-size: 0.85rem;
+            }
+            input[type="text"], input[type="password"] {
+                padding: 10px;
+                font-size: 0.85rem;
+            }
+            .btn {
+                padding: 10px 16px;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 730px) {
+            .login-container {
+                max-width: 320px;
+                padding: 25px;
+            }
+            h2 {
+                font-size: 1.5rem;
+            }
+            .form-group label {
+                font-size: 0.8rem;
+            }
+            input[type="text"], input[type="password"] {
+                padding: 9px;
+                font-size: 0.8rem;
+            }
+            .btn {
+                padding: 9px 14px;
+                font-size: 0.85rem;
+            }
+        }
+
         @media (max-width: 600px) {
             .login-container {
                 margin: 20px;
-                padding: 30px;
+                padding: 20px;
+                max-width: 300px;
+            }
+            h2 {
+                font-size: 1.4rem;
+            }
+            .form-group label {
+                font-size: 0.75rem;
+            }
+            input[type="text"], input[type="password"] {
+                padding: 8px;
+                font-size: 0.75rem;
+            }
+            .btn {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 460px) {
+            .login-container {
+                margin: 15px;
+                padding: 18px;
+                max-width: 280px;
+            }
+            h2 {
+                font-size: 1.3rem;
+            }
+            .form-group label {
+                font-size: 0.7rem;
+            }
+            input[type="text"], input[type="password"] {
+                padding: 7px;
+                font-size: 0.7rem;
+            }
+            .btn {
+                padding: 7px 10px;
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 359px) {
+            .login-container {
+                margin: 10px;
+                padding: 15px;
+                max-width: 260px;
+            }
+            h2 {
+                font-size: 1.2rem;
+            }
+            .form-group label {
+                font-size: 0.65rem;
+            }
+            input[type="text"], input[type="password"] {
+                padding: 6px;
+                font-size: 0.65rem;
+            }
+            .btn {
+                padding: 6px 8px;
+                font-size: 0.7rem;
+            }
+        }
+
+        @media (max-width: 200px) {
+            .login-container {
+                margin: 5px;
+                padding: 10px;
+                max-width: 180px;
+            }
+            h2 {
+                font-size: 1rem;
+            }
+            .form-group label {
+                font-size: 0.6rem;
+            }
+            input[type="text"], input[type="password"] {
+                padding: 5px;
+                font-size: 0.6rem;
+            }
+            .btn {
+                padding: 5px 6px;
+                font-size: 0.65rem;
             }
         }
         
@@ -159,6 +337,8 @@
 </head>
 <body>
    <div id="progress-bar"></div>
+   <div class="container">
+  
     <div class="login-container">
         <h2>🔒 User Login</h2>
         <form id="loginForm">
@@ -178,7 +358,7 @@
             <div id="message"></div>
         </form>
     </div>
-
+    </div>
     <script>
 
     window.addEventListener('scroll', () => {
